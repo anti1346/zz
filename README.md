@@ -19,3 +19,14 @@ echo 'export PS1="\[\e[33m\]\u\[\e[m\]\[\e[37m\]@\[\e[m\]\[\e[34m\]\h\[\e[m\]:\[
 ```
 ```
 source ~/.bashrc
+
+### sudoer 변경
+```
+echo 'NoPasswordUser ALL=NOPASSWD: ALL' >> /etc/sudoers
+```
+
+### 우분투 editor 변경
+```
+sudo update-alternatives --config editor
+```
+
