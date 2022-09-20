@@ -1,3 +1,12 @@
+
+###히스토리
+```
+echo 'export HISTTIMEFORMAT="%d/%m/%y %T "' >> ~/.bashrc
+```
+```
+source ~/.bashrc
+```
+###프롬프트
 ```
 vim ~/.bashrc
 ```
