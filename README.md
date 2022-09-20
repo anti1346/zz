@@ -1,7 +1,13 @@
 
 ### 히스토리
 ```
-echo 'export HISTTIMEFORMAT="%d/%m/%y %T "' >> ~/.bashrc
+ cat <<EOF >> /etc/profile
+
+## history
+export HISTSIZE=10000
+export HISTTIMEFORMAT='%Y-%m-%d %H:%M:%S '
+#export HISTCONTROL=erasedups
+EOF
 ```
 ```
 source ~/.bashrc
