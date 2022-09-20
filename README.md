@@ -1,7 +1,7 @@
 
 ### 히스토리
 ```
-sudo cat <<EOF >> /etc/profile
+sudo cat <<EOF >> ~/.bashrc
 
 ## history
 export HISTSIZE=10000
