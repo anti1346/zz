@@ -26,6 +26,11 @@ source ~/.bashrc
 echo 'NoPasswordUser ALL=NOPASSWD: ALL' >> /etc/sudoers
 ```
 
+### 타임존(timezone) 설정
+```
+sudo timedatectl set-timezone Asia/Seoul
+```
+
 ### 우분투 editor 변경
 ```
 sudo update-alternatives --config editor
