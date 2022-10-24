@@ -46,6 +46,9 @@ sudo timedatectl set-timezone Asia/Seoul
 yum install -q -y chrony
 ```
 ```
+systemctl --now enable chronyd
+```
+```
 cat <<EOF > /etc/chrony.conf
 server time.bora.net iburst
 server times.postech.ac.kr iburst
