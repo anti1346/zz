@@ -1,16 +1,17 @@
 
-
+### user1 그룹 생성
 ```
 groupadd -g 2001 user1
 ```
+### user1 계정 생성
 ```
 useradd -m -c "System Account" -d /home/user1 -s /bin/bash -u 2001 -g 2001 user1
 ```
-
+### user1 사용자 그룹 변경
 ```
 usermod -G dba user1
 ```
-
+### sudo editor
 ```
 echo 'user1 ALL=NOPASSWD: ALL' >> /etc/sudoers
 
