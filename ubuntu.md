@@ -1,7 +1,8 @@
 
 ```
 groupadd -g 2001 user1
-
+```
+```
 useradd -m -c "System Account" -d /home/user1 -s /bin/bash -u 2001 -g 2001 user1
 ```
 
