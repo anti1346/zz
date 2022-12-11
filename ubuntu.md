@@ -1,10 +1,10 @@
 
 
 ```
-groupadd -g 2001 user1
+groupadd -g 1101 vagrant
 ```
 ```
-useradd -m -c "System Account" -d /home/user1 -s /bin/bash -u 2001 -g 2001 user1
+useradd -m -c "System Account" -d /home/vagrant -s /bin/bash -u 1101 -g 1101 vagrant
 ```
 
 ```
@@ -12,7 +12,7 @@ usermod -G dba user1
 ```
 
 ```
-echo 'user1 ALL=NOPASSWD: ALL' >> /etc/sudoers
+echo 'vagrant ALL=NOPASSWD: ALL' >> /etc/sudoers
 
 ```
 
