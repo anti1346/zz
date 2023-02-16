@@ -17,7 +17,7 @@ echo 'vagrant ALL=NOPASSWD: ALL' >> /etc/sudoers
 ```
 
 ### 히스토리
-##### ~/.bashrc
+##### ${HOME}/.bashrc
 ```
 sudo cat <<EOF >> ~/.bashrc
 
