@@ -17,6 +17,7 @@ echo 'vagrant ALL=NOPASSWD: ALL' >> /etc/sudoers
 ```
 
 ### 히스토리
+##### ~/.bashrc
 ```
 sudo cat <<EOF >> ~/.bashrc
 
@@ -29,7 +30,19 @@ EOF
 ```
 source ~/.bashrc
 ```
+##### /etc/profile
+```
+sudo cat <<EOF >> /etc/profile
 
+## history
+export HISTSIZE=10000
+export HISTTIMEFORMAT='%Y-%m-%d %H:%M:%S '
+#export HISTCONTROL=erasedups
+EOF
+```
+```
+source /etc/profile
+```
 ### 프롬프트
 ###### linux user 
 ```
