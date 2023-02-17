@@ -78,5 +78,8 @@ sudo timedatectl set-timezone Asia/Seoul
 
 ### 우분투 editor 변경
 ```
+sudo update-alternatives --set editor /usr/bin/vim.basic
+```
+```
 sudo update-alternatives --config editor
 ```
