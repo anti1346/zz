@@ -53,6 +53,7 @@ systemctl --now enable chronyd
 ```
 ```
 cat <<EOF > /etc/chrony.conf
+server 169.254.169.123 iburst
 server time.bora.net iburst
 server times.postech.ac.kr iburst
 
