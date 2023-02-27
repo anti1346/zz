@@ -2,7 +2,7 @@
 
 #### 히스토리
 ```
-sudo cat <<EOF >> ~/.bashrc
+sudo cat <<EOF >> /etc/profile
 
 ## history
 export HISTSIZE=10000
@@ -11,7 +11,7 @@ export HISTTIMEFORMAT='%Y-%m-%d %H:%M:%S '
 EOF
 ```
 ```
-source ~/.bashrc
+source /etc/profile
 ```
 
 #### 프롬프트
