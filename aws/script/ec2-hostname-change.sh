@@ -44,4 +44,4 @@ hostname=$(aws --region ${region} ec2 describe-instances \
 
 sudo hostnamectl set-hostname ${hostname}
 
-echo -e "\nHostname set to ${hostname}"
+echo -e "\nHostname set to ${hostname}\n"
