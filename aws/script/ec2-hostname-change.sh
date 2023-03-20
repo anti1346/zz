@@ -20,7 +20,7 @@ else
     echo -e "\njq 패키지가 이미 설치되어 있습니다."
 fi
 
-if ! [ -x "$(command -v aws)" ] || [ "$(aws --version | cut -d' ' -f1 | cut -d'/' -f2 | cut -c1)" != "1" ]; then
+if ! [ -x "$(command -v aws)" ] || [ "$(aws --version | cut -d' ' -f1 | cut -d'/' -f2 | cut -c1)" != "2" ]; then
     echo -e "\nAWS CLI v2 패키지가 설치되어 있지 않거나 버전이 1이며 패키지를 재설치합니다."
     sudo rm -rf /usr/bin/aws
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
