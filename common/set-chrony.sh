@@ -10,7 +10,7 @@ elif [[ $(cat /etc/os-release | grep "^ID=" | awk -F'=' '{print $2}') == "centos
     PACKAGE_MANAGER="yum"
     SERVICE_NAME="chronyd.service"
     CONFIG_FILE_PATH="/etc/chrony.conf"
-elif [[ $(cat /etc/os-release | grep "^ID=" | awk -F'=' '{print $2}') == "amzn" ]]; then
+elif [[ $(cat /etc/os-release | grep "^ID=" | awk -F'=' '{print $2}' | tr -d '"') == "amzn" ]]; then
     PACKAGE_MANAGER="yum"
     SERVICE_NAME="chronyd.service"
     CONFIG_FILE_PATH="/etc/chrony.conf"
