@@ -54,3 +54,5 @@ chronyc sources -v
 # 현재 시스템의 시간 추적 정보를 출력
 echo -e "\n### chronyc tracking"
 chronyc tracking
+
+echo -e "\n"
