@@ -50,16 +50,11 @@ sudo hostnamectl set-hostname ${hostname}
 echo -e "\nHostname set to ${hostname}\n"
 EOF
 
-chmod +x ec2-hostname-change.sh
+### ec2-user
+sudo chown ec2-user.ec2-user ec2-hostname-change.sh
+sudo chmod +x ec2-hostname-change.sh
 
-# instance_id=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
-# region=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)
+sudo mkdir -pv /home/ec2-user/script
+sudo mv ec2-hostname-change.sh /home/ec2-user/script/.
 
-# hostname=$(aws --region ${region} ec2 describe-instances \
-#     --instance-ids ${instance_id} \
-#     --query "Reservations[].Instances[].Tags[?Key=='Name'].Value[]" \
-#     --output text)
-
-# sudo hostnamectl set-hostname ${hostname}
-
-# echo -e "\nHostname set to ${hostname}\n"
+sudo ln -s /home/ec2-user/script/ec2-hostname-change.sh /etc/profile.d/ec2-hostname-change.sh
