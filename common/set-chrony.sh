@@ -6,7 +6,11 @@ if [[ $(cat /etc/os-release | grep "^ID=" | awk -F'=' '{print $2}') == "ubuntu" 
     SERVICE_NAME="chrony.service"
     CONFIG_FILE_PATH="/etc/chrony/chrony.conf"
     sudo $PACKAGE_MANAGER update
-elif [[ $(cat /etc/os-release | grep "^ID=" | awk -F'=' '{print $2}') == "centos" || $(cat /etc/os-release | grep "^ID=" | awk -F'=' '{print $2}') == "amzn" ]]; then
+elif [[ $(cat /etc/os-release | grep "^ID=" | awk -F'=' '{print $2}') == "centos" ]]; then
+    PACKAGE_MANAGER="yum"
+    SERVICE_NAME="chronyd.service"
+    CONFIG_FILE_PATH="/etc/chrony.conf"
+elif [[ $(cat /etc/os-release | grep "^ID=" | awk -F'=' '{print $2}') == "amzn" ]]; then
     PACKAGE_MANAGER="yum"
     SERVICE_NAME="chronyd.service"
     CONFIG_FILE_PATH="/etc/chrony.conf"
