@@ -44,13 +44,13 @@ EOF
 sudo systemctl restart $SERVICE_NAME
 
 # 현재 chrony가 사용 중인 서버들의 상태
-echo "chronyc sourcestats -v"
+echo -e "\n### chronyc sourcestats -v"
 chronyc sourcestats -v
 
 # 현재 chrony가 사용 중인 시간 서버들의 상태
-echo "chronyc sources -v"
+echo -e "\n### chronyc sources -v"
 chronyc sources -v
 
 # 현재 시스템의 시간 추적 정보를 출력
-echo "chronyc tracking"
+echo -e "\n### chronyc tracking"
 chronyc tracking
