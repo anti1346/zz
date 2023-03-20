@@ -26,6 +26,7 @@ if ! [ -x "$(command -v aws)" ] || [ "$(aws --version | cut -d' ' -f1 | cut -d'/
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
     unzip awscliv2.zip
     sudo ./aws/install
+    sudo ln -s /usr/local/bin/aws /usr/bin/aws
     sudo aws --version
 else
     echo -e "\nAWS CLI v2 패키지가 이미 설치되어 있습니다."
