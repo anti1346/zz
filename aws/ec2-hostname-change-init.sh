@@ -57,4 +57,8 @@ sudo chmod +x ec2-hostname-change.sh
 sudo mkdir -pv /home/ec2-user/script
 sudo mv ec2-hostname-change.sh /home/ec2-user/script/.
 
+sudo rm /etc/profile.d/ec2-hostname-change.sh
 sudo ln -s /home/ec2-user/script/ec2-hostname-change.sh /etc/profile.d/ec2-hostname-change.sh
+
+bash /etc/profile.d/ec2-hostname-change.sh
+
