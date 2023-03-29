@@ -1,10 +1,16 @@
 
 
 ```
-groupadd -g 1101 vagrant
+groupadd -g 1201 user1
 ```
 ```
-useradd -m -c "System Account" -d /home/vagrant -s /bin/bash -u 1101 -g 1101 vagrant
+useradd -m -c "user1" -d /home/user1 -s /bin/bash -u 1201 -g 1201 user1
+```
+```
+useradd -m -c "vagrant" -d /home/vagrant -s /bin/bash -u 1101 vagrant
+```
+```
+useradd -m -c "ubuntu" -d /home/ubuntu -s /bin/bash -u 1102 ubuntu
 ```
 
 ```
