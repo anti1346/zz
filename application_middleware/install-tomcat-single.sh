@@ -90,5 +90,5 @@ echo "Verifying Tomcat installation..."
 # Clean up downloaded files
 rm -f /tmp/${tomcat_file}
 
-echo "Tomcat starting..."
+echo -e "\nTomcat starting..."
 echo "${tomcat_home}/instance1/bin/startup.sh"
