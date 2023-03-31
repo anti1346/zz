@@ -18,7 +18,8 @@ fi
 
 # Set Tomcat download URL and file name
 tomcat_file="apache-tomcat-${tomcat_version}.tar.gz"
-if ! [ -f "${tomcat_file}" ]; then
+
+if ! [ -f "/tmp/${tomcat_file}" ]; then
     echo "Tomcat download..."
     tomcat_url="https://downloads.apache.org/tomcat/tomcat-10/v${tomcat_version}/bin/apache-tomcat-${tomcat_version}.tar.gz"
 if
