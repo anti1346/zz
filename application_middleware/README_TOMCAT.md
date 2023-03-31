@@ -1,4 +1,4 @@
-## README.md
+## README_TOMCAT.md
 #### tomcat single 설정(install-tomcat-single.sh)
 - 기본 포트 : 8081
 - tomcat 홈 디렉토리 : /apps/tomcat
@@ -19,3 +19,8 @@
 - 기본 포트 : 18281
 - tomcat 홈 디렉토리 : /apps/tomcat
 - 인스턴트 디렉토리 : /apps/tomcat/instance3
+
+##### tomcat 인스턴스 stop
+```
+sudo kill -9 $(ps aux | grep '[t]omcat' | awk '{print $2}')
+```
