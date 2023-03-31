@@ -60,8 +60,8 @@ for i in {1..3}; do
     sed -i "s/8009/${ajp_port}/g" "${instance_dir}/conf/server.xml"
     sed -i "s/8443/${https_port}/g" "${instance_dir}/conf/server.xml"
 
-    if ! [ -f "${tomcat_home}/instance1/webapps/ROOT/test.jsp" ]; then
-        cat <<'EOT' > "${tomcat_home}/instance1/webapps/ROOT/test.jsp"
+    if ! [ -f "${tomcat_home}/instance${i}/webapps/ROOT/test.jsp" ]; then
+        cat <<'EOT' > "${tomcat_home}/instance${i}/webapps/ROOT/test.jsp"
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.lang.management.ManagementFactory" %>
