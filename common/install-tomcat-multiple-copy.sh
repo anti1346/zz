@@ -17,8 +17,11 @@ if ! id -u tomcat >/dev/null 2>&1; then
 fi
 
 # Set Tomcat download URL and file name
-tomcat_url="https://downloads.apache.org/tomcat/tomcat-10/v${tomcat_version}/bin/apache-tomcat-${tomcat_version}.tar.gz"
 tomcat_file="apache-tomcat-${tomcat_version}.tar.gz"
+if ! [ -f "${tomcat_file}" ]; then
+    echo "Tomcat download..."
+    tomcat_url="https://downloads.apache.org/tomcat/tomcat-10/v${tomcat_version}/bin/apache-tomcat-${tomcat_version}.tar.gz"
+if
 
 # Set initial Tomcat directory
 initial_tomcat="${tomcat_home}/apache-tomcat-${tomcat_version}"
@@ -110,8 +113,6 @@ EOT
 done
 
 # Clean up
-rm -f /tmp/${tomcat_file}
+#rm -f /tmp/${tomcat_file}
 
 echo "Tomcat instances created successfully."
-
-
