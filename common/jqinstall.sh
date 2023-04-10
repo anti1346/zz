@@ -9,7 +9,6 @@ else
     sudo apt-get update
     sudo apt-get install -y jq
   elif command -v yum &> /dev/null; then
-    sudo yum update
     sudo yum install -y jq
   else
     echo "Unable to determine package manager. Please install jq manually."
