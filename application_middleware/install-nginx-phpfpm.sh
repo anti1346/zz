@@ -194,11 +194,11 @@ elif [[ $OS == "CentOS" ]]; then
     PHPFPM_PHPINI="/etc/php.ini"
     PHPFPM_PHPFPMCONF="/etc/php-fpm.conf"
     PHPFPM_WWWCONF="/etc/php-fpm.d/www.conf"
-    if rpm -q remi-release-7 >/dev/null 2>&1; then
-        echo "remi-release-7 package is already installed"
+    if yum list installed "remi-release" >/dev/null 2>&1; then
+        echo -e "\033[38;5;226m\nremi-release가 이미 설치되어 있습니다.\n\033[0m"
     else
+        echo -e "\033[38;5;226m\nremi-release가 설치되지 않았습니다. 지금 설치 중...\n\033[0m"
         sudo yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-        echo "remi-release-7 package installed"
     fi
     yum-config-manager --enable remi-php${PHP_VERSION//./}
     yum install -y php php-cli php-common php-devel php-pear php-fpm
