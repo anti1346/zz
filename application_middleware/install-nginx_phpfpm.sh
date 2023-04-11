@@ -5,8 +5,8 @@ set -euo pipefail
 
 ### Check if running as root
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root"
-   exit 1
+    echo "This script must be run as root"
+    exit 1
 fi
 
 ### Check if running on Ubuntu or CentOS
@@ -55,7 +55,7 @@ elif [[ $OS == "CentOS" ]]; then
     NGINX_DEFAULTCONF="/etc/nginx/conf.d/default.conf"
 
     ### Nginx 서명 키 추가
-    sudo rpm --import https://nginx.org/keys/nginx_signing.key
+    #sudo rpm --import https://nginx.org/keys/nginx_signing.key
 
     ### Nginx 저장소 추가
     sudo tee /etc/yum.repos.d/nginx.repo << EOF
@@ -76,6 +76,9 @@ gpgkey=https://nginx.org/keys/nginx_signing.key
 module_hotfixes=true
 EOF
 
+    ### Nginx stable
+    sudo yum-config-manager --enable nginx-stable
+
     ### Nginx 설치
     sudo yum install -y nginx
 fi
@@ -85,7 +88,7 @@ fi
 ############################################################################################################
 # Install PHP-FPM packages
 if [[ $OS == "Ubuntu" ]]; then
-    # Configure PHP-FPM
+    ### Configure PHP-FPM
     PHP_VERSIOIN="8.2"
     PHPFPM_PHPINI="/etc/php/$PHP_VERSIOIN/fpm/php.ini"
     PHPFPM_PHPFPMCONF="/etc/php/$PHP_VERSIOIN/fpm/php-fpm.conf"
@@ -102,11 +105,17 @@ if [[ $OS == "Ubuntu" ]]; then
         php$PHP_VERSIOIN-mongodb php$PHP_VERSIOIN-zip php$PHP_VERSIOIN-imagick php$PHP_VERSIOIN-rdkafka \
         php-json php-pear
 elif [[ $OS == "CentOS" ]]; then
-    # Configure Nginx
-    WWWCONF="/etc/php-fpm.d/www.conf"
-    yum install -y php8.2-fpm
+    ### Configure PHP-FPM
+    PHP_VERSIOIN="8.2"
+    PHPFPM_PHPINI="/etc/php.ini"
+    PHPFPM_PHPFPMCONF="/etc/php-fpm.conf"
+    PHPFPM_WWWCONF="/etc/php-fpm.d/www.conf"
+    sudo yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+    yum-config-manager --enable remi-php${PHP_VERSIOIN//./}
+    yum install -y php php-cli php-common php-devel php-pear php-fpm
+    yum install -y php-mysqlnd php-mysql php-mysqli php-zip php-gd php-curl php-xml php-json php-intl php-mbstring \
+    php-mcrypt php-pecl-igbinary php-pecl-redis php-pecl-rdkafka php-pecl-zip
 fi
-
 
 # Configure Nginx
 sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
@@ -133,7 +142,9 @@ http {
     sendfile on;
     tcp_nopush on;
     tcp_nodelay on;
+
     keepalive_timeout 65;
+
     types_hash_max_size 2048;
 
     include /etc/nginx/conf.d/*.conf;
@@ -165,7 +176,7 @@ server {
     # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
     location ~ \.php$ {
         try_files \$uri =404;
-        fastcgi_pass unix:/var/run/php-fpm/www.sock;
+        fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock;
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
         include fastcgi_params;
@@ -173,12 +184,91 @@ server {
 }
 EOF
 
-# Configure PHP-FPM
-sudo sed -i 's/expose_php = On/expose_php = Off/g' $PHPFPM_PHPINI
-sudo sed -i 's/^user = www-data/user = nginx/' $PHPFPM_WWWCONF
-sudo sed -i 's/^group = www-data/group = nginx/' $PHPFPM_WWWCONF
+### Configure PHP-FPM
+sudo tee $PHPFPM_PHPFPMCONF > /dev/null <<EOF
+[global]
+pid = /run/php-fpm/php-fpm.pid
+error_log = /var/log/php-fpm/error.log
+daemonize = yes
+include=/etc/php-fpm.d/*.conf
+EOF
 
-# Restart PHP-FPM and Nginx
+sudo tee $PHPFPM_WWWCONF > /dev/null <<EOF
+[www]
+user = nginx
+group = nginx
+
+listen = /var/run/php-fpm/php-fpm.sock
+
+listen.owner = nginx
+listen.group = nginx
+listen.mode = 0666
+;listen.allowed_clients = 127.0.0.1
+
+pm = dynamic
+pm.max_children = 50
+pm.start_servers = 5
+pm.min_spare_servers = 5
+pm.max_spare_servers = 35
+
+request_terminate_timeout = 30
+request_slowlog_timeout = 10
+
+;ping.path = /ping
+pm.status_path = /status
+
+slowlog = /var/log/php-fpm/www-slow.log
+
+access.log = /var/log/php-fpm/www-access.log
+access.format = "[%t] %m %{REQUEST_SCHEME}e://%{HTTP_HOST}e%{REQUEST_URI}e %f pid:%p TIME:%ds MEM:%{mega}Mmb CPU:%C%% status:%s {%{REMOTE_ADDR}e|%{HTTP_USER_AGENT}e}"
+
+php_admin_value[error_log] = /var/log/php-fpm/www-error.log
+php_admin_flag[log_errors] = on
+php_value[session.save_handler] = files
+php_value[session.save_path]    = /var/lib/php/session
+php_value[soap.wsdl_cache_dir]  = /var/lib/php/wsdlcache
+EOF
+
+if [[ $OS == "Ubuntu" ]]; then
+    mkdir -p /var/run/php-fpm
+    chown nginx.nginx /var/run/php-fpm
+    mkdir -p /var/log/php-fpm
+    sudo sed -i 's/expose_php = On/expose_php = Off/g' $PHPFPM_PHPINI
+    sudo sed -i 's/^listen = .*/listen = \/var\/run\/php-fpm\/php-fpm.sock/g' $PHPFPM_WWWCONF
+    sudo sed -i 's/^user = www-data/user = nginx/' $PHPFPM_WWWCONF
+    sudo sed -i 's/^group = www-data/group = nginx/' $PHPFPM_WWWCONF
+elif [[ $OS == "CentOS" ]]; then
+    sudo sed -i 's/expose_php = On/expose_php = Off/g' $PHPFPM_PHPINI
+    sudo sed -i 's/^listen = .*/listen = \/var\/run\/php-fpm\/php-fpm.sock/g' $PHPFPM_WWWCONF
+    sudo sed -i 's/^user = apache/user = nginx/' $PHPFPM_WWWCONF
+    sudo sed -i 's/^group = apache/group = nginx/' $PHPFPM_WWWCONF
+fi
+
+### Php info page(/usr/share/nginx/html)
+sudo tee /usr/share/nginx/html/test.php > /dev/null <<'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PHP Test Page</title>
+</head>
+<body>
+    <h1>PHP Test Page</h1>
+    <p>IP Address: <?php echo $_SERVER['REMOTE_ADDR']; ?></p>
+    <p>Server Hostname: <?php echo gethostname(); ?></p>
+    <p>NGINX Version: <?php echo $_SERVER['SERVER_SOFTWARE']; ?></p>
+    <p>NGINX Home Directory: <?php echo $_SERVER['DOCUMENT_ROOT']; ?></p>
+    <p>PHP Version: <?php echo phpversion(); ?></p>
+    <p>PHP Modules:</p>
+    <ul>
+        <?php foreach(get_loaded_extensions() as $module): ?>
+            <li><?php echo $module; ?></li>
+        <?php endforeach; ?>
+    </ul>
+</body>
+</html>
+EOF
+
+### Restart PHP-FPM and Nginx
 if [[ $OS == "Ubuntu" ]]; then
     systemctl restart php8.2-fpm nginx
 elif [[ $OS == "CentOS" ]]; then
