@@ -33,7 +33,7 @@ if [[ -x "$(command -v apt-get)" ]]; then
 elif [[ -x "$(command -v yum)" ]]; then
     OS="CentOS"
 else
-    echo -e "/n지원되지 않는 운영 체제입니다./n"
+    echo -e "\n지원되지 않는 운영 체제입니다.\n"
     exit 1
 fi
 
@@ -43,10 +43,10 @@ if [[ $OS == "Ubuntu" ]]; then
     ### sources.list 파일 백업 및 저장소
     cp /etc/apt/sources.list /etc/apt/sources.list-$(date +%Y%m%d_%H%M%S)
     sed -i 's/kr.archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
-    echo -e "/n패키지 리스트 업데이트/n"
+    echo -e "\n패키지 리스트 업데이트\n"
 elif [[ $OS == "CentOS" ]]; then
     sudo yum install -y epel-release yum-utils
-    echo -e "/n패키지 리스트 업데이트/n"
+    echo -e "\n패키지 리스트 업데이트\n"
 fi
 
 ############################################################################################################
@@ -72,7 +72,7 @@ if [[ $OS == "Ubuntu" ]]; then
     ### 패키지 리스트 업데이트 및 Nginx 설치
     sudo apt-get update
     sudo apt-get install -y nginx 
-    echo -e "/nNginx 패키지 설치/n"
+    echo -e "\nNginx 패키지 설치\n"
 elif [[ $OS == "CentOS" ]]; then
     NGINX_NGINXCONF="/etc/nginx/nginx.conf"
     NGINX_DEFAULTCONF="/etc/nginx/conf.d/default.conf"
@@ -104,6 +104,7 @@ EOF
 
     ### Nginx 설치
     sudo yum install -y nginx
+    echo -e "\nNginx 패키지 설치\n"
 fi
 
 ############################################################################################################
@@ -127,6 +128,7 @@ if [[ $OS == "Ubuntu" ]]; then
         php$PHP_VERSIOIN-mcrypt php$PHP_VERSIOIN-intl php$PHP_VERSIOIN-xml php$PHP_VERSIOIN-redis php$PHP_VERSIOIN-readline \
         php$PHP_VERSIOIN-mongodb php$PHP_VERSIOIN-zip php$PHP_VERSIOIN-imagick php$PHP_VERSIOIN-rdkafka \
         php-json php-pear
+    echo -e "\nPHP-FPM 패키지 설치\n"
 elif [[ $OS == "CentOS" ]]; then
     ### Configure PHP-FPM
     #PHP_VERSIOIN="8.2"
@@ -144,6 +146,7 @@ elif [[ $OS == "CentOS" ]]; then
     yum install -y php-mysql php-gd php-curl php-xml php-json php-intl php-mbstring \
         php-mcrypt php-pecl-igbinary php-pecl-redis php-pecl-rdkafka php-pecl-zip php-pecl-imagick \
         php-pecl-mongodb
+    echo -e "\nPHP-FPM 패키지 설치\n"
 fi
 
 # Configure Nginx
@@ -212,6 +215,8 @@ server {
     }
 }
 EOF
+echo -e "\nNginx 설정\n"
+
 
 ### Configure PHP-FPM
 sudo tee $PHPFPM_PHPFPMCONF > /dev/null <<EOF
@@ -273,6 +278,7 @@ elif [[ $OS == "CentOS" ]]; then
     sudo sed -i 's/^user = apache/user = www-data/' $PHPFPM_WWWCONF
     sudo sed -i 's/^group = apache/group = www-data/' $PHPFPM_WWWCONF
 fi
+echo -e "\nPHP-FPM 설정\n"
 
 ### Php info page(/usr/share/nginx/html)
 sudo tee /usr/share/nginx/html/test.php > /dev/null <<'EOF'
@@ -297,6 +303,7 @@ sudo tee /usr/share/nginx/html/test.php > /dev/null <<'EOF'
 </body>
 </html>
 EOF
+echo -e "\nPHP 테스트 페이지 생성\n"
 
 ### Restart PHP-FPM and Nginx
 if [[ $OS == "Ubuntu" ]]; then
