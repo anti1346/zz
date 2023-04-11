@@ -3,7 +3,7 @@
 ### 이 스크립트에서 발생한 에러가 무시되지 않도록 합니다.
 set -euo pipefail
 
-PHP_VERSIOIN="8.2"
+PHP_VERSION="${PHP_VERSION:-8.2}"
 
 ### Check if running as root
 if [[ $EUID -ne 0 ]]; then
@@ -180,18 +180,18 @@ echo -e "\033[38;5;226m\nNginx 설정\n\033[0m"
 # Install PHP-FPM packages
 if [[ $OS == "Ubuntu" ]]; then
     ### Configure PHP-FPM
-    #PHP_VERSIOIN="8.2"
-    PHPFPM_PHPINI="/etc/php/$PHP_VERSIOIN/fpm/php.ini"
-    PHPFPM_PHPFPMCONF="/etc/php/$PHP_VERSIOIN/fpm/php-fpm.conf"
-    PHPFPM_WWWCONF="/etc/php/$PHP_VERSIOIN/fpm/pool.d/www.conf"
+    #PHP_VERSION="8.2"
+    PHPFPM_PHPINI="/etc/php/$PHP_VERSION/fpm/php.ini"
+    PHPFPM_PHPFPMCONF="/etc/php/$PHP_VERSION/fpm/php-fpm.conf"
+    PHPFPM_WWWCONF="/etc/php/$PHP_VERSION/fpm/pool.d/www.conf"
 
     sudo add-apt-repository -y ppa:ondrej/php
     apt-get update
-    sudo apt-get install -y php$PHP_VERSIOIN php$PHP_VERSIOIN-dev php$PHP_VERSIOIN-cli php$PHP_VERSIOIN-fpm \
-        php$PHP_VERSIOIN-common php$PHP_VERSIOIN-igbinary
-    sudo apt-get install -y php$PHP_VERSIOIN-gd php$PHP_VERSIOIN-mysql php$PHP_VERSIOIN-curl php$PHP_VERSIOIN-mbstring \
-        php$PHP_VERSIOIN-mcrypt php$PHP_VERSIOIN-intl php$PHP_VERSIOIN-xml php$PHP_VERSIOIN-redis php$PHP_VERSIOIN-readline \
-        php$PHP_VERSIOIN-mongodb php$PHP_VERSIOIN-zip php$PHP_VERSIOIN-imagick php$PHP_VERSIOIN-rdkafka \
+    sudo apt-get install -y php$PHP_VERSION php$PHP_VERSION-dev php$PHP_VERSION-cli php$PHP_VERSION-fpm \
+        php$PHP_VERSION-common php$PHP_VERSION-igbinary
+    sudo apt-get install -y php$PHP_VERSION-gd php$PHP_VERSION-mysql php$PHP_VERSION-curl php$PHP_VERSION-mbstring \
+        php$PHP_VERSION-mcrypt php$PHP_VERSION-intl php$PHP_VERSION-xml php$PHP_VERSION-redis php$PHP_VERSION-readline \
+        php$PHP_VERSION-mongodb php$PHP_VERSION-zip php$PHP_VERSION-imagick php$PHP_VERSION-rdkafka \
         php-json php-pear
     echo -e "\033[38;5;226m\nPHP-FPM 패키지 설치\n\033[0m"
 elif [[ $OS == "CentOS" ]]; then
@@ -264,6 +264,7 @@ if [[ $OS == "Ubuntu" ]]; then
     chown nginx.nginx /var/run/php-fpm
     mkdir -p /var/log/php-fpm
     chmod 770 /var/log/php-fpm
+    sudo sed -i "s|^include=/etc/php-fpm.d/\*.conf|include=/etc/php/$PHP_VERSION/fpm/pool.d/\*.conf|g" $PHPFPM_PHPFPMCONF
     sudo sed -i 's/expose_php = On/expose_php = Off/g' $PHPFPM_PHPINI
     sudo sed -i 's/^listen = .*/listen = \/var\/run\/php-fpm\/php-fpm.sock/g' $PHPFPM_WWWCONF
     sudo sed -i 's/^user = www-data/user = www-data/' $PHPFPM_WWWCONF
