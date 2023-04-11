@@ -3,6 +3,16 @@
 ### 이 스크립트에서 발생한 에러가 무시되지 않도록 합니다.
 set -euo pipefail
 
+PHP_VERSIOIN="8.2"
+
+### 애플리케이션 유저(www-data) 생성
+if id "www-data" >/dev/null 2>&1; then
+    echo "www-data user already exists"
+else
+    sudo useradd -r -s /usr/sbin/nologin -d /var/www -U www-data
+    echo "www-data user created"
+fi
+
 ### Check if running as root
 if [[ $EUID -ne 0 ]]; then
     echo "This script must be run as root"
@@ -89,7 +99,7 @@ fi
 # Install PHP-FPM packages
 if [[ $OS == "Ubuntu" ]]; then
     ### Configure PHP-FPM
-    PHP_VERSIOIN="8.2"
+    #PHP_VERSIOIN="8.2"
     PHPFPM_PHPINI="/etc/php/$PHP_VERSIOIN/fpm/php.ini"
     PHPFPM_PHPFPMCONF="/etc/php/$PHP_VERSIOIN/fpm/php-fpm.conf"
     PHPFPM_WWWCONF="/etc/php/$PHP_VERSIOIN/fpm/pool.d/www.conf"
@@ -106,7 +116,7 @@ if [[ $OS == "Ubuntu" ]]; then
         php-json php-pear
 elif [[ $OS == "CentOS" ]]; then
     ### Configure PHP-FPM
-    PHP_VERSIOIN="8.2"
+    #PHP_VERSIOIN="8.2"
     PHPFPM_PHPINI="/etc/php.ini"
     PHPFPM_PHPFPMCONF="/etc/php-fpm.conf"
     PHPFPM_WWWCONF="/etc/php-fpm.d/www.conf"
@@ -195,13 +205,13 @@ EOF
 
 sudo tee $PHPFPM_WWWCONF > /dev/null <<EOF
 [www]
-user = nginx
-group = nginx
+user = www-data
+group = www-data
 
 listen = /var/run/php-fpm/php-fpm.sock
 
-listen.owner = nginx
-listen.group = nginx
+listen.owner = www-data
+listen.group = www-data
 listen.mode = 0666
 ;listen.allowed_clients = 127.0.0.1
 
@@ -235,13 +245,13 @@ if [[ $OS == "Ubuntu" ]]; then
     mkdir -p /var/log/php-fpm
     sudo sed -i 's/expose_php = On/expose_php = Off/g' $PHPFPM_PHPINI
     sudo sed -i 's/^listen = .*/listen = \/var\/run\/php-fpm\/php-fpm.sock/g' $PHPFPM_WWWCONF
-    sudo sed -i 's/^user = www-data/user = nginx/' $PHPFPM_WWWCONF
-    sudo sed -i 's/^group = www-data/group = nginx/' $PHPFPM_WWWCONF
+    sudo sed -i 's/^user = www-data/user = www-data/' $PHPFPM_WWWCONF
+    sudo sed -i 's/^group = www-data/group = www-data/' $PHPFPM_WWWCONF
 elif [[ $OS == "CentOS" ]]; then
     sudo sed -i 's/expose_php = On/expose_php = Off/g' $PHPFPM_PHPINI
     sudo sed -i 's/^listen = .*/listen = \/var\/run\/php-fpm\/php-fpm.sock/g' $PHPFPM_WWWCONF
-    sudo sed -i 's/^user = apache/user = nginx/' $PHPFPM_WWWCONF
-    sudo sed -i 's/^group = apache/group = nginx/' $PHPFPM_WWWCONF
+    sudo sed -i 's/^user = apache/user = www-data/' $PHPFPM_WWWCONF
+    sudo sed -i 's/^group = apache/group = www-data/' $PHPFPM_WWWCONF
 fi
 
 ### Php info page(/usr/share/nginx/html)
