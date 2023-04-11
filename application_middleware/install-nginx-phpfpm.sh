@@ -3,7 +3,13 @@
 ### 이 스크립트에서 발생한 에러가 무시되지 않도록 합니다.
 set -euo pipefail
 
+### PHP 버전
 PHP_VERSION="${PHP_VERSION:-8.2}"
+
+if [[ ! -z "$1" ]]; then
+    ### PHP_VERSION=8.1
+    PHP_VERSION="${1#*=}"
+fi
 
 ### Check if running as root
 if [[ $EUID -ne 0 ]]; then
@@ -163,6 +169,23 @@ server {
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
         include fastcgi_params;
+    }
+
+    # nginx, php-fpm status
+    location ~ ^/(status|ping)$ {
+        fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        allow 127.0.0.1;
+        deny all;
+        access_log off;
+    }
+    location /basic_status {
+        stub_status on;
+        allow 127.0.0.1;
+        deny all;
+        access_log off;
     }
 }
 EOF
