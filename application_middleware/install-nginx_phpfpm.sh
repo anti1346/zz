@@ -40,6 +40,10 @@ fi
 ### 패키지 리스트 업데이트
 if [[ $OS == "Ubuntu" ]]; then
     apt-get update
+    ### sources.list 파일 백업 및 저장소
+    cp /etc/apt/sources.list /etc/apt/sources.list-$(date +%Y%m%d_%H%M%S)
+    sed -i 's/kr.archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
+    echo -e "/n패키지 리스트 업데이트/n"
 elif [[ $OS == "CentOS" ]]; then
     sudo yum install -y epel-release yum-utils
 fi
@@ -55,10 +59,6 @@ if [[ $OS == "Ubuntu" ]]; then
     ### 필요한 종속성 설치
     sudo apt-get install -y ubuntu-keyring
 
-    ### sources.list 파일 백업 및 저장소 
-    cp /etc/apt/sources.list /etc/apt/sources.list-$(date +%Y%m%d_%H%M%S)
-    sed -i 's/kr.archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
-
     ### Nginx 서명 키 가져오기
     curl -s https://nginx.org/keys/nginx_signing.key | gpg --dearmor | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
     ### 키 지문 확인. 다르면 파일 삭제.
@@ -71,6 +71,7 @@ if [[ $OS == "Ubuntu" ]]; then
     ### 패키지 리스트 업데이트 및 Nginx 설치
     sudo apt-get update
     sudo apt-get install -y nginx 
+    echo -e "/nNginx 패키지 설치/n"
 elif [[ $OS == "CentOS" ]]; then
     NGINX_NGINXCONF="/etc/nginx/nginx.conf"
     NGINX_DEFAULTCONF="/etc/nginx/conf.d/default.conf"
