@@ -190,7 +190,7 @@ if [[ $OS == "Ubuntu" ]]; then
     echo -e "\033[38;5;226m\nPHP-FPM 패키지 설치\n\033[0m"
 elif [[ $OS == "CentOS" ]]; then
     ### Configure PHP-FPM
-    #PHP_VERSIOIN="8.2"
+    #PHP_VERSION="8.2"
     PHPFPM_PHPINI="/etc/php.ini"
     PHPFPM_PHPFPMCONF="/etc/php-fpm.conf"
     PHPFPM_WWWCONF="/etc/php-fpm.d/www.conf"
@@ -200,7 +200,7 @@ elif [[ $OS == "CentOS" ]]; then
         sudo yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
         echo "remi-release-7 package installed"
     fi
-    yum-config-manager --enable remi-php${PHP_VERSIOIN//./}
+    yum-config-manager --enable remi-php${PHP_VERSION//./}
     yum install -y php php-cli php-common php-devel php-pear php-fpm
     yum install -y php-mysql php-gd php-curl php-xml php-json php-intl php-mbstring \
         php-mcrypt php-pecl-igbinary php-pecl-redis php-pecl-rdkafka php-pecl-zip php-pecl-imagick \
