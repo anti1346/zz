@@ -5,6 +5,12 @@ set -euo pipefail
 
 PHP_VERSIOIN="8.2"
 
+### Check if running as root
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root"
+    exit 1
+fi
+
 ### 애플리케이션 유저(www-data) 생성
 if id "www-data" >/dev/null 2>&1; then
     echo "www-data user already exists"
@@ -13,10 +19,12 @@ else
     echo "www-data user created"
 fi
 
-### Check if running as root
-if [[ $EUID -ne 0 ]]; then
-    echo "This script must be run as root"
-    exit 1
+### 호스트 파일에 호스트명 등록
+if grep -q "^127.0.0.1\s$HOSTNAME\s*$" /etc/hosts; then
+    echo "127.0.0.1 $HOSTNAME에 대한 호스트 항목이 /etc/hosts에 이미 존재합니다."
+else
+    echo "127.0.0.1 $HOSTNAME" | sudo tee -a /etc/hosts >/dev/null
+    echo "/etc/hosts에 127.0.0.1 $HOSTNAME에 대한 호스트 항목 추가"
 fi
 
 ### Check if running on Ubuntu or CentOS
@@ -32,7 +40,6 @@ fi
 ### 패키지 리스트 업데이트
 if [[ $OS == "Ubuntu" ]]; then
     apt-get update
-    echo "127.0.0.1 $HOSTNAME" | sudo tee -a /etc/hosts >/dev/null
 elif [[ $OS == "CentOS" ]]; then
     sudo yum install -y epel-release yum-utils
 fi
@@ -120,11 +127,17 @@ elif [[ $OS == "CentOS" ]]; then
     PHPFPM_PHPINI="/etc/php.ini"
     PHPFPM_PHPFPMCONF="/etc/php-fpm.conf"
     PHPFPM_WWWCONF="/etc/php-fpm.d/www.conf"
-    sudo yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+    if rpm -q remi-release-7 >/dev/null 2>&1; then
+        echo "remi-release-7 package is already installed"
+    else
+        sudo yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+        echo "remi-release-7 package installed"
+    fi
     yum-config-manager --enable remi-php${PHP_VERSIOIN//./}
     yum install -y php php-cli php-common php-devel php-pear php-fpm
-    yum install -y php-mysqlnd php-mysql php-mysqli php-zip php-gd php-curl php-xml php-json php-intl php-mbstring \
-    php-mcrypt php-pecl-igbinary php-pecl-redis php-pecl-rdkafka php-pecl-zip
+    yum install -y php-mysql php-gd php-curl php-xml php-json php-intl php-mbstring \
+        php-mcrypt php-pecl-igbinary php-pecl-redis php-pecl-rdkafka php-pecl-zip php-pecl-imagick \
+        php-pecl-mongodb
 fi
 
 # Configure Nginx
@@ -243,6 +256,7 @@ if [[ $OS == "Ubuntu" ]]; then
     mkdir -p /var/run/php-fpm
     chown nginx.nginx /var/run/php-fpm
     mkdir -p /var/log/php-fpm
+    chmod 770 /var/log/php-fpm
     sudo sed -i 's/expose_php = On/expose_php = Off/g' $PHPFPM_PHPINI
     sudo sed -i 's/^listen = .*/listen = \/var\/run\/php-fpm\/php-fpm.sock/g' $PHPFPM_WWWCONF
     sudo sed -i 's/^user = www-data/user = www-data/' $PHPFPM_WWWCONF
