@@ -21,10 +21,10 @@ fi
 
 ### 호스트 파일에 호스트명 등록
 if grep -q "^127.0.0.1\s$HOSTNAME\s*$" /etc/hosts; then
-    echo -e "\033[38;5;226m\n127.0.0.1 $HOSTNAME에 대한 호스트 항목이 /etc/hosts 에 이미 존재합니다.\n\033[0m"
+    echo -e "\033[38;5;226m\n127.0.0.1 $HOSTNAME 에 대한 호스트 항목이 /etc/hosts 에 이미 존재합니다.\n\033[0m"
 else
     echo "127.0.0.1 $HOSTNAME" | sudo tee -a /etc/hosts >/dev/null
-    echo -e "\033[38;5;226m\n/etc/hosts에 127.0.0.1 $HOSTNAME 에 대한 호스트 항목 추가\n\033[0m"
+    echo -e "\033[38;5;226m\n/etc/hosts 에 127.0.0.1 $HOSTNAME 에 대한 호스트 항목 추가\n\033[0m"
 fi
 
 ### Check if running on Ubuntu or CentOS
@@ -59,16 +59,13 @@ if [[ $OS == "Ubuntu" ]]; then
 
     ### 필요한 종속성 설치
     sudo apt-get install -y ubuntu-keyring
-
     ### Nginx 서명 키 가져오기
     curl -s https://nginx.org/keys/nginx_signing.key | gpg --dearmor | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
     ### 키 지문 확인. 다르면 파일 삭제.
     # gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
-
     ### 안정 버전 Nginx 패키지를 위한 apt 저장소 설정
     echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \
         | sudo tee /etc/apt/sources.list.d/nginx.list
-
     ### 패키지 리스트 업데이트 및 Nginx 설치
     sudo apt-get update
     sudo apt-get install -y nginx 
@@ -79,7 +76,6 @@ elif [[ $OS == "CentOS" ]]; then
 
     ### Nginx 서명 키 추가
     #sudo rpm --import https://nginx.org/keys/nginx_signing.key
-
     ### Nginx 저장소 추가
     sudo tee /etc/yum.repos.d/nginx.repo << EOF
 [nginx-stable]
@@ -98,7 +94,6 @@ enabled=0
 gpgkey=https://nginx.org/keys/nginx_signing.key
 module_hotfixes=true
 EOF
-
     ### Nginx stable
     sudo yum-config-manager --enable nginx-stable
     ### Nginx 설치
@@ -107,7 +102,7 @@ EOF
 fi
 
 # Configure Nginx
-sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
+sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf_$(date +%Y%m%d_%H%M%S)
 sudo tee /etc/nginx/nginx.conf > /dev/null <<EOF
 user nginx;
 worker_processes auto;
@@ -139,8 +134,7 @@ http {
     include /etc/nginx/conf.d/*.conf;
 }
 EOF
-
-sudo cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.backup
+sudo cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf_$(date +%Y%m%d_%H%M%S)
 sudo rm /etc/nginx/conf.d/default.conf
 sudo tee /etc/nginx/conf.d/default.conf > /dev/null <<EOF
 server {
@@ -260,8 +254,10 @@ php_value[soap.wsdl_cache_dir]  = /var/lib/php/wsdlcache
 EOF
 
 if [[ $OS == "Ubuntu" ]]; then
+    ### sock 디렉토리 생성
     mkdir -p /var/run/php-fpm
-    chown nginx.nginx /var/run/php-fpm
+    chown www-data.www-data /var/run/php-fpm
+    ### 로그 디렉토리 생성
     mkdir -p /var/log/php-fpm
     chmod 770 /var/log/php-fpm
     sudo sed -i "s|^include=/etc/php-fpm.d/\*.conf|include=/etc/php/$PHP_VERSION/fpm/pool.d/\*.conf|g" $PHPFPM_PHPFPMCONF
