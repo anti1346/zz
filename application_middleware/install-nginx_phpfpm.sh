@@ -13,18 +13,18 @@ fi
 
 ### 애플리케이션 유저(www-data) 생성
 if id "www-data" >/dev/null 2>&1; then
-    echo "www-data user already exists"
+    echo -e "\nwww-data user already exists\n"
 else
     sudo useradd -r -s /usr/sbin/nologin -d /var/www -U www-data
-    echo "www-data user created"
+    echo -e "\nwww-data user created\n"
 fi
 
 ### 호스트 파일에 호스트명 등록
 if grep -q "^127.0.0.1\s$HOSTNAME\s*$" /etc/hosts; then
-    echo "127.0.0.1 $HOSTNAME에 대한 호스트 항목이 /etc/hosts에 이미 존재합니다."
+    echo -e "\n127.0.0.1 $HOSTNAME에 대한 호스트 항목이 /etc/hosts에 이미 존재합니다.\n"
 else
     echo "127.0.0.1 $HOSTNAME" | sudo tee -a /etc/hosts >/dev/null
-    echo "/etc/hosts에 127.0.0.1 $HOSTNAME에 대한 호스트 항목 추가"
+    echo -e "\n/etc/hosts에 127.0.0.1 $HOSTNAME에 대한 호스트 항목 추가\n"
 fi
 
 ### Check if running on Ubuntu or CentOS
@@ -33,7 +33,7 @@ if [[ -x "$(command -v apt-get)" ]]; then
 elif [[ -x "$(command -v yum)" ]]; then
     OS="CentOS"
 else
-    echo "지원되지 않는 운영 체제입니다."
+    echo -e "/n지원되지 않는 운영 체제입니다./n"
     exit 1
 fi
 
@@ -46,6 +46,7 @@ if [[ $OS == "Ubuntu" ]]; then
     echo -e "/n패키지 리스트 업데이트/n"
 elif [[ $OS == "CentOS" ]]; then
     sudo yum install -y epel-release yum-utils
+    echo -e "/n패키지 리스트 업데이트/n"
 fi
 
 ############################################################################################################
