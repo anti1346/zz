@@ -54,7 +54,11 @@ if [[ $OS == "Ubuntu" ]]; then
 
     ### 필요한 종속성 설치
     sudo apt-get install -y ubuntu-keyring
-        
+
+    ### sources.list 파일 백업 및 저장소 
+    cp /etc/apt/sources.list /etc/apt/sources.list-$(date +%Y%m%d_%H%M%S)
+    sed -i 's/kr.archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
+
     ### Nginx 서명 키 가져오기
     curl -s https://nginx.org/keys/nginx_signing.key | gpg --dearmor | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
     ### 키 지문 확인. 다르면 파일 삭제.
