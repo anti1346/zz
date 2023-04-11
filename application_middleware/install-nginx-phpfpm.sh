@@ -58,7 +58,7 @@ if [[ $OS == "Ubuntu" ]]; then
     NGINX_DEFAULTCONF="/etc/nginx/conf.d/default.conf"
 
     ### 필요한 종속성 설치
-    sudo apt-get install -y ubuntu-keyring
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ubuntu-keyring
     ### Nginx 서명 키 가져오기
     curl -s https://nginx.org/keys/nginx_signing.key | gpg --dearmor | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
     ### 키 지문 확인. 다르면 파일 삭제.
@@ -68,7 +68,7 @@ if [[ $OS == "Ubuntu" ]]; then
         | sudo tee /etc/apt/sources.list.d/nginx.list
     ### 패키지 리스트 업데이트 및 Nginx 설치
     sudo apt-get update
-    sudo apt-get install -y nginx 
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nginx 
     echo -e "\033[38;5;226m\nNginx 패키지 설치\n\033[0m"
 elif [[ $OS == "CentOS" ]]; then
     NGINX_NGINXCONF="/etc/nginx/nginx.conf"
@@ -179,11 +179,11 @@ if [[ $OS == "Ubuntu" ]]; then
     PHPFPM_PHPFPMCONF="/etc/php/$PHP_VERSION/fpm/php-fpm.conf"
     PHPFPM_WWWCONF="/etc/php/$PHP_VERSION/fpm/pool.d/www.conf"
 
-    sudo add-apt-repository -y ppa:ondrej/php
+    sudo DEBIAN_FRONTEND=noninteractive add-apt-repository -y ppa:ondrej/php
     apt-get update
-    sudo apt-get install -y php$PHP_VERSION php$PHP_VERSION-dev php$PHP_VERSION-cli php$PHP_VERSION-fpm \
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y php$PHP_VERSION php$PHP_VERSION-dev php$PHP_VERSION-cli php$PHP_VERSION-fpm \
         php$PHP_VERSION-common php$PHP_VERSION-igbinary
-    sudo apt-get install -y php$PHP_VERSION-gd php$PHP_VERSION-mysql php$PHP_VERSION-curl php$PHP_VERSION-mbstring \
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y php$PHP_VERSION-gd php$PHP_VERSION-mysql php$PHP_VERSION-curl php$PHP_VERSION-mbstring \
         php$PHP_VERSION-mcrypt php$PHP_VERSION-intl php$PHP_VERSION-xml php$PHP_VERSION-redis php$PHP_VERSION-readline \
         php$PHP_VERSION-mongodb php$PHP_VERSION-zip php$PHP_VERSION-imagick php$PHP_VERSION-rdkafka \
         php-json php-pear
