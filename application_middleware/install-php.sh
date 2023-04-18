@@ -17,21 +17,21 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-### 애플리케이션 유저(www-data) 생성
-if id "www-data" >/dev/null 2>&1; then
-    echo -e "\033[38;5;226m\nwww-data user already exists\n\033[0m"
-else
-    sudo useradd -r -s /usr/sbin/nologin -d /var/www -U www-data
-    echo -e "\033[38;5;226m\nwww-data user created\n\033[0m"
-fi
+# ### 애플리케이션 유저(www-data) 생성
+# if id "www-data" >/dev/null 2>&1; then
+#     echo -e "\033[38;5;226m\nwww-data user already exists\n\033[0m"
+# else
+#     sudo useradd -r -s /usr/sbin/nologin -d /var/www -U www-data
+#     echo -e "\033[38;5;226m\nwww-data user created\n\033[0m"
+# fi
 
-### 호스트 파일에 호스트명 등록
-if grep -q "^127.0.0.1\s$HOSTNAME\s*$" /etc/hosts; then
-    echo -e "\033[38;5;226m\n127.0.0.1 $HOSTNAME 에 대한 호스트 항목이 /etc/hosts 에 이미 존재합니다.\n\033[0m"
-else
-    echo "127.0.0.1 $HOSTNAME" | sudo tee -a /etc/hosts >/dev/null
-    echo -e "\033[38;5;226m\n/etc/hosts 에 127.0.0.1 $HOSTNAME 에 대한 호스트 항목 추가\n\033[0m"
-fi
+# ### 호스트 파일에 호스트명 등록
+# if grep -q "^127.0.0.1\s$HOSTNAME\s*$" /etc/hosts; then
+#     echo -e "\033[38;5;226m\n127.0.0.1 $HOSTNAME 에 대한 호스트 항목이 /etc/hosts 에 이미 존재합니다.\n\033[0m"
+# else
+#     echo "127.0.0.1 $HOSTNAME" | sudo tee -a /etc/hosts >/dev/null
+#     echo -e "\033[38;5;226m\n/etc/hosts 에 127.0.0.1 $HOSTNAME 에 대한 호스트 항목 추가\n\033[0m"
+# fi
 
 ### Check if running on Ubuntu or CentOS
 if [[ -x "$(command -v apt-get)" ]]; then
