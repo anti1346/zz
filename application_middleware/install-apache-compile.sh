@@ -34,13 +34,34 @@ else
     exit 1
 fi
 
+
+cd /usr/local/src/
+# APR 소스 다운로드
+wget https://archive.apache.org/dist/apr/apr-1.7.0.tar.gz
+tar -xvzf apr-1.7.0.tar.gz
+cd apr-1.7.0
+
+# APR 컴파일 및 설치
+./configure
+make
+sudo make install
+
+cd /usr/local/src/
 # Apache 소스 다운로드
 wget https://downloads.apache.org/httpd/httpd-${HTTP_VERSION}.tar.gz
 tar -xvzf httpd-${HTTP_VERSION}.tar.gz
 cd httpd-${HTTP_VERSION}
 
 # 컴파일 및 설치
-./configure --prefix=/usr/local/apache --enable-ssl --enable-so --with-mpm=worker
+./configure \
+--prefix=/usr/local/apache \
+--enable-mpms-shared=all \
+--with-apr=/usr/local/apr/bin/apr-1-config \
+--enable-ssl \
+--enable-so \
+--enable-rewrite \
+--with-mpm=worker
+
 make
 sudo make install
 echo -e "\033[38;5;226m\napache 소스 컴파일 완료\n\033[0m"
