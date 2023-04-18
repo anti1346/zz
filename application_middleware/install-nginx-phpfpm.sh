@@ -4,7 +4,7 @@
 set -euo pipefail
 
 ### PHP 버전
-PHP_VERSION="${PHP_VERSION:-8.2}"
+PHP_VERSION="${PHP_VERSION:-8.1}"
 
 if [[ ! -z "$1" ]]; then
     ### PHP_VERSION=8.1
