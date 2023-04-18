@@ -61,7 +61,7 @@ fi
 # Install PHP packages
 if [[ $OS == "Ubuntu" ]]; then
     ### Configure PHP
-    PHPFPM_PHPINI="/etc/php/$PHP_VERSION/fpm/php.ini"
+    PHP_PHPINI="/etc/php/$PHP_VERSION/cli/php.ini"
 
     sudo DEBIAN_FRONTEND=noninteractive add-apt-repository -y ppa:ondrej/php
     apt-get update
