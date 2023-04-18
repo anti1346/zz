@@ -47,6 +47,17 @@ make
 sudo make install
 
 cd /usr/local/src/
+# APR-util 소스 다운로드
+wget https://archive.apache.org/dist/apr/apr-util-1.6.1.tar.gz
+tar -xvzf apr-util-1.6.1.tar.gz
+cd apr-util-1.6.1
+
+# APR-util 컴파일 및 설치
+./configure --with-apr=/usr/local/apr
+make
+sudo make install
+
+cd /usr/local/src/
 # Apache 소스 다운로드
 wget https://downloads.apache.org/httpd/httpd-${HTTP_VERSION}.tar.gz
 tar -xvzf httpd-${HTTP_VERSION}.tar.gz
@@ -57,6 +68,7 @@ cd httpd-${HTTP_VERSION}
 --prefix=/usr/local/apache \
 --enable-mpms-shared=all \
 --with-apr=/usr/local/apr/bin/apr-1-config \
+--with-apr-util=/usr/local/apr/bin/apu-1-config \
 --enable-ssl \
 --enable-so \
 --enable-rewrite \
