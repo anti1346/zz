@@ -307,6 +307,8 @@ sudo tee /usr/share/nginx/html/test.php > /dev/null <<'EOF'
     <h1>PHP Test Page</h1>
     <p>IP Address: <?php echo $_SERVER['REMOTE_ADDR']; ?></p>
     <p>Server Hostname: <?php echo gethostname(); ?></p>
+    <p>Server IP Address: <?php echo $_SERVER['SERVER_ADDR']; ?></p>
+    <p>Virtual Host Domain: <?php echo $_SERVER['HTTP_HOST']; ?></p>
     <p>NGINX Version: <?php echo $_SERVER['SERVER_SOFTWARE']; ?></p>
     <p>NGINX Home Directory: <?php echo $_SERVER['DOCUMENT_ROOT']; ?></p>
     <p>PHP Version: <?php echo phpversion(); ?></p>
