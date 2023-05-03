@@ -10,6 +10,9 @@ fi
 sudo systemctl stop systemd-resolved
 sudo systemctl disable systemd-resolved
 
+#sudo apt remove systemd-resolved
+#sudo apt autoremove -y --purge systemd-resolved
+
 # Remove /etc/resolv.conf and create a new one
 sudo rm /etc/resolv.conf
 sudo bash -c 'cat << EOF > /etc/resolv.conf
