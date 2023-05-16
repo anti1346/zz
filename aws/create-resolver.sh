@@ -15,3 +15,5 @@ nameserver $aws_resolver
 nameserver 1.1.1.1
 nameserver 8.8.8.8
 EOF
+
+echo -e "\ncat /etc/resolv.conf"
