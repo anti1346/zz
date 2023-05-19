@@ -44,7 +44,7 @@ fi
 cd /tmp
 
 # Download MySQL archive
-#wget -q ${mysql_url}
+wget -q ${mysql_url}
 
 tar xf ${mysql_filename}
 
