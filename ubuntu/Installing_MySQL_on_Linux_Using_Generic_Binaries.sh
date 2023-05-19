@@ -17,8 +17,11 @@ if ! dpkg -s libaio1 >/dev/null 2>&1; then
   sudo apt-get install -qq -y libaio1
 fi
 
-sudo groupadd --gid ${mysql_groupid} ${mysql_groupname}
-sudo useradd -r --uid ${mysql_userid} -g ${mysql_groupname} -s /bin/false ${mysql_username}
+# Check if MySQL user exists
+if ! id -u ${mysql_username} >/dev/null 2>&1; then
+  sudo groupadd --gid ${mysql_groupid} ${mysql_groupname}
+  sudo useradd -r --uid ${mysql_userid} -g ${mysql_groupname} -s /bin/false ${mysql_username}
+fi
 
 if [ ! -d "${mysql_basedir}" ]; then
   base_dir=${mysql_basedir}
