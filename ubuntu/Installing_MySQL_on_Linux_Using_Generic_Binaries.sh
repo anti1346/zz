@@ -14,7 +14,7 @@ mysql_version=$(echo "$mysql_filename" | grep -oP '\d+\.\d+\.\d+')
 
 if ! dpkg -s libaio1 >/dev/null 2>&1; then
   sudo apt-get update
-  sudo apt-get install -qq -y libaio1
+  sudo apt-get install -qq -y libaio1 libnuma1 libncurses5
 fi
 
 # Check if MySQL user exists
@@ -44,7 +44,7 @@ fi
 cd /tmp
 
 # Download MySQL archive
-wget ${mysql_url}
+#wget -q ${mysql_url}
 
 tar xf ${mysql_filename}
 
@@ -78,6 +78,11 @@ EOF
 
 cd ${base_dir}
 
+# /usr/local/mysql/bin/mysqld --initialize-insecure --user=mysql --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data
 ${base_dir}/bin/mysqld --initialize-insecure --user=${user_name} --basedir=${base_dir} --datadir=${data_dir}
 
+# /usr/local/mysql/bin/mysqld --defaults-file=/usr/local/mysql/my.cnf --user=mysql &
 ${base_dir}/bin/mysqld_safe --defaults-file=${base_dir}/my.cnf --user=${user_name} &
+
+# /usr/local/mysql/bin/mysql -uroot --socket /usr/local/mysql/mysql.sock
+
