@@ -85,4 +85,4 @@ ${base_dir}/bin/mysqld --initialize-insecure --user=${user_name} --basedir=${bas
 ${base_dir}/bin/mysqld_safe --defaults-file=${base_dir}/my.cnf --user=${user_name} &
 
 # /usr/local/mysql/bin/mysql -uroot --socket /usr/local/mysql/mysql.sock
-
+# /usr/local/mysql/bin/mysqladmin -u root shutdown --socket /usr/local/mysql/mysql.sock
