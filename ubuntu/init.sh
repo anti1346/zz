@@ -12,7 +12,7 @@ for SSH_USER in "${SSH_USERS[@]}"; do
     echo "$SSH_USER:$SSH_USER" | chpasswd
     echo "$SSH_USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
     #echo 'export PS1="\[\e[33m\]\u\[\e[m\]\[\e[37m\]@\[\e[m\]\[\e[34m\]\h\[\e[m\]:\[\033[01;31m\]\W\[\e[m\]$ "' >> "/home/$SSH_USER/.bashrc"
-    sudo tee /home/$SSH_USER/.bashrc > /dev/null <<'EOF'
+    sudo tee -a /home/$SSH_USER/.bashrc >/dev/null <<'EOF'
 
 ### ps1
 export PS1="\[\e[33m\]\u\[\e[m\]\[\e[37m\]@\[\e[m\]\[\e[34m\]\h\[\e[m\]:\[\033[01;31m\]\W\[\e[m\]$ "
