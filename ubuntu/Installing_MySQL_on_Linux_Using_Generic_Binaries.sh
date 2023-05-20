@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ### Define MySQL URL
-#mysql_url="https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.41-linux-glibc2.12-x86_64.tar"
-mysql_url="https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.33-linux-glibc2.17-aarch64.tar"
+mysql_url="https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.41-linux-glibc2.12-x86_64.tar"
+#mysql_url="https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.33-linux-glibc2.17-aarch64.tar"
 
 ### Define MySQL installation details
 mysql_basedir=/usr/local/mysql
