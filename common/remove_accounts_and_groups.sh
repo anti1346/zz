@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 삭제할 계정 목록
-REMOVE_ACCOUNT_LIST="games lp news uucp gnats sync proxy backup list irc pollinate landscape fwupd-refresh lxd"
+REMOVE_ACCOUNT_LIST="games lp news uucp gnats sync proxy backup list irc pollinate landscape fwupd-refresh lxd uuidd tss systemd-resolve mail"
 
 for account in $REMOVE_ACCOUNT_LIST; do
     # 계정이 존재하는지 확인
@@ -15,7 +15,7 @@ for account in $REMOVE_ACCOUNT_LIST; do
 done
 
 # 삭제할 그룹 목록
-REMOVE_GROUP_LIST="games lp news uucp gnats"
+REMOVE_GROUP_LIST="games lp news uucp gnats fax voice floppy tape audio video systemd-resolve lxd uuidd tss"
 
 for group in $REMOVE_GROUP_LIST; do
     # 그룹이 존재하는지 확인
