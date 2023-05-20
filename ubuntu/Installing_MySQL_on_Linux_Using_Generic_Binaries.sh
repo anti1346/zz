@@ -16,7 +16,7 @@ mysql_filename=$(basename "$mysql_url")
 mysql_version=$(echo "$mysql_filename" | grep -oP '\d+\.\d+\.\d+')
 
 ### Check if required packages are installed, and install if not
-echo -e "\n\e[33mPackages Install\e[0m"
+echo -e "\n\e[33mPackages Install - libaio1 libnuma1 libncurses5 \e[0m"
 if ! dpkg -s libaio1 >/dev/null 2>&1; then
   sudo apt-get update -qq
   sudo apt-get install -qq -y libaio1 libnuma1 libncurses5
@@ -26,8 +26,9 @@ fi
 echo -e "\n\e[33mMySQL User Create\e[0m"
 if ! id -u ${mysql_username} >/dev/null 2>&1; then
   sudo groupadd --gid ${mysql_groupid} ${mysql_groupname}
-  sudo useradd -r --uid ${mysql_userid} -g ${mysql_groupname} -s /bin/false ${mysql_username}
+  sudo useradd -r -d /usr/local/mysql --uid ${mysql_userid} -g ${mysql_groupname} -s /bin/false ${mysql_username}
 fi
+cat /etc/passwd | egrep mysql | awk -F: 'BEGIN { printf "username : "; } { printf $1; } END { printf "\nhome directory : "; printf $6; printf "\n"; }'
 
 ### Set the MySQL base directory based on version
 if [ ! -d "${mysql_basedir}" ]; then
@@ -50,6 +51,7 @@ if [ ! -d "${base_dir}" ]; then
 else
   exit 127
 fi
+echo "base dir : ${base_dir}"
 
 cd /tmp
 
@@ -66,12 +68,17 @@ if [ ! -d "${data_dir}" ]; then
 else
   exit 127
 fi
+echo "data dir : ${data_dir}"
 
 tar xfz ${mysql_filename}.gz -C "${base_dir}" --strip-components=1
 
+### Change ownership of MySQL base directory
+echo -e "\n\e[33mSetting MySQL Base Directory Ownership\e[0m"
 sudo chown -R ${user_name}:${group_name} "${base_dir}"
+ls -ld ${base_dir} | awk '{print "Owner:", $3, "\nDirectory:", $NF}'
 
 echo -e "\n\e[33mMySQL Configure File(my.cnf) Create\e[0m"
+echo "my.cnf path : ${base_dir}/my.cnf"
 sudo tee ${base_dir}/my.cnf > /dev/null <<EOF
 [mysqld]
 user = ${user_name}
