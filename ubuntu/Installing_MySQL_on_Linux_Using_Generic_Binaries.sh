@@ -102,6 +102,7 @@ wait
 echo -e "\n\e[33mStart MySQL\e[0m"
 # /usr/local/mysql/bin/mysqld --defaults-file=/usr/local/mysql/my.cnf --user=mysql &
 ${base_dir}/bin/mysqld_safe --defaults-file=${base_dir}/my.cnf --user=${user_name} &
+sleep 5
 
 ### Connect MySQL
 echo -e "\n\e[33mConnect MySQL\e[0m"
