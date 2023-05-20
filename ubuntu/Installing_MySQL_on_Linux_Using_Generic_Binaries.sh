@@ -16,13 +16,14 @@ mysql_filename=$(basename "$mysql_url")
 mysql_version=$(echo "$mysql_filename" | grep -oP '\d+\.\d+\.\d+')
 
 ### Check if required packages are installed, and install if not
+echo -e "\n\e[33mPackages Install\e[0m"
 if ! dpkg -s libaio1 >/dev/null 2>&1; then
   sudo apt-get update -qq
   sudo apt-get install -qq -y libaio1 libnuma1 libncurses5
 fi
 
 ### Check if MySQL user exists and create if not
-echo "Packages Install"
+echo -e "\n\e[33mMySQL User Create\e[0m"
 if ! id -u ${mysql_username} >/dev/null 2>&1; then
   sudo groupadd --gid ${mysql_groupid} ${mysql_groupname}
   sudo useradd -r --uid ${mysql_userid} -g ${mysql_groupname} -s /bin/false ${mysql_username}
@@ -43,6 +44,7 @@ user_name=${mysql_username}
 group_name=${mysql_groupname}
 
 ### Create MySQL base directory if it doesn't exist
+echo -e "\n\e[33mMySQL Base Directory Create\e[0m"
 if [ ! -d "${base_dir}" ]; then
   mkdir "${base_dir}"
 else
@@ -52,12 +54,13 @@ fi
 cd /tmp
 
 ### Download MySQL
-echo "MySQL Packages Download"
+echo -e "\n\e[33mMySQL Packages Download\e[0m"
 wget -q --show-progress ${mysql_url}
 
 tar xf ${mysql_filename}
 
 ### Create data directory if it doesn't exist
+echo -e "\n\e[33mMySQL Data Directory Create\e[0m"
 if [ ! -d "${data_dir}" ]; then
   mkdir "${data_dir}"
 else
@@ -68,6 +71,7 @@ tar xfz ${mysql_filename}.gz -C "${base_dir}" --strip-components=1
 
 sudo chown -R ${user_name}:${group_name} "${base_dir}"
 
+echo -e "\n\e[33mMySQL Configure File(my.cnf) Create\e[0m"
 sudo tee ${base_dir}/my.cnf > /dev/null <<EOF
 [mysqld]
 user = ${user_name}
@@ -89,21 +93,22 @@ EOF
 cd ${base_dir}
 
 ### Initialize MySQL
-echo -e "\nInitialize MySQL"
+echo -e "\n\e[33mInitialize MySQL\e[0m"
 # /usr/local/mysql/bin/mysqld --initialize-insecure --user=mysql --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data
 ${base_dir}/bin/mysqld --initialize-insecure --user=${user_name} --basedir=${base_dir} --datadir=${data_dir}
+wait
 
 ### Start MySQL
-echo -e "\nStart MySQL"
+echo -e "\n\e[33mStart MySQL\e[0m"
 # /usr/local/mysql/bin/mysqld --defaults-file=/usr/local/mysql/my.cnf --user=mysql &
 ${base_dir}/bin/mysqld_safe --defaults-file=${base_dir}/my.cnf --user=${user_name} &
 
 ### Connect MySQL
-echo -e "\nConnect MySQL"
+echo -e "\n\e[33mConnect MySQL\e[0m"
 # /usr/local/mysql/bin/mysql -uroot --socket /usr/local/mysql/mysql.sock
 echo "/usr/local/mysql/bin/mysql -uroot --socket /usr/local/mysql/mysql.sock"
 
 ### Stop(shutdown) MySQL
-echo -e "\nShutdown MySQL"
+echo -e "\n\e[33mShutdown MySQL\e[0m"
 # /usr/local/mysql/bin/mysqladmin -u root shutdown --socket /usr/local/mysql/mysql.sock
 echo -e "/usr/local/mysql/bin/mysqladmin -u root shutdown --socket /usr/local/mysql/mysql.sock\n"
