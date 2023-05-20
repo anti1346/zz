@@ -22,6 +22,7 @@ if ! dpkg -s libaio1 >/dev/null 2>&1; then
 fi
 
 ### Check if MySQL user exists and create if not
+echo "Packages Install"
 if ! id -u ${mysql_username} >/dev/null 2>&1; then
   sudo groupadd --gid ${mysql_groupid} ${mysql_groupname}
   sudo useradd -r --uid ${mysql_userid} -g ${mysql_groupname} -s /bin/false ${mysql_username}
@@ -51,6 +52,7 @@ fi
 cd /tmp
 
 ### Download MySQL
+echo "MySQL Packages Download"
 wget -q --show-progress ${mysql_url}
 
 tar xf ${mysql_filename}
@@ -98,6 +100,8 @@ ${base_dir}/bin/mysqld_safe --defaults-file=${base_dir}/my.cnf --user=${user_nam
 
 ### Connect to MySQL
 # /usr/local/mysql/bin/mysql -uroot --socket /usr/local/mysql/mysql.sock
+echo -e "\n/usr/local/mysql/bin/mysql -uroot --socket /usr/local/mysql/mysql.sock"
 
 ### Stop(shutdown) MySQL
 # /usr/local/mysql/bin/mysqladmin -u root shutdown --socket /usr/local/mysql/mysql.sock
+echo -e "\n/usr/local/mysql/bin/mysqladmin -u root shutdown --socket /usr/local/mysql/mysql.sock"
