@@ -17,7 +17,7 @@ mysql_version=$(echo "$mysql_filename" | grep -oP '\d+\.\d+\.\d+')
 
 ### Check if required packages are installed, and install if not
 if ! dpkg -s libaio1 >/dev/null 2>&1; then
-  sudo apt-get update -qq -y
+  sudo apt-get update -qq
   sudo apt-get install -qq -y libaio1 libnuma1 libncurses5
 fi
 
