@@ -87,13 +87,17 @@ EOF
 cd ${base_dir}
 
 ### Initialize MySQL
+echo "Initialize MySQL"
 # /usr/local/mysql/bin/mysqld --initialize-insecure --user=mysql --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data
 ${base_dir}/bin/mysqld --initialize-insecure --user=${user_name} --basedir=${base_dir} --datadir=${data_dir}
 
 ### Start MySQL
+echo "Start MySQL"
 # /usr/local/mysql/bin/mysqld --defaults-file=/usr/local/mysql/my.cnf --user=mysql &
 ${base_dir}/bin/mysqld_safe --defaults-file=${base_dir}/my.cnf --user=${user_name} &
 
-### Uncomment the following lines if you want to connect to MySQL using the command-line client and then shutdown the server
+### Connect to MySQL
 # /usr/local/mysql/bin/mysql -uroot --socket /usr/local/mysql/mysql.sock
+
+### Stop(shutdown) MySQL
 # /usr/local/mysql/bin/mysqladmin -u root shutdown --socket /usr/local/mysql/mysql.sock
