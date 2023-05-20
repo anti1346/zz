@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 삭제할 계정 목록
-REMOVE_ACCOUNT_LIST="games lp news uucp gnats"
+REMOVE_ACCOUNT_LIST="games lp news uucp gnats sync proxy backup list irc pollinate landscape fwupd-refresh lxd"
 
 for account in $REMOVE_ACCOUNT_LIST; do
     # 계정이 존재하는지 확인
