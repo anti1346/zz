@@ -51,7 +51,7 @@ fi
 cd /tmp
 
 ### Download MySQL
-wget -q ${mysql_url}
+wget -q --show-progress ${mysql_url}
 
 tar xf ${mysql_filename}
 
