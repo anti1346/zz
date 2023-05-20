@@ -16,14 +16,23 @@ done
 
 sudo update-alternatives --set editor /usr/bin/vim.basic
 
+### set timezone
 curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/common/set-timezone.sh | sudo bash
 
+### install chrony 
 curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/common/set-chrony.sh | sudo bash
 
+### set PS1
 curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/common/set-ps1.sh | sudo bash
 
+### install jq
 curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/common/jqinstall.sh | sudo bash
 
+### remove accounts and groups
 curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/common/remove_accounts_and_groups.sh | sudo bash
 
+### remove pakage
 curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/common/remove_pakage.sh | sudo bash
+
+### install mysql
+curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/Installing_MySQL_on_Linux_Using_Generic_Binaries.sh | sudo bash
