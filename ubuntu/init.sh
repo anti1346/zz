@@ -35,4 +35,4 @@ curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/common/remove_acco
 curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/common/remove_pakage.sh | sudo bash
 
 ### install mysql
-curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/Installing_MySQL_on_Linux_Using_Generic_Binaries.sh | sudo bash
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/Installing_MySQL_on_Linux_Using_Generic_Binaries.sh | sudo bash
