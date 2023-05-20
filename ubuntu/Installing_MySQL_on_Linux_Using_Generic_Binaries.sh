@@ -106,9 +106,9 @@ ${base_dir}/bin/mysqld_safe --defaults-file=${base_dir}/my.cnf --user=${user_nam
 ### Connect MySQL
 echo -e "\n\e[33mConnect MySQL\e[0m"
 # /usr/local/mysql/bin/mysql -uroot --socket /usr/local/mysql/mysql.sock
-echo "/usr/local/mysql/bin/mysql -uroot --socket /usr/local/mysql/mysql.sock"
+echo "${base_dir}/bin/mysql -uroot --socket ${base_dir}/mysql.sock"
 
 ### Stop(shutdown) MySQL
 echo -e "\n\e[33mShutdown MySQL\e[0m"
 # /usr/local/mysql/bin/mysqladmin -u root shutdown --socket /usr/local/mysql/mysql.sock
-echo -e "/usr/local/mysql/bin/mysqladmin -u root shutdown --socket /usr/local/mysql/mysql.sock\n"
+echo -e "${base_dir}/bin/mysqladmin -u root shutdown --socket ${base_dir}/mysql.sock\n"
