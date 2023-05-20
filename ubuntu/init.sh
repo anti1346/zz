@@ -12,6 +12,17 @@ for SSH_USER in "${SSH_USERS[@]}"; do
     echo "$SSH_USER:$SSH_USER" | chpasswd
     echo 'export PS1="\[\e[33m\]\u\[\e[m\]\[\e[37m\]@\[\e[m\]\[\e[34m\]\h\[\e[m\]:\[\033[01;31m\]\W\[\e[m\]$ "' >> "/home/$SSH_USER/.bashrc"
     echo "$SSH_USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+    sudo tee /home/$SSH_USER/.bashrc > /dev/null <<EOF
+
+### history
+export HISTSIZE=10000
+export HISTTIMEFORMAT='%Y-%m-%d %H:%M:%S '
+#export HISTCONTROL=erasedups
+
+### tmout 10m
+TMOUT=600
+export TMOUT
+EOF
 done
 
 sudo update-alternatives --set editor /usr/bin/vim.basic
