@@ -36,5 +36,6 @@ EOF
 
 else
     # Exit with code 127 if /etc/rc.local file already exists
+    echo -e "\n\e[33m/etc/rc.local file already exists\e[0m"
     exit 127
 fi
