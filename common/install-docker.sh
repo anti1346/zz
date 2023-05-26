@@ -26,19 +26,19 @@ if [ "$distro" == "CentOS" ]; then
         bash get-docker.sh
         usermod -aG docker $(whoami)
         systemctl --now enable docker.service
+    elif [ "$distro" == "Ubuntu" ]; then
+        echo "Ubuntu $os_version"
+        curl -fsSL https://get.docker.com -o get-docker.sh
+        chmod +x get-docker.sh
+        sudo bash get-docker.sh
+        usermod -aG docker $(whoami)
+        systemctl --now enable docker.service
     elif [ "$distro" == "Amazon" ]; then
         echo "Amazon $os_version"
         amazon-linux-extras install -y epel
         amazon-linux-extras install -y docker
         usermod -aG docker ec2-user
         systemctl --now enable docker.service
-    elif [ "$distro" == "Ubuntu" ]; then
-        echo "Ubuntu $os_version"
-        sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
-        sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-        sudo echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-        sudo apt update
-        sudo apt install -y docker-ce
     else
         echo "Other OS"
     fi
