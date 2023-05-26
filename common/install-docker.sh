@@ -41,6 +41,7 @@ if [ "$distro" == "CentOS" ]; then
         apt install -y docker-ce
     else
         echo "Other OS"
+    fi
 fi
 
 # 도커 컴포즈 설치
