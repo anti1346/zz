@@ -26,20 +26,20 @@ if [ "$distro" == "CentOS" ]; then
         # bash get-docker.sh
         # usermod -aG docker $(whoami)
         # systemctl --now enable docker.service
-    if
+    fi
 elif [ "$distro" == "Ubuntu" ]; then
-        echo "Ubuntu $os_version"
-        # curl -fsSL https://get.docker.com -o get-docker.sh
-        # chmod +x get-docker.sh
-        # sudo bash get-docker.sh
-        # usermod -aG docker $(whoami)
-        # systemctl --now enable docker.service
+    echo "Ubuntu $os_version"
+    # curl -fsSL https://get.docker.com -o get-docker.sh
+    # chmod +x get-docker.sh
+    # sudo bash get-docker.sh
+    # usermod -aG docker $(whoami)
+    # systemctl --now enable docker.service
 elif [ "$distro" == "Amazon" ]; then
-        echo "Amazon $os_version"
-        # amazon-linux-extras install -y epel
-        # amazon-linux-extras install -y docker
-        # usermod -aG docker ec2-user
-        # systemctl --now enable docker.service
+    echo "Amazon $os_version"
+    # amazon-linux-extras install -y epel
+    # amazon-linux-extras install -y docker
+    # usermod -aG docker ec2-user
+    # systemctl --now enable docker.service
 else
     echo "Other OS"
 fi
