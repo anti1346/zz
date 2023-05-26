@@ -56,7 +56,7 @@ if ! command -v ctop >/dev/null; then
     sudo curl -fsSL "https://github.com/bcicen/ctop/releases/download/${CTOP_VERSION}/ctop-${CTOP_VERSION}-linux-amd64" -o /usr/local/bin/ctop
     sudo chmod +x /usr/local/bin/ctop
     sudo ln -s /usr/local/bin/ctop /usr/bin/ctop
-    echo "CTOP version: $(ctop --version)"
+    echo "CTOP version: $(ctop -v | grep -oP '(?<=version )[\d.]+')"
 else
     echo "CTOP already installed"
     echo "CTOP version: $(ctop -v | grep -oP '(?<=version )[\d.]+')"
