@@ -54,9 +54,9 @@ ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
 
 
-### CTOP 설치 ###
-CTOP=${CTOPVersion:-0.7.7}
-#https://github.com/bcicen/ctop/releases/download/v0.7.7/ctop-0.7.7-linux-amd64
-curl -fsSL https://github.com/bcicen/ctop/releases/download/v${CTOP}/ctop-${CTOP}-linux-amd64 -o /usr/local/bin/ctop
-chmod +x /usr/local/bin/ctop
-ln -s /usr/local/bin/ctop /usr/bin/ctop
+# ### CTOP 설치 ###
+# CTOP=${CTOPVersion:-0.7.7}
+# #https://github.com/bcicen/ctop/releases/download/v0.7.7/ctop-0.7.7-linux-amd64
+# curl -fsSL https://github.com/bcicen/ctop/releases/download/v${CTOP}/ctop-${CTOP}-linux-amd64 -o /usr/local/bin/ctop
+# chmod +x /usr/local/bin/ctop
+# ln -s /usr/local/bin/ctop /usr/bin/ctop
