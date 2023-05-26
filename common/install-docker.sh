@@ -21,27 +21,27 @@ os_version=$(lsb_release -sr | cut -d'.' -f1)
 if [ "$distro" == "CentOS" ]; then
     if [[ $os_version -eq 8 || $os_version -eq 7 ]]; then
         echo "CentOS $os_version"
-        curl -fsSL https://get.docker.com -o get-docker.sh
-        chmod +x get-docker.sh
-        bash get-docker.sh
-        usermod -aG docker $(whoami)
-        systemctl --now enable docker.service
-    elif [ "$distro" == "Ubuntu" ]; then
+        # curl -fsSL https://get.docker.com -o get-docker.sh
+        # chmod +x get-docker.sh
+        # bash get-docker.sh
+        # usermod -aG docker $(whoami)
+        # systemctl --now enable docker.service
+    if
+elif [ "$distro" == "Ubuntu" ]; then
         echo "Ubuntu $os_version"
-        curl -fsSL https://get.docker.com -o get-docker.sh
-        chmod +x get-docker.sh
-        sudo bash get-docker.sh
-        usermod -aG docker $(whoami)
-        systemctl --now enable docker.service
-    elif [ "$distro" == "Amazon" ]; then
+        # curl -fsSL https://get.docker.com -o get-docker.sh
+        # chmod +x get-docker.sh
+        # sudo bash get-docker.sh
+        # usermod -aG docker $(whoami)
+        # systemctl --now enable docker.service
+elif [ "$distro" == "Amazon" ]; then
         echo "Amazon $os_version"
-        amazon-linux-extras install -y epel
-        amazon-linux-extras install -y docker
-        usermod -aG docker ec2-user
-        systemctl --now enable docker.service
-    else
-        echo "Other OS"
-    fi
+        # amazon-linux-extras install -y epel
+        # amazon-linux-extras install -y docker
+        # usermod -aG docker ec2-user
+        # systemctl --now enable docker.service
+else
+    echo "Other OS"
 fi
 
 # # 도커 컴포즈 설치
