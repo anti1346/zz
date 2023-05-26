@@ -34,6 +34,7 @@ if ! command -v docker >/dev/null; then
     echo "Docker version: $(docker version --format '{{.Server.Version}}')"
 else
     echo "Docker already installed"
+    echo "Docker version: $(docker version --format '{{.Server.Version}}')"
 fi
 
 # 도커 컴포즈 설치
@@ -45,6 +46,7 @@ if ! command -v docker-compose >/dev/null; then
     echo "Docker Compose version: $(docker-compose version --short)"
 else
     echo "Docker Compose already installed"
+    echo "Docker Compose version: $(docker-compose version --short)"
 fi
 
 # CTOP 설치
@@ -57,6 +59,7 @@ if ! command -v ctop >/dev/null; then
     echo "CTOP version: $(ctop --version)"
 else
     echo "CTOP already installed"
+    echo "CTOP version: $(ctop --version)"
 fi
 
 # 스크립트 종료
