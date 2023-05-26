@@ -34,27 +34,27 @@ if [ "$distro" == "CentOS" ]; then
         systemctl --now enable docker.service
     elif [ "$distro" == "Ubuntu" ]; then
         echo "Ubuntu $os_version"
-        apt install -y apt-transport-https ca-certificates curl software-properties-common
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-        apt update
-        apt install -y docker-ce
+        sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+        sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+        sudo echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        sudo apt update
+        sudo apt install -y docker-ce
     else
         echo "Other OS"
     fi
 fi
 
-# 도커 컴포즈 설치
-curl -fsSL "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
-ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+# # 도커 컴포즈 설치
+# curl -fsSL "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# chmod +x /usr/local/bin/docker-compose
+# ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
-# CTOP 설치
-CTOP=${CTOPVersion:-0.7.7}
-#https://github.com/bcicen/ctop/releases/download/v0.7.7/ctop-0.7.7-linux-amd64
-curl -fsSL https://github.com/bcicen/ctop/releases/download/v${CTOP}/ctop-${CTOP}-linux-amd64 -o /usr/local/bin/ctop
-chmod +x /usr/local/bin/ctop
-ln -s /usr/local/bin/ctop /usr/bin/ctop
+# # CTOP 설치
+# CTOP=${CTOPVersion:-0.7.7}
+# #https://github.com/bcicen/ctop/releases/download/v0.7.7/ctop-0.7.7-linux-amd64
+# curl -fsSL https://github.com/bcicen/ctop/releases/download/v${CTOP}/ctop-${CTOP}-linux-amd64 -o /usr/local/bin/ctop
+# chmod +x /usr/local/bin/ctop
+# ln -s /usr/local/bin/ctop /usr/bin/ctop
 
 # 스크립트 종료
 exit 0
