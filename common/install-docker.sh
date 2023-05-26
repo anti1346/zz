@@ -1,19 +1,5 @@
 #!/bin/bash
 
-# lsb_release 명령으로 운영체제 판단
-# if command -v apt >/dev/null; then
-#     echo "Linux Distribution : Debian"
-#     apt update -qq -y >/dev/null 2>&1
-#     apt install -qq -y lsb-release >/dev/null 2>&1
-#     lsb_release -ds
-# elif command -v yum >/dev/null; then
-#     echo "Linux Distribution : RedHat"
-#     yum install -q -y redhat-lsb-core >/dev/null 2>&1
-#     lsb_release -ds | tr -d '"'
-# else
-#     echo "other OS"
-# fi
-
 distro=$(lsb_release -i | cut -f2)
 os_version=$(lsb_release -sr | cut -d'.' -f1)
 
@@ -21,25 +7,25 @@ os_version=$(lsb_release -sr | cut -d'.' -f1)
 if [ "$distro" == "CentOS" ]; then
     if [[ $os_version -eq 8 || $os_version -eq 7 ]]; then
         echo "CentOS $os_version"
-        # curl -fsSL https://get.docker.com -o get-docker.sh
-        # chmod +x get-docker.sh
-        # bash get-docker.sh
-        # usermod -aG docker $(whoami)
-        # systemctl --now enable docker.service
+        curl -fsSL https://get.docker.com -o get-docker.sh
+        chmod +x get-docker.sh
+        bash get-docker.sh
+        usermod -aG docker $(whoami)
+        systemctl --now enable docker.service
     fi
 elif [ "$distro" == "Ubuntu" ]; then
     echo "Ubuntu $os_version"
-    # curl -fsSL https://get.docker.com -o get-docker.sh
-    # chmod +x get-docker.sh
-    # sudo bash get-docker.sh
-    # usermod -aG docker $(whoami)
-    # systemctl --now enable docker.service
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    chmod +x get-docker.sh
+    sudo bash get-docker.sh
+    usermod -aG docker $(whoami)
+    systemctl --now enable docker.service
 elif [ "$distro" == "Amazon" ]; then
     echo "Amazon $os_version"
-    # amazon-linux-extras install -y epel
-    # amazon-linux-extras install -y docker
-    # usermod -aG docker ec2-user
-    # systemctl --now enable docker.service
+    amazon-linux-extras install -y epel
+    amazon-linux-extras install -y docker
+    usermod -aG docker ec2-user
+    systemctl --now enable docker.service
 else
     echo "Other OS"
 fi
@@ -58,3 +44,20 @@ fi
 
 # 스크립트 종료
 exit 0
+
+
+
+
+# lsb_release 명령으로 운영체제 판단
+# if command -v apt >/dev/null; then
+#     echo "Linux Distribution : Debian"
+#     apt update -qq -y >/dev/null 2>&1
+#     apt install -qq -y lsb-release >/dev/null 2>&1
+#     lsb_release -ds
+# elif command -v yum >/dev/null; then
+#     echo "Linux Distribution : RedHat"
+#     yum install -q -y redhat-lsb-core >/dev/null 2>&1
+#     lsb_release -ds | tr -d '"'
+# else
+#     echo "other OS"
+# fi
