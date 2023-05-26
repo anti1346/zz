@@ -1,18 +1,18 @@
 #!/bin/bash
 
 # lsb_release 명령으로 운영체제 판단
-if command -v apt >/dev/null; then
-    echo "Linux Distribution : Debian"
-    apt update -qq -y >/dev/null 2>&1
-    apt install -qq -y lsb-release >/dev/null 2>&1
-    lsb_release -ds
-elif command -v yum >/dev/null; then
-    echo "Linux Distribution : RedHat"
-    yum install -q -y redhat-lsb-core >/dev/null 2>&1
-    lsb_release -ds | tr -d '"'
-else
-    echo "other OS"
-fi
+# if command -v apt >/dev/null; then
+#     echo "Linux Distribution : Debian"
+#     apt update -qq -y >/dev/null 2>&1
+#     apt install -qq -y lsb-release >/dev/null 2>&1
+#     lsb_release -ds
+# elif command -v yum >/dev/null; then
+#     echo "Linux Distribution : RedHat"
+#     yum install -q -y redhat-lsb-core >/dev/null 2>&1
+#     lsb_release -ds | tr -d '"'
+# else
+#     echo "other OS"
+# fi
 
 distro=$(lsb_release -i | cut -f2)
 os_version=$(lsb_release -sr | cut -d'.' -f1)
