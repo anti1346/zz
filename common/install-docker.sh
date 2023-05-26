@@ -62,5 +62,8 @@ else
     echo "CTOP version: $(ctop -v | grep -oP '(?<=version )[\d.]+')"
 fi
 
+# Clean up
+rm -f get-docker.sh
+
 # 스크립트 종료
 exit 0
