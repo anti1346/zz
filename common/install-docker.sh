@@ -8,29 +8,30 @@ os_version=$(lsb_release -sr | cut -d'.' -f1)
 if ! command -v docker >/dev/null; then
     if [ "$distro" == "CentOS" ]; then
         if [[ $os_version -eq 8 || $os_version -eq 7 ]]; then
-            echo "CentOS $os_version"
-            curl -fsSL https://get.docker.com -o get-docker.sh
-            chmod +x get-docker.sh
-            bash get-docker.sh
-            usermod -aG docker $(whoami)
-            systemctl --now enable docker.service
+            echo "Installing Docker on $distro $os_version"
+            sudo curl -fsSL https://get.docker.com -o get-docker.sh
+            sudo chmod +x get-docker.sh
+            sudo bash get-docker.sh
+            sudo usermod -aG docker $(whoami)
+            sudo systemctl --now enable docker.service
         fi
     elif [ "$distro" == "Ubuntu" ]; then
-        echo "Ubuntu $os_version"
-        curl -fsSL https://get.docker.com -o get-docker.sh
-        chmod +x get-docker.sh
+        echo "Installing Docker on $distro $os_version"
+        sudo curl -fsSL https://get.docker.com -o get-docker.sh
+        sudo chmod +x get-docker.sh
         sudo bash get-docker.sh
-        usermod -aG docker $(whoami)
-        systemctl --now enable docker.service
+        sudo usermod -aG docker $(whoami)
+        sudo systemctl --now enable docker.service
     elif [ "$distro" == "Amazon" ]; then
-        echo "Amazon $os_version"
-        amazon-linux-extras install -y epel
-        amazon-linux-extras install -y docker
-        usermod -aG docker ec2-user
-        systemctl --now enable docker.service
+        echo "Installing Docker on $distro $os_version"
+        sudo amazon-linux-extras install -y epel
+        sudo amazon-linux-extras install -y docker
+        sudo usermod -aG docker $(whoami)
+        sudo systemctl --now enable docker.service
     else
         echo "Other OS"
     fi
+    echo "Docker version: $(docker version --format '{{.Server.Version}}')"
 else
     echo "Docker already installed"
 fi
@@ -38,9 +39,10 @@ fi
 # 도커 컴포즈 설치
 if ! command -v docker-compose >/dev/null; then
     echo "Installing Docker Compose"
-    curl -fsSL "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
-    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+    sudo curl -fsSL "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+    echo "Docker Compose version: $(docker-compose version --short)"
 else
     echo "Docker Compose already installed"
 fi
@@ -48,27 +50,14 @@ fi
 # CTOP 설치
 if ! command -v ctop >/dev/null; then
     echo "Installing CTOP"
-    CTOP=${CTOPVersion:-0.7.7}
-    curl -fsSL https://github.com/bcicen/ctop/releases/download/v${CTOP}/ctop-${CTOP}-linux-amd64 -o /usr/local/bin/ctop
-    chmod +x /usr/local/bin/ctop
-    ln -s /usr/local/bin/ctop /usr/bin/ctop
+    CTOP_VERSION=$(sudo curl -sSL "https://api.github.com/repos/bcicen/ctop/releases/latest" | grep -oP '"tag_name": "\K(.*)(?=")')
+    sudo curl -fsSL "https://github.com/bcicen/ctop/releases/download/${CTOP_VERSION}/ctop-${CTOP_VERSION}-linux-amd64" -o /usr/local/bin/ctop
+    sudo chmod +x /usr/local/bin/ctop
+    sudo ln -s /usr/local/bin/ctop /usr/bin/ctop
+    echo "CTOP version: $(ctop --version)"
 else
     echo "CTOP already installed"
 fi
 
 # 스크립트 종료
 exit 0
-
-# lsb_release 명령으로 운영체제 판단
-# if command -v apt >/dev/null; then
-#     echo "Linux Distribution : Debian"
-#     apt update -qq -y >/dev/null 2>&1
-#     apt install -qq -y lsb-release >/dev/null 2>&1
-#     lsb_release -ds
-# elif command -v yum >/dev/null; then
-#     echo "Linux Distribution : RedHat"
-#     yum install -q -y redhat-lsb-core >/dev/null 2>&1
-#     lsb_release -ds | tr -d '"'
-# else
-#     echo "other OS"
-# fi

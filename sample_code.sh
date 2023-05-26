@@ -33,3 +33,17 @@ else
     echo "Unsupported operating system."
     exit 1
 fi
+
+# lsb_release 명령으로 운영체제 판단
+# if command -v apt >/dev/null; then
+#     echo "Linux Distribution : Debian"
+#     apt update -qq -y >/dev/null 2>&1
+#     apt install -qq -y lsb-release >/dev/null 2>&1
+#     lsb_release -ds
+# elif command -v yum >/dev/null; then
+#     echo "Linux Distribution : RedHat"
+#     yum install -q -y redhat-lsb-core >/dev/null 2>&1
+#     lsb_release -ds | tr -d '"'
+# else
+#     echo "other OS"
+# fi
