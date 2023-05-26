@@ -59,7 +59,7 @@ if ! command -v ctop >/dev/null; then
     echo "CTOP version: $(ctop --version)"
 else
     echo "CTOP already installed"
-    echo "CTOP version: $(ctop --version)"
+    echo "CTOP version: $(ctop -v | grep -oP '(?<=version )[\d.]+')"
 fi
 
 # 스크립트 종료
