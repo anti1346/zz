@@ -3,8 +3,9 @@
 # Get aws-cli version
 aws_version=$(aws --version | awk '{print $1}' | awk -F'/' '{print $2}')
 
-if ! command -v aws >/dev/null; then
-    echo "aws is already installed. Exiting..."
+# Check if aws-cli is already installed
+if command -v aws &>/dev/null; then
+    echo "aws is already installed."
     echo "aws-cli version: $aws_version"
     exit 0
 fi
