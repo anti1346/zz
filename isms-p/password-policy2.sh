@@ -1,5 +1,23 @@
 #!/bin/bash
 
+# Backup Settings
+BACKUP_DATE="$(date +%Y%m%d-%H%M%S)"
+
+# Determine Linux Distro and Install Required Packages
+if [[ -f /etc/centos-release ]]; then
+    DISTRO="CentOS"
+    yum install -y libpwquality
+elif [[ -f /etc/system-release && $(grep -c "Amazon Linux" /etc/system-release) -eq 1 ]]; then
+    DISTRO="Amazon Linux"
+    yum install -y libpwquality
+elif [[ -f /etc/lsb-release && $(grep -c "DISTRIB_ID=Ubuntu" /etc/lsb-release) -eq 1 ]]; then
+    DISTRO="Ubuntu"
+    apt-get install -y libpam-pwquality
+else
+    echo "Unsupported Linux distribution."
+    exit 1
+fi
+
 # Apply Password Policy Settings
 if [[ $DISTRO == "CentOS" || $DISTRO == "Amazon Linux" ]]; then
     sudo cp /etc/pam.d/system-auth /etc/pam.d/system-auth.$BACKUP_DATE
