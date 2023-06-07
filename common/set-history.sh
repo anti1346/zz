@@ -5,7 +5,6 @@ TMOUT=600
 
 HISTSIZE=10000
 HISTFILESIZE=10000
-HISTTIMEFORMAT='%Y-%m-%d %H:%M:%S '
 
 # .bashrc 파일을 백업합니다.
 cp ~/.bashrc ~/.bashrc.bak
@@ -27,7 +26,7 @@ if [ $HISTTIMEFORMAT_EXIST -ne 0 ]; then
     echo "### HISTORY" >> ~/.bashrc
     echo "HISTSIZE=$HISTSIZE" >> ~/.bashrc
     echo "HISTFILESIZE=$HISTFILESIZE" >> ~/.bashrc
-    echo "HISTTIMEFORMAT=$HISTTIMEFORMAT" >> ~/.bashrc
+    echo "HISTTIMEFORMAT='%Y-%m-%d %H:%M:%S '" >> ~/.bashrc
 fi
 
 # 변경사항을 적용합니다.
