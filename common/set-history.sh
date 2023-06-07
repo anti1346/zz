@@ -27,7 +27,7 @@ if [ $HISTTIMEFORMAT_EXIST -ne 0 ]; then
     echo "### HISTORY" >> ~/.bashrc
     echo "HISTSIZE=$HISTSIZE" >> ~/.bashrc
     echo "HISTFILESIZE=$HISTFILESIZE" >> ~/.bashrc
-    echo "HISTTIMEFORMAT="$HISTTIMEFORMAT"" >> ~/.bashrc
+    echo "HISTTIMEFORMAT=$HISTTIMEFORMAT" >> ~/.bashrc
 fi
 
 # 변경사항을 적용합니다.
