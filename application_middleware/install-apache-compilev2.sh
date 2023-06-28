@@ -82,7 +82,7 @@ make -j $(($(nproc) + 1))
 
 make install
 
-rm -rf ${SRC_DIR}/httpd-${HTTP_VERSION} ${SRC_DIR}/httpd-${HTTP_VERSION}.tar.gz  ${SRC_DIR}/apr-${APR_VERSION}.tar.gz ${SRC_DIR}/apr-util-$APRUTIL_VERSION}.tar.gz
+rm -rf ${SRC_DIR}/httpd-${HTTP_VERSION} ${SRC_DIR}/httpd-${HTTP_VERSION}.tar.gz  ${SRC_DIR}/apr-${APR_VERSION}.tar.gz ${SRC_DIR}/apr-util-${APRUTIL_VERSION}.tar.gz
 
 echo -e "\033[38;5;226m\napache 소스 컴파일 완료\n\033[0m"
 
