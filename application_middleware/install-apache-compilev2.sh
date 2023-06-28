@@ -48,7 +48,7 @@ cd $SRC_DIR
 # Apache, APR 및 APR-UTIL 소스 파일 다운로드
 wget --no-check-certificate https://dlcdn.apache.org/httpd/httpd-${HTTP_VERSION}.tar.gz
 wget --no-check-certificate https://dlcdn.apache.org/apr/apr-${APR_VERSION}.tar.gz
-wget --no-check-certificate https://dlcdn.apache.org/apr/apr-util-${APR_APRUTIL_VERSION}.tar.gz
+wget --no-check-certificate https://dlcdn.apache.org/apr/apr-util-${APRUTIL_VERSION}.tar.gz
 
 # Apache 소스 파일 압축 해제
 tar xfz httpd-${HTTP_VERSION}.tar.gz
@@ -58,7 +58,7 @@ mkdir -p ${APR_DIR} ${APRUTIL_DIR}
 
 # APR, APR-UTIL 소스 파일 압축 해제
 tar xfz apr-${APR_VERSION}.tar.gz -C ${APR_DIR} --strip-components=1
-tar xfz apr-util-${APR_APRUTIL_VERSION}.tar.gz -C ${APRUTIL_DIR} --strip-components=1
+tar xfz apr-util-${APRUTIL_VERSION}.tar.gz -C ${APRUTIL_DIR} --strip-components=1
 
 cd $HTTPD_DIR
 
@@ -82,7 +82,7 @@ make -j $(($(nproc) + 1))
 
 make install
 
-rm -rf ${SRC_DIR}/httpd-${HTTP_VERSION} ${SRC_DIR}/httpd-${HTTP_VERSION}.tar.gz  ${SRC_DIR}/apr-${APR_VERSION}.tar.gz ${SRC_DIR}/apr-util-${APR_APRUTIL_VERSION}.tar.gz
+rm -rf ${SRC_DIR}/httpd-${HTTP_VERSION} ${SRC_DIR}/httpd-${HTTP_VERSION}.tar.gz  ${SRC_DIR}/apr-${APR_VERSION}.tar.gz ${SRC_DIR}/apr-util-$APRUTIL_VERSION}.tar.gz
 
 echo -e "\033[38;5;226m\napache 소스 컴파일 완료\n\033[0m"
 
