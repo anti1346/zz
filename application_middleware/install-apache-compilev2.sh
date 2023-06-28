@@ -21,7 +21,7 @@ if [[ $OS == "Ubuntu" ]]; then
     sudo apt-get update
     sudo apt-get install -y build-essential
     # 의존성 패키지 설치
-    sudo apt-get install -y libpcre3 libpcre3-dev libssl-dev
+    sudo apt-get install -y libpcre3 libpcre3-dev libssl-dev libnghttp2-dev
 elif [[ $OS == "CentOS" ]]; then
     # CentOS
     sudo yum install -y epel-release
