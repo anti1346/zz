@@ -2,7 +2,7 @@
 
 HTTP_VERSION="${HTTP_VERSION:-2.4.57}"
 APR_VERSION="${APR_VERSION:-1.7.4}"
-UTIL_VERSION="${UTIL_VERSION:-1.6.3}"
+APRUTIL_VERSION="${APRUTIL_VERSION:-1.6.3}"
 
 ### Ubuntu 또는 CentOS에서 실행 중인지 확인
 if [[ -x "$(command -v apt-get)" ]]; then
@@ -48,7 +48,7 @@ cd $SRC_DIR
 # Apache, APR 및 APR-UTIL 소스 파일 다운로드
 wget --no-check-certificate https://dlcdn.apache.org/httpd/httpd-${HTTP_VERSION}.tar.gz
 wget --no-check-certificate https://dlcdn.apache.org/apr/apr-${APR_VERSION}.tar.gz
-wget --no-check-certificate https://dlcdn.apache.org/apr/apr-util-${APR_UTIL_VERSION}.tar.gz
+wget --no-check-certificate https://dlcdn.apache.org/apr/apr-util-${APR_APRUTIL_VERSION}.tar.gz
 
 # Apache 소스 파일 압축 해제
 tar xfz httpd-${HTTP_VERSION}.tar.gz
@@ -58,7 +58,7 @@ mkdir -p ${APR_DIR} ${APR_UTIL_DIR}
 
 # APR, APR-UTIL 소스 파일 압축 해제
 tar xfz apr-${APR_VERSION}.tar.gz -C ${APR_DIR} --strip-components=1
-tar xfz apr-util-${APR_UTIL_VERSION}.tar.gz -C ${APR_UTIL_DIR} --strip-components=1
+tar xfz apr-util-${APR_APRUTIL_VERSION}.tar.gz -C ${APR_UTIL_DIR} --strip-components=1
 
 cd $HTTPD_DIR
 
@@ -82,7 +82,7 @@ make -j $(($(nproc) + 1))
 
 make install
 
-rm -rf ${SRC_DIR}/httpd-${HTTP_VERSION} ${SRC_DIR}/httpd-${HTTP_VERSION}.tar.gz  ${SRC_DIR}/apr-${APR_VERSION}.tar.gz ${SRC_DIR}/apr-util-${APR_UTIL_VERSION}.tar.gz
+rm -rf ${SRC_DIR}/httpd-${HTTP_VERSION} ${SRC_DIR}/httpd-${HTTP_VERSION}.tar.gz  ${SRC_DIR}/apr-${APR_VERSION}.tar.gz ${SRC_DIR}/apr-util-${APR_APRUTIL_VERSION}.tar.gz
 
 echo -e "\033[38;5;226m\napache 소스 컴파일 완료\n\033[0m"
 
