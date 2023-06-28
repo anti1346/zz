@@ -86,12 +86,15 @@ rm -rf ${SRC_DIR}/httpd-${HTTP_VERSION} ${SRC_DIR}/httpd-${HTTP_VERSION}.tar.gz 
 
 echo -e "\033[38;5;226m\napache 소스 컴파일 완료\n\033[0m"
 
-cp ${DST_DIR}/conf/httpd.conf ${DST_DIR}/conf/httpd.conf_$(date +"%Y%m%d-%H%M%S")
+#cp ${DST_DIR}/conf/httpd.conf ${DST_DIR}/conf/httpd.conf_$(date +"%Y%m%d-%H%M%S")
+cp ${DST_DIR}/conf/httpd.conf ${DST_DIR}/conf/httpd.conf_$(date +"%Y%m%d%H")
 
 sed -i '/^User /s/.*/User nobody/' ${DST_DIR}/conf/httpd.conf
 sed -i '/^Group /s/.*/Group nobody/' ${DST_DIR}/conf/httpd.conf
 sed -i 's/#ServerName www.example.com:80/ServerName 0.0.0.0:80/' ${DST_DIR}/conf/httpd.conf
 sed -i 's/ServerAdmin you@example.com/ServerAdmin root@localhost/' ${DST_DIR}/conf/httpd.conf
 sed -i 's/DirectoryIndex index.html/DirectoryIndex index.html index.htm/' ${DST_DIR}/conf/httpd.conf
+
+diff -Nur ${DST_DIR}/conf/httpd.conf_$(date +"%Y%m%d%H") ${DST_DIR}/conf/httpd.conf
 
 echo -e "\033[38;5;226m\nhttpd.conf 편집 완료\n\033[0m"
