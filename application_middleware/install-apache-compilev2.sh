@@ -41,7 +41,7 @@ SRC_DIR='/usr/local/src'
 
 HTTPD_DIR="${SRC_DIR}/httpd-${HTTP_VERSION}"
 APR_DIR="${HTTPD_DIR}/srclib/apr"
-APR_UTIL_DIR="${HTTPD_DIR}/srclib/apr-util"
+APRUTIL_DIR="${HTTPD_DIR}/srclib/apr-util"
 
 cd $SRC_DIR
 
@@ -54,11 +54,11 @@ wget --no-check-certificate https://dlcdn.apache.org/apr/apr-util-${APR_APRUTIL_
 tar xfz httpd-${HTTP_VERSION}.tar.gz
 
 # APR, APR-UTIL 디렉토리 생성
-mkdir -p ${APR_DIR} ${APR_UTIL_DIR}
+mkdir -p ${APR_DIR} ${APRUTIL_DIR}
 
 # APR, APR-UTIL 소스 파일 압축 해제
 tar xfz apr-${APR_VERSION}.tar.gz -C ${APR_DIR} --strip-components=1
-tar xfz apr-util-${APR_APRUTIL_VERSION}.tar.gz -C ${APR_UTIL_DIR} --strip-components=1
+tar xfz apr-util-${APR_APRUTIL_VERSION}.tar.gz -C ${APRUTIL_DIR} --strip-components=1
 
 cd $HTTPD_DIR
 
