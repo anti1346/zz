@@ -26,9 +26,11 @@ total_processes=$cpu_cores
 max_connections_per_child=$((total_connections / total_processes))
 
 # 결과 출력
+echo ""
 echo "StartServers: $start_servers"
 echo "MinSpareThreads: $min_spare_threads"
 echo "MaxSpareThreads: $max_spare_threads"
 echo "ThreadsPerChild: $threads_per_child"
 echo "MaxRequestWorkers: $max_request_workers"
 echo "MaxConnectionsPerChild: $max_connections_per_child"
+echo ""
