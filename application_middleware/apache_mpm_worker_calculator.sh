@@ -20,17 +20,22 @@ threads_per_child=$((cpu_cores / 2))
 max_request_workers=$((cpu_cores * 25))
 
 # MaxConnectionsPerChild 계산
-#max_connections_per_child=0 # 기본값인 무제한 사용
 total_connections=$((threads_per_child * max_request_workers))
 total_processes=$cpu_cores
 max_connections_per_child=$((total_connections / total_processes))
 
 # 결과 출력
-echo ""
-echo "StartServers: $start_servers"
-echo "MinSpareThreads: $min_spare_threads"
-echo "MaxSpareThreads: $max_spare_threads"
-echo "ThreadsPerChild: $threads_per_child"
-echo "MaxRequestWorkers: $max_request_workers"
-echo "MaxConnectionsPerChild: $max_connections_per_child"
-echo ""
+echo """
+Note:
+    # 기본값인 무제한 사용
+    MaxConnectionsPerChild      0
+
+<IfModule mpm_worker_module>
+    StartServers                ${start_servers}
+    MinSpareThreads             ${min_spare_threads}
+    MaxSpareThreads             ${max_spare_threads}
+    ThreadsPerChild             ${threads_per_child}
+    MaxRequestWorkers           ${max_request_workers}
+    MaxConnectionsPerChild      ${max_connections_per_child}
+</IfModule>
+"""
