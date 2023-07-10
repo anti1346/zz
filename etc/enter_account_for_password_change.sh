@@ -43,7 +43,7 @@ function PASSWORD {
             ;;
         esac
 
-        echo -e "\n${YELLOW}(password before change): $SHADOW${NC}"
+        echo -e "\n${YELLOW}(password before change):\n$SHADOW${NC}"
         echo "$user:$pwdstr$nid$hid" | sudo chpasswd > /dev/null 2>&1
         echo -e "${GREEN}$user 사용자의 비밀번호가 변경되었습니다.${NC}"
         echo -e "${RED}sshpass -p'$pwdstr$nid$hid' ssh $user@$MyIP -oStrictHostKeyChecking=no${NC}\n"
