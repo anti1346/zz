@@ -13,7 +13,7 @@ NetworkID=$(echo "$MyIP" | cut -d . -f1-3)
 HostID=$(echo "$MyIP" | cut -d . -f4)
 
 # 사용자 목록은 명령줄 인수로 전달
-default_users=("root" "ec2-user" "vagrant" "ubuntu")
+default_users=("root" "ec2-user" "vagrant" "ubuntu" "centos")
 users=("${@:-${default_users[@]}}")
 
 # 비밀번호 변경 함수
@@ -32,12 +32,12 @@ function PASSWORD {
           vagrant)
             pwdstr="ekfnsms"
             ;;
-          ubuntu)
+          ubuntu|centos)
             pwdstr="rltnf"
             ;;
-          centos)
-            pwdstr="rltnf"
-            ;;
+          # centos)
+          #   pwdstr="rltnf"
+          #   ;;
           *)
             echo -e "알 수 없는 사용자 이름 '$user'."
             continue
