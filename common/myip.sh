@@ -10,5 +10,5 @@ INTERNAL_IP=$(hostname -I | awk '{print $1}')
 # 외부 IP 가져오기
 EXTERNAL_IP=$(curl -s --max-time 3 https://checkip.amazonaws.com)
 
-echo -e "${RED}내부 IP: $INTERNAL_IP${NC}"
-echo -e "${GREEN}외부 IP: $EXTERNAL_IP${NC}"
+echo -e "\n${RED}내부 IP: $INTERNAL_IP${NC}"
+echo -e "${GREEN}외부 IP: $EXTERNAL_IP${NC}\n"
