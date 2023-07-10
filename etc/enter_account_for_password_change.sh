@@ -13,8 +13,8 @@ NetworkID=$(echo "$MyIP" | cut -d . -f1-3)
 HostID=$(echo "$MyIP" | cut -d . -f4)
 
 # 사용자 목록은 명령줄 인수로 전달
-users=("root" "ec2-user" "vagrant" "ubuntu")
-users=("${users[@]:-$@}")
+default_users=("root" "ec2-user" "vagrant" "ubuntu")
+users=("${@:-${default_users[@]}}")
 
 # 비밀번호 변경 함수
 function PASSWORD {
