@@ -15,48 +15,38 @@ HostID=$(echo "$MyIP" | cut -d . -f4)
 # 사용자 목록은 명령줄 인수로 전달
 users=$@
 
-check_user_exists() {
-  local username=$1
-  grep -q "^$username:" /etc/passwd
-  return $?
-}
-
-for username in "$@"; do
-  if check_user_exists "$username"; then
-    echo "$username exists in /etc/passwd"
-  else
-    echo "$username does not exist in /etc/passwd"
-  fi
-done
-
 # 비밀번호 변경 함수
 function PASSWORD {
   for user in $users; do
-    case $user in
-      root)
-        pwdstr="flsnrtm"
-        ;;
-      ec2-user)
-        pwdstr="tjqjfmf"
-        ;;
-      vagrant)
-        pwdstr="ekfnsms"
-        ;;
-      ubuntu)
-        pwdstr="rltnf"
-        ;;
-      centos)
-        pwdstr="rltnf"
-        ;;
-      *)
-        echo -e "알 수 없는 사용자 이름 '$user'."
-        exit 1
-        ;;
-    esac
+    if id "$user" >/dev/null 2>&1; then
+      case $user in
+        root)
+          pwdstr="flsnrtm"
+          ;;
+        ec2-user)
+          pwdstr="tjqjfmf"
+          ;;
+        vagrant)
+          pwdstr="ekfnsms"
+          ;;
+        ubuntu)
+          pwdstr="rltnf"
+          ;;
+        centos)
+          pwdstr="rltnf"
+          ;;
+        *)
+          echo -e "알 수 없는 사용자 이름 '$user'."
+          continue
+          ;;
+      esac
 
-    echo "$user:$pwdstr$nid$hid" | chpasswd > /dev/null 2>&1
-    echo -e "${GREEN}$user 사용자의 비밀번호가 변경되었습니다.${NC}"
-    echo -e "${RED}sshpass -p'$pwdstr$nid$hid' ssh $user@$MyIP -oStrictHostKeyChecking=no${NC}"
+      echo "$user:$pwdstr$nid$hid" | chpasswd > /dev/null 2>&1
+      echo -e "${GREEN}$user 사용자의 비밀번호가 변경되었습니다.${NC}"
+      echo -e "${RED}sshpass -p'$pwdstr$nid$hid' ssh $user@$MyIP -oStrictHostKeyChecking=no${NC}"
+    else
+      echo -e "시스템에 '$user' 사용자가 존재하지 않습니다."
+    fi
   done
 }
 
