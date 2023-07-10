@@ -4,6 +4,9 @@
 ```
 curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/enter_account_for_password_change.sh | bash -s root
 ```
+```
+curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/enter_account_for_password_change.sh | bash
+```
 
 #### 자동으로 비밀번호 변경
 ```
