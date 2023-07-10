@@ -5,6 +5,8 @@
 CYAN='\033[0;36m'
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+YELLOW="\033[1;33m"
+LT_GREEN="\033[1;32m"
 NC='\033[0m'
 
 # 로컬 IP 주소를 가져와서 네트워크 ID와 호스트 ID 추출
@@ -41,7 +43,7 @@ function PASSWORD {
             ;;
         esac
 
-        echo -e "\n${CYAN}(password before change): $SHADOW${NC}"
+        echo -e "\n${YELLOW}(password before change): $SHADOW${NC}"
         echo "$user:$pwdstr$nid$hid" | sudo chpasswd > /dev/null 2>&1
         echo -e "${GREEN}$user 사용자의 비밀번호가 변경되었습니다.${NC}"
         echo -e "${RED}sshpass -p'$pwdstr$nid$hid' ssh $user@$MyIP -oStrictHostKeyChecking=no${NC}\n"
