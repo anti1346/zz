@@ -15,6 +15,20 @@ HostID=$(echo "$MyIP" | cut -d . -f4)
 # 사용자 목록은 명령줄 인수로 전달
 users=$@
 
+check_user_exists() {
+  local username=$1
+  grep -q "^$username:" /etc/passwd
+  return $?
+}
+
+for username in "$@"; do
+  if check_user_exists "$username"; then
+    echo "$username exists in /etc/passwd"
+  else
+    echo "$username does not exist in /etc/passwd"
+  fi
+done
+
 # 비밀번호 변경 함수
 function PASSWORD {
   for user in $users; do
