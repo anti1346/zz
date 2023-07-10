@@ -8,17 +8,17 @@ GREEN='\033[0;32m'
 NC='\033[0m'
 
 # 로컬 IP 주소를 가져와서 네트워크 ID와 호스트 ID 추출
-MyIP=$(ifconfig | grep "inet" | grep "broadcast" | awk '{print $2}')
+MyIP=$(ifconfig | awk '/inet .*broadcast/{print $2}')
 NetworkID=$(echo "$MyIP" | cut -d . -f1-3)
 HostID=$(echo "$MyIP" | cut -d . -f4)
 
 # 사용자 목록은 명령줄 인수로 전달
 users=("root" "ec2-user" "vagrant" "ubuntu")
-users=${users:-$@}
+users=("${users[@]:-$@}")
 
 # 비밀번호 변경 함수
 function PASSWORD {
-  for user in $users; do
+  for user in "${users[@]}"; do
     if id "$user" >/dev/null 2>&1; then
       case $user in
         root)
@@ -30,10 +30,7 @@ function PASSWORD {
         vagrant)
           pwdstr="ekfnsms"
           ;;
-        ubuntu)
-          pwdstr="rltnf"
-          ;;
-        centos)
+        ubuntu|centos)
           pwdstr="rltnf"
           ;;
         *)
