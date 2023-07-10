@@ -32,7 +32,10 @@ function PASSWORD {
           vagrant)
             pwdstr="ekfnsms"
             ;;
-          ubuntu|centos)
+          ubuntu)
+            pwdstr="rltnf"
+            ;;
+          centos)
             pwdstr="rltnf"
             ;;
           *)
@@ -49,7 +52,7 @@ function PASSWORD {
         echo -e "${RED}사용자 '$user'의 shadow 파일에서 항목을 찾을 수 없습니다.${NC}\n"
       fi
     else
-      echo -e "시스템에 '$user' 사용자가 존재하지 않습니다.\n"
+      echo -e "${RED}시스템에 '$user' 사용자가 존재하지 않습니다.${NC}\n"
     fi
   done
 }
@@ -87,6 +90,6 @@ case $NetworkID in
     PASSWORD
     ;;
   *)
-    echo -e "알 수 없는 네트워크 ID (Netmask) '$NetworkID'입니다."
+    echo -e "${RED}알 수 없는 네트워크 ID (Netmask) '$NetworkID'입니다.${NC}\n"
     ;;
 esac
