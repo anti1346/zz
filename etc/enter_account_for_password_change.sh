@@ -20,6 +20,7 @@ users=("${@:-${default_users[@]}}")
 function PASSWORD {
   for user in "${users[@]}"; do
     if id "$user" >/dev/null 2>&1; then
+      grep "$user" /etc/shadow
       case $user in
         root)
           pwdstr="flsnrtm"
@@ -43,7 +44,7 @@ function PASSWORD {
       echo -e "\n${GREEN}$user 사용자의 비밀번호가 변경되었습니다.${NC}"
       echo -e "${RED}sshpass -p'$pwdstr$nid$hid' ssh $user@$MyIP -oStrictHostKeyChecking=no${NC}\n"
     else
-      echo -e "시스템에 '$user' 사용자가 존재하지 않습니다."
+      echo -e "시스템에 '$user' 사용자가 존재하지 않습니다.\n"
     fi
   done
 }
