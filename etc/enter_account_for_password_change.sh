@@ -41,7 +41,7 @@ function PASSWORD {
             ;;
         esac
 
-        echo -e "\n==> $SHADOW${NC}"
+        echo -e "\n${CYAN}(password before change): $SHADOW${NC}"
         echo "$user:$pwdstr$nid$hid" | sudo chpasswd > /dev/null 2>&1
         echo -e "${GREEN}$user 사용자의 비밀번호가 변경되었습니다.${NC}"
         echo -e "${RED}sshpass -p'$pwdstr$nid$hid' ssh $user@$MyIP -oStrictHostKeyChecking=no${NC}\n"
@@ -49,7 +49,7 @@ function PASSWORD {
         echo -e "${RED}사용자 '$user'의 shadow 파일에서 항목을 찾을 수 없습니다.${NC}\n"
       fi
     else
-      echo -e "${RED}시스템에 '$user' 사용자가 존재하지 않습니다.${NC}\n"
+      echo -e "${CYAN}시스템에 '$user' 사용자가 존재하지 않습니다.${NC}\n"
     fi
   done
 }
@@ -87,6 +87,6 @@ case $NetworkID in
     PASSWORD
     ;;
   *)
-    echo -e "${RED}알 수 없는 네트워크 ID (Netmask) '$NetworkID'입니다.${NC}\n"
+    echo -e "${CYAN}알 수 없는 네트워크 ID (Netmask) '$NetworkID'입니다.${NC}\n"
     ;;
 esac
