@@ -35,7 +35,7 @@ while [[ $# -gt 0 ]]; do
   case $1 in
     --ip)
       shift
-      IP_ADDRESS=$1
+      IP_ADDRESS=("$1")
       ;;
     --user)
       shift
