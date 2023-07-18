@@ -144,3 +144,9 @@ case $NetworkID in
     echo -e "${CYAN}알 수 없는 네트워크 ID (Netmask) '$NetworkID'입니다.${NC}\n"
     ;;
 esac
+
+# 추가된 코드: 명령줄 인수 출력
+echo -e "\n인수 목록:"
+for arg in "${args[@]}"; do
+  echo "Argument: $arg"
+done
