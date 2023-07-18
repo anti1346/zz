@@ -33,11 +33,11 @@ USER_LIST=()
 # 명령줄 인수를 처리합니다.
 while [[ $# -gt 0 ]]; do
   case $1 in
-    --ip)
+    -i | --ip)
       shift
       IP_ADDRESS=$1
       ;;
-    --user)
+    -u | --user)
       shift
       while [[ $# -gt 0 ]]; do
         USER_LIST+=("$1")
