@@ -1,3 +1,8 @@
+#####################################
+# pip 패키지 설치                    #
+# pip install boto3 psutil requests #
+#####################################
+
 import boto3
 import psutil
 import requests
