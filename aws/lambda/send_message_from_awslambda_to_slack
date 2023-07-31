@@ -1,0 +1,84 @@
+import boto3
+import json
+import logging
+import os
+import time
+
+from datetime import datetime
+from datetime import timedelta
+from base64 import b64decode
+from urllib.request import Request, urlopen
+from urllib.error import URLError, HTTPError
+
+HOOK_URL = os.environ['HOOK_URL']
+SLACK_CHANNEL = os.environ['SLACK_CHANNEL']
+
+# Function to retrieve AWS Account Alias
+def get_account_alias():
+    try:
+        client = boto3.client('iam')
+        response = client.list_account_aliases()
+        return response['AccountAliases'][0] if response['AccountAliases'] else None
+    except Exception as e:
+        logging.error("Failed to get AWS account alias: %s", str(e))
+        return None
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+def lambda_handler(event, context):
+    logger.info("Event: " + str(event))
+    data = event['detail']
+    
+    accountType = data['userIdentity']['type']
+    
+    # Root 인지 IAMUser 인지 구분
+    if accountType == "Root":
+        accountUserName = "Root"
+    elif accountType == "IAMUser":
+        accountUserName = data['userIdentity']['userName']
+    else:
+        accountUserName = " "
+        
+    # KST 시간 변환
+    state_login_time = data['eventTime'][:19]
+    kst_login_time = datetime.strptime(state_login_time, '%Y-%m-%dT%H:%M:%S') - timedelta(hours=-9) #KST 시간 변환
+    
+    # Slack Message Title
+    title = "AWS Management Console Login"
+    
+    # source IP Address
+    sourceIPAddress = data['sourceIPAddress']
+    
+    # MFA 사용 유무
+    usedMFA = data['additionalEventData']['MFAUsed']
+    
+    # 접속 성공 유무
+    loginStatusCheck = data['responseElements']['ConsoleLogin']
+    
+    # Get AWS Account ID
+    aws_account_id = data['recipientAccountId']
+    
+    # Get AWS Account Alias
+    aws_account_alias = get_account_alias()
+    
+    slack_message = {
+        'channel': SLACK_CHANNEL,
+        'text': "*%s*\n>>>*Account ID*: %s\n*Account Alias*: %s\n*IAM User*: %s\n*접속시간*: %s\n*접속 IP Address*: %s\n*Console Login 결과*: %s\n*MFA 사용유무*: %s" % (title, aws_account_id, aws_account_alias, accountUserName, kst_login_time, sourceIPAddress, loginStatusCheck, usedMFA)
+    }
+
+    req = Request(HOOK_URL, json.dumps(slack_message).encode('utf-8'))
+    try:
+        response = urlopen(req)
+        response.read()
+        logger.info("Message posted")
+    except HTTPError as e:
+        logger.error("Request failed: %d %s", e.code, e.reason)
+    except URLError as e:
+        logger.error("Server connection failed: %s", e.reason)
+
+
+##########################################################################################
+####Lambda > 함수 > 구성 > 환경 변수
+# HOOK_URL	https://hooks.slack.com/services/xxxxx
+# SLACK_CHANNEL	xxxxx
