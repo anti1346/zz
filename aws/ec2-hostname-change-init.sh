@@ -5,7 +5,7 @@ then
     echo -e "\njq 패키지가 설치되어 있지 않습니다. 패키지를 설치합니다."
     if [[ $(cat /etc/os-release | grep "^ID=" | awk -F'=' '{print $2}' | tr -d '"') == "ubuntu" ]]; then
         sudo apt-get update
-        sudo apt-get install -y jq
+        sudo apt-get install -y jq unzip
     elif [[ $(cat /etc/os-release | grep "^ID=" | awk -F'=' '{print $2}' | tr -d '"') == "centos" ]]; then
         sudo yum install -y epel-release
         sudo yum install -y jq
