@@ -1,5 +1,4 @@
-
-
+### 계정 생성
 ```
 groupadd -g 1201 user1
 ```
@@ -80,6 +79,20 @@ echo 'NoPasswordUser ALL=NOPASSWD: ALL' >> /etc/sudoers
 ### 타임존(timezone) 설정
 ```
 sudo timedatectl set-timezone Asia/Seoul
+```
+
+### 저장소 URL 변경
+```
+cat /etc/apt/sources.list
+```
+```
+sudo cp /etc/apt/sources.list /etc/apt/sources.list.bk
+```
+```
+sed -i 's/kr.archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
+```
+```
+sudo sed -i 's/http:\/\/archive.ubuntu.com/https:\/\/mirror.kakao.com/g' /etc/apt/sources.list
 ```
 
 ### 우분투 editor 변경
