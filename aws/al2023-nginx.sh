@@ -2,7 +2,7 @@
 
 sudo yum install -y yum-utils
 
-cat <<'EOF' > /etc/yum.repos.d/nginx.repo
+sudo cat <<'EOF' > /etc/yum.repos.d/nginx.repo
 [nginx-stable]
 name=nginx stable repo
 baseurl=http://nginx.org/packages/amzn/2023/$basearch/
