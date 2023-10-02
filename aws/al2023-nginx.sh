@@ -27,3 +27,5 @@ sudo yum-config-manager --enable nginx-stable
 sudo yum install -y nginx
 
 sudo systemctl --now enable nginx
+
+echo "NGINT TEST PAGE" > /usr/share/nginx/html/tt.html
