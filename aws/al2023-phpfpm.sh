@@ -2,7 +2,7 @@
 
 sudo yum install -y epel-release
 
-sudo yum install -y php8.1php8.1 php8.1-cli php8.1-common php8.1-devel php8.1-fpm
+sudo yum install -y php8.1 php8.1-cli php8.1-common php8.1-devel php8.1-fpm
 sudo yum install -y php-gd php-mbstring php-xml php-intl php-mysqlnd
 
 sudo systemctl --now enable php-fpm
