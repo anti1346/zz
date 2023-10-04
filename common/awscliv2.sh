@@ -7,7 +7,7 @@ while [ -f /var/run/yum.pid ]; do
 done
 
 # Get the installed aws-cli version
-aws_version=$(aws --version | awk '{print $1}' | awk -F'/' '{print $2}')
+#aws_version=$(aws --version | awk '{print $1}' | awk -F'/' '{print $2}')
 
 # Check if AWS CLI version 1 is installed
 if aws --version 2>&1 | grep -q "aws-cli/1"; then
