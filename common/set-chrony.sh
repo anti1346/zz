@@ -20,7 +20,10 @@ else
 fi
 
 # chrony 설치
-sudo $PACKAGE_MANAGER install chrony -y
+sudo $PACKAGE_MANAGER install -y chrony
+
+# chrony 서비스 시작
+sudo systemctl --now enable $SERVICE_NAME
 
 # 기본 설정 파일 백업
 sudo cp $CONFIG_FILE_PATH $CONFIG_FILE_PATH.bak
