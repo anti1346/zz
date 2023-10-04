@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 # Amazon Linux 2 PHP-FPM 8.1 설치 스크립트
 
