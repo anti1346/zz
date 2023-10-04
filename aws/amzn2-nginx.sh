@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 
 # /var/run/yum.pid 파일이 존재하는지 확인
 while [ -f /var/run/yum.pid ]; do
