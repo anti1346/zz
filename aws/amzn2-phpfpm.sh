@@ -1,6 +1,12 @@
 #!/bin/bash
 set -x
 
+# /var/run/yum.pid 파일이 존재하는지 확인
+while [ -f /var/run/yum.pid ]; do
+    echo "Waiting for another yum process to finish..."
+    sleep 5
+done
+
 # Amazon Linux 2 PHP-FPM 8.1 설치 스크립트
 
 # 패키지 업데이트
