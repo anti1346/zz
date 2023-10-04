@@ -14,11 +14,27 @@ done
 sudo amazon-linux-extras install -y epel
 
 # PHP 저장소 추가 및 PHP 8.1 설치
-sudo amazon-linux-extras install -y php8.1
+sudo yum-config-manager --enable remi-php81
+sudo yum install -y php php-fpm php-cli php-common php-devel php-pear php-pdo
 
 # PHP-FPM 및 관련 패키지 설치
-sudo yum install -y php-fpm php-cli php-common php-xml php-mbstring php-gd php-curl 
-#sudo yum install -y php-zip php-redis php-mongodb 
+sudo yum install -y php-mysqlnd php-mbstring php-gd php-intl php-bcmath
+
+# 컴파일러
+sudo yum install -y gcc
+
+# PHP 확장 모듈
+echo "" | sudo pecl install mongodb
+sudo echo "extension=mongodb.so" >> /etc/php.ini
+
+echo "" | sudo pecl install redis
+sudo echo "extension=redis.so" >> /etc/php.ini
+
+sudo yum install -y re2c
+sudo yum install -y librdkafka librdkafka-devel
+echo "" | sudo pecl install rdkafka
+sudo echo "extension=rdkafka.so" >> /etc/php.ini
+
 
 # PHP-FPM 서비스 시작 및 활성화
 sudo systemctl --now enable php-fpm
