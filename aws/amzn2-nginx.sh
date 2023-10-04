@@ -36,3 +36,4 @@ sudo systemctl --now enable nginx
 
 echo "NGINT TEST PAGE" > /usr/share/nginx/html/tt.html
 
+echo "NGINX 1.24 설치가 완료되었습니다."
