@@ -9,19 +9,18 @@ done
 # Get the installed aws-cli version
 aws_version=$(aws --version | awk '{print $1}' | awk -F'/' '{print $2}')
 
-# Check if aws-cli is already installed
-if command -v aws &>/dev/null; then
-    aws_version=$(aws --version | awk '{print $1}' | awk -F'/' '{print $2}')
-    echo "AWS CLI version 1이 설치되어 있습니다."
-    echo "AWS CLI version 1 제거 중..."
+# Check if AWS CLI version 1 is installed
+if aws --version 2>&1 | grep -q "aws-cli/1"; then
+    echo "AWS CLI version 1 is installed. Removing..."
     sudo yum -y remove awscli
-    echo "AWS CLI version 1이 성공적으로 제거되었습니다."
+    echo "AWS CLI version 1 has been removed."
 fi
-# if command -v aws &>/dev/null; then
-#     echo "AWS CLI is already installed."
-#     echo "AWS CLI version: $aws_version"
-#     exit 0
-# fi
+
+# Verify the installation
+if aws --version 2>&1 | grep -q "aws-cli/2"; then
+    echo "AWS CLI version 2 installation successful."
+    exit 0
+fi
 
 # Determine the operating system and install aws-cli accordingly
 if [[ "$(uname -a)" == *"amzn2"* ]]; then
@@ -50,8 +49,9 @@ fi
 curl -fsSL "$download_url" -o "$home_dir/awscliv2.zip"
 unzip -q "$home_dir/awscliv2.zip"
 sudo "$home_dir/aws/install"
+sudo ln -s /usr/local/bin/aws /usr/bin/aws
 
-echo "AWS CLI version: $aws_version"
+echo "AWS CLI version: `aws --version`"
 
 # Clean up
 rm -rf "$home_dir/awscliv2.zip" "$home_dir/aws"
