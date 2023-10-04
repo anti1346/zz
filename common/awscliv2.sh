@@ -48,3 +48,5 @@ echo "AWS CLI version: $aws_version"
 
 # Clean up
 rm -rf "$home_dir/awscliv2.zip" "$home_dir/aws"
+
+echo "AWSCLI 설치가 완료되었습니다."
