@@ -27,6 +27,8 @@ EOF
 
 sudo yum-config-manager --enable nginx-stable
 
+sudo yum install -y libcrypt
+
 sudo yum install -y nginx
 
 sudo systemctl --now enable nginx
