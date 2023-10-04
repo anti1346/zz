@@ -1,6 +1,12 @@
 #!/bin/bash
 set -x
 
+# /var/run/yum.pid 파일이 존재하는지 확인
+while [ -f /var/run/yum.pid ]; do
+    echo "Waiting for another yum process to finish..."
+    sleep 5
+done
+
 ###sudo yum install -y epel-release
 sudo amazon-linux-extras install -y epel
 
