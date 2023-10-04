@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# /var/run/yum.pid 파일이 존재하는지 확인
+while [ -f /var/run/yum.pid ]; do
+    echo "Waiting for another yum process to finish..."
+    sleep 5
+done
+
 # Get the installed aws-cli version
 aws_version=$(aws --version | awk '{print $1}' | awk -F'/' '{print $2}')
 
