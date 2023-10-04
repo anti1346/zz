@@ -18,7 +18,7 @@ fi
 
 # Verify the installation
 if aws --version 2>&1 | grep -q "aws-cli/2"; then
-    echo "AWS CLI version 2 installation successful."
+    echo "AWS CLI 버전 2가 설치되었습니다."
     exit 0
 fi
 
@@ -56,4 +56,4 @@ echo "AWS CLI version: `aws --version`"
 # Clean up
 rm -rf "$home_dir/awscliv2.zip" "$home_dir/aws"
 
-echo "AWSCLI 설치가 완료되었습니다."
+echo "AWS CLI 버전 2가 설치되었습니다."
