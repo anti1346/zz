@@ -41,8 +41,8 @@ cd /tmp
 #wget -q https://aws-codedeploy-ap-northeast-2.s3.ap-northeast-2.amazonaws.com/latest/install -O install
 REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)
 wget -q "https://aws-codedeploy-${REGION}.s3.${REGION}.amazonaws.com/latest/install" -O install
-chmod +x install
-sudo install auto
+chmod +x ./install
+./install auto
 
 # AWS CodeDeploy 에이전트 업데이트
 #sudo /opt/codedeploy-agent/bin/install auto
