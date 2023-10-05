@@ -22,6 +22,9 @@ esac
 # 필수 패키지 설치
 sudo $package_manager install -y curl jq
 
+# Ruby 설치
+sudo $package_manager install -y ruby
+
 # AWS CodeDeploy 에이전트 서비스 중지 및 제거
 sudo systemctl stop codedeploy-agent
 #sudo systemctl disable codedeploy-agent
