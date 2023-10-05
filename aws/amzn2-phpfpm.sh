@@ -11,6 +11,7 @@ done
 # 패키지 업데이트
 ###sudo yum install -y epel-release
 sudo amazon-linux-extras install -y epel
+sudo amazon-linux-extras enable php8.1
 
 # PHP 저장소 추가 및 PHP 8.1 설치
 sudo yum-config-manager --enable remi-php81
