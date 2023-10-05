@@ -24,7 +24,7 @@ sudo $package_manager install -y curl jq
 
 # AWS CodeDeploy 에이전트 서비스 중지 및 제거
 sudo systemctl stop codedeploy-agent
-sudo systemctl disable codedeploy-agent
+#sudo systemctl disable codedeploy-agent
 sudo $package_manager erase -y codedeploy-agent
 
 # 기존 AWS CodeDeploy 에이전트 파일 제거
