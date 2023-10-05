@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# /var/run/yum.pid 파일이 존재하는지 확인
+while [ -f /var/run/yum.pid ]; do
+    echo "Waiting for another yum process to finish..."
+    sleep 5
+done
+
 # 리눅스 배포판 확인
 os_distribution=$(grep -oP '(?<=^PRETTY_NAME=")(.*)(?=")' /etc/os-release)
 
