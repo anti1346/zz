@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# /var/run/yum.pid 파일이 존재하는지 확인
+while [ -f /var/run/yum.pid ]; do
+    echo "Waiting for another yum process to finish..."
+    sleep 5
+done
+
 # 운영체제 확인
 if [[ $(cat /etc/os-release | grep "^ID=" | awk -F'=' '{print $2}' | tr -d '"') == "ubuntu" ]]; then
     PACKAGE_MANAGER="apt-get"
