@@ -6,12 +6,15 @@ os_distribution=$(grep -oP '(?<=^PRETTY_NAME=")(.*)(?=")' /etc/os-release)
 case "$os_distribution" in
   "Amazon Linux 2")
     package_manager="yum"
+    sudo amazon-linux-extras install -y ruby3.0
     ;;
   "CentOS Linux"*)
     package_manager="yum"
+    sudo yum install -y ruby
     ;;
   "Ubuntu"*)
     package_manager="apt"
+    sudo apt-get install -y ruby
     ;;
   *)
     echo "지원되지 않는 운영 체제 배포판"
@@ -21,9 +24,6 @@ esac
 
 # 필수 패키지 설치
 sudo $package_manager install -y curl jq
-
-# Ruby 설치
-sudo $package_manager install -y ruby
 
 # AWS CodeDeploy 에이전트 서비스 중지 및 제거
 sudo systemctl stop codedeploy-agent
