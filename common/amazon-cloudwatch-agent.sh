@@ -61,12 +61,16 @@ EOF
 
 # 운영체제 판별 및 CloudWatch 에이전트 설치
 if [[ "$(uname -a)" == *"amzn2.x86_64"* ]]; then
+  # Install on Amazon Linux 2(x86_64)
   install_cloudwatch_agent "amazon_linux" "amd64" "messages" "secure"
 elif [[ "$(uname -a)" == *"amzn2.aarch64"* ]]; then
+  # Install on Amazon Linux 2(ARM)
   install_cloudwatch_agent "amazon_linux" "arm64" "messages" "secure"
 elif [[ "$(uname -a)" == *"el7"* ]]; then
+   # Install on CentOS 7.9
   install_cloudwatch_agent "centos" "amd64" "messages" "secure"
 elif [[ "$(uname -a)" == *"Ubuntu"* ]]; then
+  # Install on Ubuntu 22.04
   install_cloudwatch_agent "ubuntu" "amd64" "syslog" "auth.log"
 else
   echo "지원되지 않는 운영체제입니다."
