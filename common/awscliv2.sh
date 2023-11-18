@@ -23,10 +23,15 @@ if aws --version 2>&1 | grep -q "aws-cli/2"; then
 fi
 
 # Determine the operating system and install aws-cli accordingly
-if [[ "$(uname -a)" == *"amzn2"* ]]; then
-    # Install on Amazon Linux 2
+if [[ "$(uname -a)" == *"amzn2.x86_64"* ]]; then
+    # Install on Amazon Linux 2(x86_64)
     os_name="Amazon Linux 2"
     download_url="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+    home_dir="/home/ec2-user"
+elif [[ "$(uname -a)" == *"amzn2.aarch64"* ]]; then
+    # Install on Amazon Linux 2(ARM)
+    os_name="Amazon Linux 2"
+    download_url="https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip"
     home_dir="/home/ec2-user"
 elif [[ "$(uname -a)" == *"el7"* ]]; then
     # Install on CentOS 7
