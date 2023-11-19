@@ -48,7 +48,7 @@ fi
 
 # Download and install aws-cli
 curl -fsSL $download_url -o /tmp/awscliv2.zip
-unzip -q tmp/awscliv2.zip
+unzip -q /tmp/awscliv2.zip
 sudo /tmp/aws/install
 sudo ln -s /usr/local/bin/aws /usr/bin/aws
 
