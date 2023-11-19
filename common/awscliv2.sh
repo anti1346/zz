@@ -55,6 +55,6 @@ sudo ln -s /usr/local/bin/aws /usr/bin/aws
 echo "AWS CLI version: `aws --version`"
 
 # Clean up
-rm -rf "$home_dir/awscliv2.zip" "$home_dir/aws"
+rm -rf /tmp/awscliv2.zip /tmp/aws
 
 echo "AWS CLI 버전 2가 설치되었습니다."
