@@ -27,33 +27,29 @@ if [[ "$(uname -a)" == *"amzn2.x86_64"* ]]; then
     # Install on Amazon Linux 2(x86_64)
     os_name="Amazon Linux 2"
     download_url="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
-    home_dir="/home/ec2-user"
 elif [[ "$(uname -a)" == *"amzn2.aarch64"* ]]; then
     # Install on Amazon Linux 2(ARM)
     os_name="Amazon Linux 2"
     download_url="https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip"
-    home_dir="/home/ec2-user"
 elif [[ "$(uname -a)" == *"el7"* ]]; then
     # Install on CentOS 7
     os_name="CentOS 7"
     download_url="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
-    home_dir="/root"
 elif [[ "$(uname -a)" == *"Ubuntu"* ]]; then
     # Install on Ubuntu
     os_name="Ubuntu"
     sudo apt-get update -qq
     sudo apt-get install -qq -y unzip
     download_url="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
-    home_dir="/home/ubuntu"
 else
     echo "Unsupported operating system."
     exit 1
 fi
 
 # Download and install aws-cli
-curl -fsSL "$download_url" -o "$home_dir/awscliv2.zip"
-unzip -q "$home_dir/awscliv2.zip"
-sudo "$home_dir/aws/install"
+curl -fsSL $download_url -o /tmp/awscliv2.zip
+unzip -q tmp/awscliv2.zip
+sudo /tmp/aws/install
 sudo ln -s /usr/local/bin/aws /usr/bin/aws
 
 echo "AWS CLI version: `aws --version`"
