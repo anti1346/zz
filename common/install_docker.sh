@@ -52,8 +52,9 @@ fi
 # CTOP 설치
 if ! command -v ctop >/dev/null; then
     echo "Installing CTOP"
-    CTOP_VERSION=$(sudo curl -sSL "https://api.github.com/repos/bcicen/ctop/releases/latest" | grep -oP '"tag_name": "\K(.*)(?=")')
-    sudo curl -fsSL "https://github.com/bcicen/ctop/releases/download/${CTOP_VERSION}/ctop-${CTOP_VERSION}-linux-amd64" -o /usr/local/bin/ctop
+    # CTOP_VERSION=$(sudo curl -sSL "https://api.github.com/repos/bcicen/ctop/releases/latest" | grep -oP '"tag_name": "\K(.*)(?=")')
+    CTOP_VERSION=$(sudo curl -sSL "https://api.github.com/repos/bcicen/ctop/releases/latest" | grep -oP '"tag_name": "\K([^"]+)' | sed 's/^v//')
+    sudo curl -fsSL "https://github.com/bcicen/ctop/releases/download/v${CTOP_VERSION}/ctop-${CTOP_VERSION}-linux-amd64" -o /usr/local/bin/ctop
     sudo chmod +x /usr/local/bin/ctop
     sudo ln -s /usr/local/bin/ctop /usr/bin/ctop
     echo "CTOP version: $(ctop -v | grep -oP '(?<=version )[\d.]+')"
