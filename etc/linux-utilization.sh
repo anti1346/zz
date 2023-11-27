@@ -21,3 +21,10 @@ while true; do
     # 1초 대기
     sleep 1
 done
+
+```
+$ bash monitor.sh
+2023-11-27 22:27:40 | CPU utilization : 1.50% | Memory utilization : 11.54% | Disk I/O: 0.00%
+2023-11-27 22:27:42 | CPU utilization : 0.00% | Memory utilization : 11.54% | Disk I/O: 0.00%
+2023-11-27 22:27:43 | CPU utilization : 1.60% | Memory utilization : 11.54% | Disk I/O: 0.00%
+```
