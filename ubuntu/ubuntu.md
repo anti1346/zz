@@ -18,7 +18,6 @@ usermod -G dba user1
 
 ```
 echo 'vagrant ALL=NOPASSWD: ALL' >> /etc/sudoers
-
 ```
 
 ### 히스토리
