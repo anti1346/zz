@@ -9,6 +9,8 @@ echo "* hard nofile 65535" >> "$LIMITS_CONF"
 echo "* soft nofile 65535" >> "$LIMITS_CONF"
 echo "* hard nproc unlimited" >> "$LIMITS_CONF"
 echo "* soft nproc unlimited" >> "$LIMITS_CONF"
+echo "* hard memlock unlimited" >> "$LIMITS_CONF"
+echo "* soft memlock unlimited" >> "$LIMITS_CONF"
 
 # 커널 파라미터 설정
 ### TCP 스택 튜닝
