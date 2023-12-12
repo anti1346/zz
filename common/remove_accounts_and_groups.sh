@@ -1,5 +1,10 @@
 #!/bin/bash
 
+### 사용자 목록 출력
+# cut -d: -f1 /etc/passwd
+### 그룹 목록 출력
+# cut -d: -f1 /etc/group
+
 # 삭제할 계정 목록
 REMOVE_ACCOUNT_LIST="games lp news uucp gnats sync proxy backup list irc pollinate landscape fwupd-refresh lxd uuidd tss systemd-resolve mail"
 
