@@ -20,7 +20,8 @@ case "$os_distribution" in
     ;;
   "Ubuntu"*)
     package_manager="apt"
-    sudo apt-get install -y ruby
+    sudo apt-get update
+    sudo apt-get install -y ruby-full
     ;;
   *)
     echo "지원되지 않는 운영 체제 배포판"
@@ -33,7 +34,7 @@ sudo $package_manager install -y curl jq
 
 # AWS CodeDeploy 에이전트 서비스 중지 및 제거
 sudo systemctl stop codedeploy-agent
-#sudo systemctl disable codedeploy-agent
+sudo systemctl disable codedeploy-agent
 sudo $package_manager erase -y codedeploy-agent
 
 # 기존 AWS CodeDeploy 에이전트 파일 제거
