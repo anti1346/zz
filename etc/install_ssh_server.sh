@@ -10,7 +10,7 @@ else
     exit 1
 fi
 
-sudo ${package_manager} install -y openssh-server
+sudo ${package_manager} install -y openssh-server wget
 
 sudo systemctl start sshd
 
