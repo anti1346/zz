@@ -15,3 +15,8 @@ sudo ${package_manager} install -y openssh-server
 sudo systemctl start sshd
 
 echo "OpenSSH server installed and started successfully."
+
+
+### Shell Execute Commands
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/install_ssh_server.sh | bash
+#
