@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if command -v apt &>/dev/null; then
+if command -v apt-get &>/dev/null; then
     package_manager=apt-get
 elif command -v yum &>/dev/null; then
     package_manager=yum
