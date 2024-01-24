@@ -18,4 +18,6 @@ sudo yum makecache
 
 
 ### Shell Execute Command
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/set_centos7_repository.sh | bash
 #
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/set_centos7_repository.sh | bash -s mirror.navercorp.com
