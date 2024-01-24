@@ -8,6 +8,7 @@ proxy_path="${2:-~/.bashrc}"
 if ! grep -q 'http_proxy\|https_proxy' "$proxy_path"; then
     # 지정된 파일에 프록시 설정 추가
     cat <<EOF >> "$proxy_path"
+
 ### Proxy Server
 export http_proxy=http://$proxy_server
 export https_proxy=http://$proxy_server
