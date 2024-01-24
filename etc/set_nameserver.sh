@@ -10,3 +10,7 @@ nameserver 8.8.8.8
 nameserver 8.8.4.4
 nameserver 1.1.1.1
 EOF
+
+
+### Shell Execute Command
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/set_nameserver.sh | bash
