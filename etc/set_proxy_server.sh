@@ -4,8 +4,8 @@
 proxy_server="${1:-ProxyServerIP:3128}"
 proxy_path="${2:-~/.bashrc}"
 
-# 지정된 파일에 프록시 변수가 이미 설정되어 있는지 확인합니다.-
-if ! grep -q 'http_proxy\|https_proxy' "$proxy_path"; then
+# 지정된 파일에 프록시 변수가 이미 설정되어 있는지 확인합니다.
+if [ -e "$proxy_path" ] && ! grep -q 'http_proxy\|https_proxy' "$proxy_path"; then
     # 지정된 파일에 프록시 설정 추가
     cat <<EOF >> "$proxy_path"
 
@@ -14,10 +14,12 @@ export http_proxy=http://$proxy_server
 export https_proxy=http://$proxy_server
 EOF
 
-    # Source the updated file to apply changes
+    # 업데이트된 파일을 소싱하여 변경 사항 적용
     source "$proxy_path"
 
     echo "Proxy settings applied."
+elif [ ! -e "$proxy_path" ]; then
+    echo "Error: The specified file $proxy_path does not exist."
 else
     echo "Proxy settings already exist in $proxy_path. No changes made."
 fi
