@@ -20,3 +20,9 @@ EOF
 else
     echo "Proxy settings already exist in $proxy_path. No changes made."
 fi
+
+
+### Shell Execute Command
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/set_proxy_server.sh | bash
+#
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/set_proxy_server.sh | bash -s mirror.navercorp.com:3030 /tmp/bb
