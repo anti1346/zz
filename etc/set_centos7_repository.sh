@@ -14,6 +14,7 @@ sudo sed -i "s|^#baseurl=http://mirror.centos.org|baseurl=https://$variable1|" /
 
 # Yum 캐시를 지우고 다시 작성하세요.
 sudo yum clean all
+
 sudo yum makecache
 
 
