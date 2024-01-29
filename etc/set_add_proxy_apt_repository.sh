@@ -31,3 +31,8 @@ Acquire::https::Proxy "http://$proxy_server";
 EOF
 
 echo "프록시 설정이 추가되었습니다."
+
+
+### Shell Execute Command
+#
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/set_add_proxy_apt_repository.sh | bash -s ProxyServerIP:3128
