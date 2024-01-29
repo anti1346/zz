@@ -32,12 +32,13 @@ fi
 
 # 프록시 설정 추가
 cat <<EOF | sudo tee "$proxy_file" >/dev/null
+
 ### Proxy Server
 Acquire::http::Proxy "http://$proxy_server";
 Acquire::https::Proxy "http://$proxy_server";
 EOF
 
-echo "프록시 설정이 추가되었습니다."
+echo "$proxy_file 파일에 프록시 설정이 추가되었습니다."
 
 
 ### Shell Execute Command
