@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# cat <<EOF >> /etc/apt/apt.conf.d/00proxy
+#
+# ### Proxy Server
+# Acquire::http::Proxy "http://ProxyServerIP:3128";
+# Acquire::https::Proxy "http://ProxyServerIP:3128";
+# EOF
+
 # 사용 방법 표시
 if [ "$#" -eq 0 ]; then
     echo "사용법: $0 [프록시서버IP:포트]"
