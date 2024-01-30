@@ -47,6 +47,6 @@ fi
 
 
 ### Shell Execute Command
-# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/create_user.sh | bash
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/vagrant_useradd.sh | bash
 #
-# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/create_user.sh | bash -s vagrant vagrant 2002 2002 true
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/vagrant_useradd.sh | bash -s vagrant vagrant 2002 2002 true
