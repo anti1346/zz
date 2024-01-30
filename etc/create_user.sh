@@ -29,7 +29,7 @@ echo "$USER_NAME:$USER_PASSWORD" | chpasswd
 # Ubuntu : echo -e '\n'$USER_NAME'\tALL=(ALL:ALL)\tNOPASSWD: ALL' >> /etc/sudoers
 if [ -x "$(command -v sudo)" ]; then
     echo "sudoers 파일을 수정 중입니다..."
-    echo -e "$USERNAME ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
+    echo "$USER_NAME ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
     echo "sudoers 파일이 수정되었습니다."
 else
     echo "경고: sudo를 사용할 수 없습니다. sudoers 파일을 직접 수정하세요." >&2
