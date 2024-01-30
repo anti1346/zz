@@ -3,8 +3,8 @@
 # 사용자 이름, 패스워드, uid, gid 설정
 USERNAME=${1:-vagrant}
 PASSWORD=${2:-vagrant}
-NEW_UID=${3:-2002}
-GID=${4:-2002}
+USER_ID=${3:-2002}
+GROUP_ID=${4:-2002}
 KEYGEN=${5:-false} #true
 
 # 입력 유효성 검사
@@ -13,13 +13,13 @@ if id "$USERNAME" &>/dev/null; then
     exit 1
 fi
 
-if [ "$NEW_UID" -lt 1000 ]; then
+if [ "$USER_ID" -lt 1000 ]; then
     echo "경고: 1000 이상의 UID를 사용하는 것이 좋습니다." >&2
 fi
 
 # 그룹 생성 및 사용자 추가
-groupadd -g "$GID" "$USERNAME"
-useradd -m -c "deployment" -d "/home/$USERNAME" -s /bin/bash -u "$UID" -g "$GID" "$USERNAME"
+groupadd -g "$GROUP_ID" "$USERNAME"
+useradd -m -c "deployment" -d "/home/$USERNAME" -s /bin/bash -u "$USER_ID" -g "$GROUP_ID" "$USERNAME"
 
 # 사용자 비밀번호 설정
 echo "$USERNAME:$PASSWORD" | chpasswd
