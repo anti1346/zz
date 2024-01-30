@@ -38,6 +38,7 @@ fi
 # SSH 키 생성
 if [ "$KEYGEN" == "true" ]; then
     su - $USER_NAME <<EOF
+    ssh-keygen -t rsa -b 2048 -C "deployment" -f /home/$USER_NAME/.ssh/id_rsa -N ""
     ssh-keygen -t rsa -b 2048 -C "deployment"
 EOF
 else
@@ -48,4 +49,4 @@ fi
 ### Shell Execute Command
 # curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/create_user.sh | bash
 #
-# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/create_user.sh | bash -s testuser
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/create_user.sh | bash -s vagrant vagrant 2002 2002 true
