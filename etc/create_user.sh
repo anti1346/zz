@@ -3,7 +3,7 @@
 # 사용자 이름, 패스워드, uid, gid 설정
 USERNAME=${1:-vagrant}
 PASSWORD=${2:-vagrant}
-UID=${3:-2002}
+NEW_UID=${3:-2002}
 GID=${4:-2002}
 KEYGEN=${5:-false} #true
 
@@ -13,7 +13,7 @@ if id "$USERNAME" &>/dev/null; then
     exit 1
 fi
 
-if [ "$UID" -lt 1000 ]; then
+if [ "$NEW_UID" -lt 1000 ]; then
     echo "경고: 1000 이상의 UID를 사용하는 것이 좋습니다." >&2
 fi
 
