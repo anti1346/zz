@@ -27,12 +27,12 @@ echo "$USER_NAME:$USER_PASSWORD" | chpasswd
 # sudoers 파일 설정
 # CentOS : echo -e '\n'$USER_NAME'\tALL=(ALL)\tNOPASSWD: ALL' >> /etc/sudoers
 # Ubuntu : echo -e '\n'$USER_NAME'\tALL=(ALL:ALL)\tNOPASSWD: ALL' >> /etc/sudoers
-if [ -x "$(command -v visudo)" ]; then
+if [ -x "$(command -v sudo)" ]; then
     echo "sudoers 파일을 수정 중입니다..."
-    echo "$USER_NAME ALL=(ALL) NOPASSWD: ALL" | sudo visudo -f /etc/sudoers.d/"$USER_NAME"
+    echo "$USERNAME ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
     echo "sudoers 파일이 수정되었습니다."
 else
-    echo "경고: visudo를 사용할 수 없습니다. sudoers 파일을 직접 수정하세요." >&2
+    echo "경고: sudo를 사용할 수 없습니다. sudoers 파일을 직접 수정하세요." >&2
 fi
 
 # SSH 키 생성
