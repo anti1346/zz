@@ -43,3 +43,7 @@ EOF
 else
     echo "SSH 키 생성이 건너뜁니다."
 fi
+
+
+### Shell Execute Command
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/create_user.sh | bash
