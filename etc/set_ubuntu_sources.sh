@@ -9,7 +9,8 @@ else
 fi
 
 # mirror.kakao.com을 사용하도록 패키지 소스를 업데이트합니다.
-sudo sed -i "s/\(kr\|archive\|ports\).ubuntu.com/$mirror_server/g" /etc/apt/sources.list
+#sudo sed -i "s/\(kr\|archive\|ports\).ubuntu.com/$mirror_server/g" /etc/apt/sources.list
+sudo sed -i.bak "s/\(kr\|archive\|ports\).ubuntu.com/$mirror_server/g" /etc/apt/sources.list
 
 # 패키지 목록 업데이트
 sudo apt-get update
