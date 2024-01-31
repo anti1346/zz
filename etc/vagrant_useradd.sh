@@ -39,7 +39,7 @@ fi
 if [ "$KEYGEN" == "true" ]; then
     su - $USER_NAME <<EOF
     ssh-keygen -t rsa -b 2048 -C "deployment" -f /home/$USER_NAME/.ssh/id_rsa -N ""
-    ssh-keygen -t rsa -b 2048 -C "deployment"
+    #ssh-keygen -t rsa -b 2048 -C "deployment"
 EOF
 else
     echo "SSH 키 생성이 건너뜁니다."
