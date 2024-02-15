@@ -18,4 +18,5 @@ sudo apt-add-repository --yes --update ppa:ansible/ansible
 # 최신 버전의 Ansible 설치
 sudo apt-get install -y ansible
 
+# Ansible 버전 확인
 sudo echo -e "Ansible 버전:\n\n `ansible --version`"
