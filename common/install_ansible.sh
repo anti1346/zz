@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Check if packer is already installed
+# Check if Ansible is already installed
 if [ -x "$(command -v ansible)" ]; then
   echo "Ansible is already installed. Exiting..."
   exit 0
@@ -17,3 +17,5 @@ sudo apt-add-repository --yes --update ppa:ansible/ansible
 
 # 최신 버전의 Ansible 설치
 sudo apt-get install -y ansible
+
+sudo echo -e "Ansible 버전:\n\n `ansible --version`"
