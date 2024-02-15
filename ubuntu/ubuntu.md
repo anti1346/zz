@@ -38,16 +38,24 @@ groupadd -g 1201 user1
 useradd -m -c "user1" -d /home/user1 -s /bin/bash -u 1201 -g 1201 user1
 ```
 ```
-useradd -m -c "vagrant" -d /home/vagrant -s /bin/bash -u 1101 vagrant
+usermod -G dba user1
 ```
 ```
 useradd -m -c "ubuntu" -d /home/ubuntu -s /bin/bash -u 1102 ubuntu
 ```
+#### vagrant 계정 생성
 ```
-usermod -G dba user1
+useradd -m -c "vagrant" -d /home/vagrant -s /bin/bash -u 1101 vagrant
 ```
 ```
-echo 'vagrant ALL=NOPASSWD: ALL' >> /etc/sudoers
+echo 'vagrant:vagrant' | sudo chpasswd
+```
+```
+echo 'vagrant ALL=(ALL:ALL) NOPASSWD: ALL' >> /etc/sudoers
+```
+#### SSH 키 생성
+```
+ssh-keygen -t rsa -b 2048 -C "deployment"
 ```
 
 ### 히스토리
@@ -108,10 +116,5 @@ source ~/.bashrc
 
 ### sudoers 변경
 ```
-echo 'NoPasswordUser ALL=NOPASSWD: ALL' >> /etc/sudoers
-```
-
-### chrony 설치 및 설정
-```
-apt-get install -y chrony
+echo 'NoPasswordUser ALL=(ALL:ALL) NOPASSWD: ALL' >> /etc/sudoers
 ```
