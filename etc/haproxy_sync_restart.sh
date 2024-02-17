@@ -11,7 +11,7 @@ target_server="root@knode1"
 if command -v haproxy &>/dev/null; then
     # haproxy.cfg 파일의 구문이 올바른지 확인합니다.
     if haproxy -c -f "$haproxy_conf" -V; then
-        echo "haproxy configuration syntax is valid. Proceeding..."
+        echo -e "haproxy configuration syntax is valid. Proceeding...\n"
 
         # localhost 서버의 haproxy를 다시 시작합니다.
         echo "Restarting HAProxy on target server..."
