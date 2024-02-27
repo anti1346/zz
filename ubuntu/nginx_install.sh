@@ -15,5 +15,7 @@ sudo apt-get update
 
 sudo apt-get install -y nginx
 
+
+
 ### Shell Execute Command
 # curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/nginx_install.sh | bash
