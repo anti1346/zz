@@ -14,3 +14,9 @@ else
     echo "Unsupported operating system."
     exit 1
 fi
+
+
+
+### Shell Execute Commands
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/text_art.sh | bash
+#
