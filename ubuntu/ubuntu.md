@@ -53,6 +53,16 @@ echo 'vagrant:vagrant' | sudo chpasswd
 ```
 echo 'vagrant ALL=(ALL:ALL) NOPASSWD: ALL' >> /etc/sudoers
 ```
+#### ubuntu 계정 생성
+```
+useradd -m -c "ubuntu" -d /home/ubuntu -s /bin/bash -u 1201 ubuntu
+```
+```
+echo 'ubuntu:ubuntu' | sudo chpasswd
+```
+```
+echo 'ubuntu ALL=(ALL:ALL) NOPASSWD: ALL' >> /etc/sudoers
+```
 #### SSH 키 생성
 ```
 ssh-keygen -t rsa -b 2048 -C "deployment"
