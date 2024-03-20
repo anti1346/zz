@@ -83,7 +83,7 @@ ssh-keygen -t rsa -b 2048 -C "deployment"
 #### 히스토리
 ##### ${HOME}/.bashrc
 ```
-sudo cat <<EOF >> ~/.bashrc
+cat <<EOF >> ~/.bashrc
 
 ## history
 export HISTSIZE=10000
