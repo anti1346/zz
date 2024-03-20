@@ -137,7 +137,8 @@ source ~/.bashrc
 ```
 
 <details>
-<summary>details block</summary>
+<summary>details summary block sample</summary>
 
+details block sample
 
 </details>
