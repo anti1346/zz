@@ -24,10 +24,13 @@ cat /etc/apt/sources.list
 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bk
 ```
 ```
-sudo sed -i 's/kr.archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
-```
-```
 sudo sed -i 's/http:\/\/archive.ubuntu.com/https:\/\/mirror.kakao.com/g' /etc/apt/sources.list
+```
+```
+sudo sed -i 's/http:\/\/kr.archive.ubuntu.com/https:\/\/mirror.kakao.com/g' /etc/apt/sources.list
+```
+```
+sudo sed -i 's/kr.archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
 ```
 
 #### 계정 생성
