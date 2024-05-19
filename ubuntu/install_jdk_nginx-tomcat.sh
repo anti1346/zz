@@ -3,7 +3,7 @@
 # JDK 설치
 sudo mkdir -p /app/java
 sudo wget -q https://download.oracle.com/java/17/archive/jdk-17.0.10_linux-aarch64_bin.tar.gz -O /app/jdk-17.0.10_linux-aarch64_bin.tar.gz
-sudo tar -xzf /app//app/jdk-17.0.10_linux-aarch64_bin.tar.gz -C /app/java --strip-components=1
+sudo tar -xzf /app/jdk-17.0.10_linux-aarch64_bin.tar.gz -C /app/java --strip-components=1
 
 # JDK 환경 변수 설정
 # JDK 환경 변수 설정
