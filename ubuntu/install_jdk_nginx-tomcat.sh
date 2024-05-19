@@ -2,7 +2,7 @@
 
 # JDK 설치
 sudo mkdir -p /app/java
-sudo wget -q https://download.oracle.com/java/17/archive/jdk-17.0.10_linux-aarch64_bin.tar.gz -O /app/jdk-17.tar.gz
+sudo wget -q https://download.oracle.com/java/17/archive/jdk-17.0.10_linux-aarch64_bin.tar.gz -O /app/jdk-17.0.10_linux-aarch64_bin.tar.gz
 sudo tar -xzf /app//app/jdk-17.0.10_linux-aarch64_bin.tar.gz -C /app/java --strip-components=1
 
 # JDK 환경 변수 설정
@@ -26,7 +26,7 @@ sudo systemctl --now enable nginx
 sudo groupadd tomcat
 sudo useradd -s /bin/false -g tomcat -d /app/tomcat tomcat
 sudo mkdir -p /app/tomcat/{tomcat1,tomcat2}
-sudo wget -q https://downloads.apache.org/tomcat/tomcat-9/v9.0.89/bin/apache-tomcat-9.0.89.tar.gz -O /app/apache-tomcat-9.tar.gz
+sudo wget -q https://downloads.apache.org/tomcat/tomcat-9/v9.0.89/bin/apache-tomcat-9.0.89.tar.gz -O /app/apache-tomcat-9.0.89.tar.gz
 sudo tar -xzf /app/apache-tomcat-9.0.89.tar.gz -C /app/tomcat/tomcat1 --strip-components=1
 sudo tar -xzf /app/apache-tomcat-9.0.89.tar.gz -C /app/tomcat/tomcat2 --strip-components=1
 
