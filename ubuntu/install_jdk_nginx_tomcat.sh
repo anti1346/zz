@@ -26,7 +26,7 @@ sudo mkdir -p /app/java
 architecture=$(uname -m)
 if [ "$architecture" = "x86_64" ]; then
     sudo wget -q https://download.oracle.com/java/17/archive/jdk-17.0.10_linux-x64_bin.tar.gz -O /app/jdk-17.0.10.tar.gz
-elif [ "$architecture" = "arm" ]; then
+elif [ "$architecture" = "aarch64" ]; then
     sudo wget -q https://download.oracle.com/java/17/archive/jdk-17.0.10_linux-aarch64_bin.tar.gz -O /app/jdk-17.0.10.tar.gz
 else
     echo "Unsupported architecture."
