@@ -94,4 +94,4 @@ EOF
 
     # Tomcat 서비스 시작 및 자동 시작 설정
     sudo systemctl daemon-reload
-    sudo systemctl --now enable
+    sudo systemctl --now enable $INSTANCE_NAME
