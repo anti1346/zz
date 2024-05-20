@@ -1,7 +1,28 @@
 #!/bin/bash
 
+# 인스턴스 수를 설정합니다. 기본값은 1입니다.
+INSTANCE_COUNT=2
+
+# 명령줄 인수를 확인하여 인스턴스 수를 조정합니다.
+while [[ $# -gt 0 ]]; do
+    key="$1"
+
+    case $key in
+        -c|--count)
+        INSTANCE_COUNT="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        *)    # unknown option
+        echo "Unknown option: $1"
+        exit 1
+        ;;
+    esac
+done
+
 # JDK 설치
 sudo mkdir -p /app/java
+# 시스템 아키텍처 확인
 architecture=$(uname -m)
 if [ "$architecture" = "x86_64" ]; then
     sudo wget -q https://download.oracle.com/java/17/archive/jdk-17.0.10_linux-x64_bin.tar.gz -O /app/jdk-17.0.10.tar.gz
@@ -30,61 +51,58 @@ sudo apt-get install -y nginx
 sudo systemctl --now enable nginx
 
 # Tomcat 설치 및 설정
-sudo groupadd tomcat
-sudo useradd -s /bin/false -g tomcat -d /app/tomcat tomcat
-sudo mkdir -p /app/tomcat/{tomcat1,tomcat2}
-sudo wget -q https://downloads.apache.org/tomcat/tomcat-9/v9.0.89/bin/apache-tomcat-9.0.89.tar.gz -O /app/apache-tomcat-9.0.89.tar.gz
-sudo tar -xzf /app/apache-tomcat-9.0.89.tar.gz -C /app/tomcat/tomcat1 --strip-components=1
-sudo tar -xzf /app/apache-tomcat-9.0.89.tar.gz -C /app/tomcat/tomcat2 --strip-components=1
+if ! id "tomcat" &>/dev/null; then
+    sudo useradd -r -m -U -d /app/tomcat -s /bin/false tomcat
+fi
 
-# 인스턴스의 server.xml 파일 수정
-TOMCAT_HOME="/app/tomcat"
-INSTANCE1_NAME="tomcat1"
-INSTANCE2_NAME="tomcat2"
+# 인스턴스별로 반복하여 Tomcat을 설치하고 설정합니다.
+for ((i = 1; i <= INSTANCE_COUNT; i++)); do
+    INSTANCE_NAME="tomcat$i"
+    INSTANCE_DIR="/app/tomcat/$INSTANCE_NAME"
+    INSTANCE_SHUTDOWN_PORT=$((8000 + $i))
+    INSTANCE_CONNECTOR_PORT=$((8080 + $i))
+    INSTANCE_REDIRECT_PORT=$((8500 + $i))
 
-INSTANCE1_SHUTDOWN_PORT="8001"
-INSTANCE1_CONNECTOR_PORT="8081"
-INSTANCE1_REDIRECT_PORT="8541"
-INSTANCE2_SHUTDOWN_PORT="8002"
-INSTANCE2_CONNECTOR_PORT="8082"
-INSTANCE2_REDIRECT_PORT="8542"
-# 인스턴스 1의 server.xml 파일 수정
-sed -i "s/port=\"8005\"/port=\"$INSTANCE1_SHUTDOWN_PORT\"/g; \
-        s/port=\"8080\"/port=\"$INSTANCE1_CONNECTOR_PORT\"/g; \
-        s/redirectPort=\"8443\"/redirectPort=\"$INSTANCE1_REDIRECT_PORT\"/g" "$TOMCAT_HOME/$INSTANCE1_NAME/conf/server.xml"
-# 인스턴스 2의 server.xml 파일 수정
-sed -i "s/port=\"8005\"/port=\"$INSTANCE2_SHUTDOWN_PORT\"/g; \
-        s/port=\"8080\"/port=\"$INSTANCE2_CONNECTOR_PORT\"/g; \
-        s/redirectPort=\"8443\"/redirectPort=\"$INSTANCE2_REDIRECT_PORT\"/g" "$TOMCAT_HOME/$INSTANCE2_NAME/conf/server.xml"
+    # Tomcat 설치
+    sudo mkdir -p "$INSTANCE_DIR"
+    sudo wget -q https://downloads.apache.org/tomcat/tomcat-9/v9.0.89/bin/apache-tomcat-9.0.89.tar.gz -O "$INSTANCE_DIR/apache-tomcat-9.0.89.tar.gz"
+    sudo tar -xzf "$INSTANCE_DIR/apache-tomcat-9.0.89.tar.gz" -C "$INSTANCE_DIR" --strip-components=1
+    sudo chown -R tomcat:tomcat "$INSTANCE_DIR"
 
-sudo chown -R tomcat:tomcat /app/tomcat
+    # Tomcat 서버 설정 파일 수정
+    sed -i "s/port=\"8005\"/port=\"$INSTANCE_SHUTDOWN_PORT\"/g; \
+            s/port=\"8080\"/port=\"$INSTANCE_CONNECTOR_PORT\"/g; \
+            s/redirectPort=\"8443\"/redirectPort=\"$INSTANCE_REDIRECT_PORT\"/g" "$INSTANCE_DIR/conf/server.xml"
 
-# Tomcat 서비스 파일 작성
-for instance in tomcat1 tomcat2; do
-    cat <<EOF | sudo tee "/etc/systemd/system/$instance.service" >/dev/null
+    # Tomcat 서비스 파일 작성
+    cat <<EOF | sudo tee "/etc/systemd/system/$INSTANCE_NAME.service" >/dev/null
 [Unit]
-Description=Tomcat Instance $instance
+Description=Tomcat Instance $i
 After=network.target
 
 [Service]
 Type=forking
+Environment=JAVA_HOME=/app/java
+Environment=CATALINA_PID=$INSTANCE_DIR/temp/tomcat.pid
+Environment=CATALINA_HOME=$INSTANCE_DIR
+Environment=CATALINA_BASE=$INSTANCE_DIR
+Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
+Environment="JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom"
+
+ExecStart=$INSTANCE_DIR/bin/startup.sh
+ExecStop=$INSTANCE_DIR/bin/shutdown.sh
+
 User=tomcat
 Group=tomcat
-Environment=CATALINA_PID=/app/tomcat/$instance/temp/tomcat.pid
-Environment=CATALINA_HOME=/app/tomcat/$instance
-Environment=CATALINA_BASE=/app/tomcat/$instance
-Environment=JAVA_HOME=/app/java
-ExecStart=/app/tomcat/$instance/bin/startup.sh
-ExecStop=/app/tomcat/$instance/bin/shutdown.sh
-Restart=on-failure
+UMask=0007
+RestartSec=10
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
 EOF
-done
 
-# Tomcat 서비스 시작 및 자동 시작 설정
-sudo systemctl daemon-reload
-for instance in tomcat1 tomcat2; do
-    sudo systemctl --now enable $instance
+    # Tomcat 서비스 시작 및 자동 시작 설정
+    sudo systemctl daemon-reload
+    sudo systemctl --now enable $INSTANCE_NAME
 done
