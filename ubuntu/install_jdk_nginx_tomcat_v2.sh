@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 인스턴스 수를 설정합니다. 기본값은 1입니다.
-INSTANCE_COUNT=1
+INSTANCE_COUNT=2
 
 # 명령줄 인수를 확인하여 인스턴스 수를 조정합니다.
 while [[ $# -gt 0 ]]; do
@@ -52,8 +52,6 @@ sudo systemctl --now enable nginx
 
 # Tomcat 설치 및 설정
 if ! id "tomcat" &>/dev/null; then
-    # sudo groupadd tomcat
-    # sudo useradd -s /bin/false -g tomcat -d /app/tomcat tomcat
     sudo useradd -r -m -U -d /app/tomcat -s /bin/false tomcat
 fi
 
@@ -63,11 +61,12 @@ for ((i = 1; i <= INSTANCE_COUNT; i++)); do
     sudo mkdir -p "/app/tomcat/$INSTANCE_NAME"
     sudo wget -q https://downloads.apache.org/tomcat/tomcat-9/v9.0.89/bin/apache-tomcat-9.0.89.tar.gz -O "/app/apache-tomcat-9.0.89.tar.gz"
     sudo tar -xzf "/app/apache-tomcat-9.0.89.tar.gz" -C "/app/tomcat/$INSTANCE_NAME" --strip-components=1
+    sudo chown -R tomcat:tomcat "/app/tomcat/$INSTANCE_NAME"
 
     # 인스턴스의 server.xml 파일 수정
     INSTANCE_SHUTDOWN_PORT=$((8000 + $i))
-    INSTANCE_CONNECTOR_PORT=$((8000 + $i))
-    INSTANCE_REDIRECT_PORT=$((8000 + $i))
+    INSTANCE_CONNECTOR_PORT=$((8080 + $i))
+    INSTANCE_REDIRECT_PORT=$((8500 + $i))
 
     sed -i "s/port=\"8005\"/port=\"$INSTANCE_SHUTDOWN_PORT\"/g; \
             s/port=\"8080\"/port=\"$INSTANCE_CONNECTOR_PORT\"/g; \
