@@ -2,6 +2,7 @@
 
 # JDK 설치
 sudo mkdir -p /app/java
+# 시스템 아키텍처 확인
 architecture=$(uname -m)
 if [ "$architecture" = "x86_64" ]; then
     sudo wget -q https://download.oracle.com/java/17/archive/jdk-17.0.10_linux-x64_bin.tar.gz -O /app/jdk-17.0.10.tar.gz
@@ -13,6 +14,7 @@ else
 fi
 sudo tar -xzf /app/jdk-17.0.10.tar.gz -C /app/java --strip-components=1
 
+# JDK 환경 변수 설정
 # JDK 환경 변수 설정
 if [ ! -f /etc/profile.d/jdk.sh ] || ! grep -q 'export JAVA_HOME=/app/java' /etc/profile.d/jdk.sh; then
     echo 'export JAVA_HOME=/app/java' | sudo tee /etc/profile.d/jdk.sh
