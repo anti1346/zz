@@ -51,8 +51,11 @@ sudo apt-get install -y nginx
 sudo systemctl --now enable nginx
 
 # Tomcat 설치 및 설정
-sudo groupadd tomcat
-sudo useradd -s /bin/false -g tomcat -d /app/tomcat tomcat
+if ! id "tomcat" &>/dev/null; then
+    # sudo groupadd tomcat
+    # sudo useradd -s /bin/false -g tomcat -d /app/tomcat tomcat
+    sudo useradd -r -m -U -d /app/tomcat -s /bin/false tomcat
+fi
 
 # 인스턴스별로 반복하여 Tomcat을 설치하고 설정합니다.
 for ((i = 1; i <= INSTANCE_COUNT; i++)); do
@@ -95,3 +98,4 @@ EOF
     # Tomcat 서비스 시작 및 자동 시작 설정
     sudo systemctl daemon-reload
     sudo systemctl --now enable $INSTANCE_NAME
+done
