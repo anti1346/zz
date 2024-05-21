@@ -111,3 +111,7 @@ EOF
     sudo systemctl daemon-reload
     sudo systemctl --now enable $INSTANCE_NAME
 done
+
+
+
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/install_jdk_nginx_tomcat.sh | bash
