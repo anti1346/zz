@@ -45,7 +45,8 @@ fi
 sudo apt-get update
 sudo apt-get install -y curl gnupg2 ca-certificates lsb-release ubuntu-keyring apt-transport-https
 curl -s https://nginx.org/keys/nginx_signing.key | gpg --dearmor --yes -o /usr/share/keyrings/nginx-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/ubuntu $(lsb_release -cs) nginx" | sudo tee /etc/apt/sources.list.d/nginx.list
+echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/ubuntu $(lsb_release -cs) nginx" \
+    | sudo tee /etc/apt/sources.list.d/nginx.list
 sudo apt-get update
 sudo apt-get install -y nginx
 sudo systemctl --now enable nginx
@@ -53,6 +54,11 @@ sudo systemctl --now enable nginx
 # Tomcat 설치 및 설정
 if ! id "tomcat" &>/dev/null; then
     sudo useradd -r -m -U -d /app/tomcat -s /bin/false tomcat
+fi
+
+# Tomcat 아카이브 파일이 있는지 확인하고 없는 경우 다운로드
+if [ ! -f /app/apache-tomcat-9.0.89.tar.gz ]; then
+    sudo wget -q https://downloads.apache.org/tomcat/tomcat-9/v9.0.89/bin/apache-tomcat-9.0.89.tar.gz -O /app/apache-tomcat-9.0.89.tar.gz
 fi
 
 # 인스턴스별로 반복하여 Tomcat을 설치하고 설정합니다.
@@ -65,8 +71,7 @@ for ((i = 1; i <= INSTANCE_COUNT; i++)); do
 
     # Tomcat 설치
     sudo mkdir -p "$INSTANCE_DIR"
-    sudo wget -q https://downloads.apache.org/tomcat/tomcat-9/v9.0.89/bin/apache-tomcat-9.0.89.tar.gz -O "$INSTANCE_DIR/apache-tomcat-9.0.89.tar.gz"
-    sudo tar -xzf "$INSTANCE_DIR/apache-tomcat-9.0.89.tar.gz" -C "$INSTANCE_DIR" --strip-components=1
+    sudo tar -xzf /app/apache-tomcat-9.0.89.tar.gz -C "$INSTANCE_DIR" --strip-components=1
     sudo chown -R tomcat:tomcat "$INSTANCE_DIR"
 
     # Tomcat 서버 설정 파일 수정
