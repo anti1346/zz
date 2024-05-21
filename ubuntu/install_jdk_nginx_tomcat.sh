@@ -53,7 +53,7 @@ sudo systemctl --now enable nginx
 
 # Tomcat 설치 및 설정
 if ! id "tomcat" &>/dev/null; then
-    sudo useradd -r -m -U -d /app/tomcat -s /bin/false tomcat
+    sudo useradd -r -U -d /app/tomcat -s /bin/false tomcat
 fi
 
 # Tomcat 아카이브 파일이 있는지 확인하고 없는 경우 다운로드
