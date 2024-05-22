@@ -20,19 +20,9 @@ fi
 # 필수 라이브러리 설치
 if [[ "$(command -v apt-get)" ]]; then
     sudo apt-get update
-    if ! dpkg -l | grep -q libncurses5; then
-        sudo apt-get install -y libncurses5
-    fi
-    if ! dpkg -l | grep -q libaio1; then
-        sudo apt-get install -y libaio1 libnuma1
-    fi
+    sudo apt-get install -y libncurses5 libaio1 libnuma1
 elif [[ "$(command -v yum)" ]]; then
-    if ! rpm -q ncurses-compat-libs; then
-        sudo yum install -y ncurses-compat-libs
-    fi
-    if ! rpm -q libaio; then
-        sudo yum install -y libaio numactl
-    fi
+    sudo yum install -y ncurses-compat-libs libaio numactl
 else
     echo "Unsupported package manager."
     exit 1
@@ -50,8 +40,15 @@ sudo tar xf ${WORK_DIR}/${MYSQL_PACKAGE} -C ${MYSQL_INSTALL_DIR} --strip-compone
 
 sudo chown -R mysql:mysql ${MYSQL_INSTALL_DIR}
 
+# MySQL 환경 변수 등록
+if ! grep -q "${MYSQL_INSTALL_DIR}/bin" ~/.bashrc; then
+    echo -e '\nexport PATH=${MYSQL_INSTALL_DIR}/bin:$PATH' >> ~/.bashrc
+    source ~/.bashrc
+fi
+
 # MySQL 버전 확인
-echo -e "MySQL Version\n---\n$(${MYSQL_INSTALL_DIR}/bin/mysqld -V)"
+echo -e "\nMySQL Version\n---"
+${MYSQL_INSTALL_DIR}/bin/mysqld -V
 
 
 
