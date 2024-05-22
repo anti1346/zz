@@ -9,6 +9,7 @@ MYSQL_INSTALL_DIR=/usr/local/mysql
 
 # MySQL 사용자 생성
 if ! id "mysql" &>/dev/null; then
+    sudo groupadd -g 104 mysql
     sudo useradd -r -u 104 -g mysql -c "MySQL Server" -d ${MYSQL_INSTALL_DIR} -s /bin/false mysql
 fi
 
@@ -33,8 +34,12 @@ if [ ! -f ${WORK_DIR}/${MYSQL_PACKAGE} ]; then
     wget -q ${MYSQL_DOWNLOAD_URL}/${MYSQL_PACKAGE} -O ${MYSQL_PACKAGE}
 fi
 
-sudo tar xf ${WORK_DIR}/${MYSQL_PACKAGE} -C ${MYSQL_INSTALL_DIR} --strip-components=1
-
 sudo mkdir -p ${MYSQL_INSTALL_DIR}/data
 
+sudo tar xf ${WORK_DIR}/${MYSQL_PACKAGE} -C ${MYSQL_INSTALL_DIR} --strip-components=1
+
 sudo chown -R mysql:mysql ${MYSQL_INSTALL_DIR}
+
+
+
+# curl -fsSL  https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/install_mysql8.sh | bash
