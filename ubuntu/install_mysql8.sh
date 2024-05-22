@@ -43,7 +43,6 @@ sudo chown -R mysql:mysql ${MYSQL_INSTALL_DIR}
 # MySQL 환경 변수 등록
 if ! grep -q "${MYSQL_INSTALL_DIR}/bin" ~/.bashrc; then
     echo -e "\nexport PATH=${MYSQL_INSTALL_DIR}/bin:\$PATH" >> ~/.bashrc
-    source ~/.bashrc
 fi
 
 # MySQL 버전 확인
