@@ -22,8 +22,8 @@ if [[ "$(command -v apt-get)" ]]; then
         sudo apt-get install -y libncurses5
     fi
 elif [[ "$(command -v yum)" ]]; then
-    if ! rpm -q ncurses-compat-libs; then
-        sudo yum install -y ncurses-compat-libs
+    if ! rpm -q libaio; then
+        sudo yum install -y libaio
     fi
 else
     echo "Unsupported package manager."
