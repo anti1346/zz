@@ -8,29 +8,35 @@ MYSQL_PACKAGE=mysql-${MYSQL_VERSION}-linux-glibc${GLIBC_VERSION}-${OS_ARCH}.tar.
 WORK_DIR=/tmp
 MYSQL_INSTALL_DIR=/usr/local/mysql
 
-# Tomcat 설치 및 설정
+# MySQL 사용자 생성
 if ! id "mysql" &>/dev/null; then
-    sudo useradd -r -U -u 104 -c "MySQL Server" -d ${MYSQL_INSTALL_DIR} -s /bin/false mysql
-    mysql:x:104:105:MySQL Server,,,:/nonexistent:/bin/false
+    sudo useradd -r -u 104 -g mysql -c "MySQL Server" -d ${MYSQL_INSTALL_DIR} -s /bin/false mysql
 fi
 
-# Check if libncurses5 is installed (only for Ubuntu)
-if [[ $(lsb_release -si) == "Ubuntu" ]]; then
+
+# libncurses5가 설치되어 있는지 확인
+if [[ "$(command -v apt-get)" ]]; then
     if ! dpkg -l | grep -q libncurses5; then
-        echo "Installing libncurses5..."
         sudo apt-get update
         sudo apt-get install -y libncurses5
     fi
+elif [[ "$(command -v yum)" ]]; then
+    if ! rpm -q ncurses-compat-libs; then
+        sudo yum install -y ncurses-compat-libs
+    fi
+else
+    echo "Unsupported package manager."
+    exit 1
 fi
 
-# Check if the MySQL package already exists in the WORK_DIR
+# WORK_DIR에 MySQL 패키지가 이미 있는지 확인
 if [ ! -f ${WORK_DIR}/${MYSQL_PACKAGE} ]; then
     cd ${WORK_DIR}
     wget -q ${MYSQL_DOWNLOAD_URL}/${MYSQL_PACKAGE} -O ${MYSQL_PACKAGE}
 fi
 
-tar xf ${WORK_DIR}/${MYSQL_PACKAGE} -C ${MYSQL_INSTALL_DIR} --strip-components=1
+sudo tar xf ${WORK_DIR}/${MYSQL_PACKAGE} -C ${MYSQL_INSTALL_DIR} --strip-components=1
 
-mkdir -p ${MYSQL_INSTALL_DIR}/data
+sudo mkdir -p ${MYSQL_INSTALL_DIR}/data
 
-chown -R mysql:mysql ${MYSQL_INSTALL_DIR}
+sudo chown -R mysql:mysql ${MYSQL_INSTALL_DIR}
