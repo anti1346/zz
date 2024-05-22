@@ -24,14 +24,14 @@ if [[ "$(command -v apt-get)" ]]; then
         sudo apt-get install -y libncurses5
     fi
     if ! dpkg -l | grep -q libaio1; then
-        sudo apt-get install -y libaio1
+        sudo apt-get install -y libaio1 libnuma1
     fi
 elif [[ "$(command -v yum)" ]]; then
-    if ! rpm -q libaio; then
-        sudo yum install -y libaio
-    fi
     if ! rpm -q ncurses-compat-libs; then
         sudo yum install -y ncurses-compat-libs
+    fi
+    if ! rpm -q libaio; then
+        sudo yum install -y libaio numactl
     fi
 else
     echo "Unsupported package manager."
@@ -51,7 +51,7 @@ sudo tar xf ${WORK_DIR}/${MYSQL_PACKAGE} -C ${MYSQL_INSTALL_DIR} --strip-compone
 sudo chown -R mysql:mysql ${MYSQL_INSTALL_DIR}
 
 # MySQL 버전 확인
-${MYSQL_INSTALL_DIR}/bin/mysqld -V
+echo -e "MySQL Version\n---\n$(${MYSQL_INSTALL_DIR}/bin/mysqld -V)"
 
 
 
