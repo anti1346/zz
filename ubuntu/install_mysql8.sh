@@ -5,8 +5,14 @@ GLIBC_VERSION=2.28
 OS_ARCH=86_64
 MYSQL_DOWNLOAD_URL=https://dev.mysql.com/get/Downloads/MySQL-8.0
 MYSQL_PACKAGE=mysql-${MYSQL_VERSION}-linux-glibc${GLIBC_VERSION}-${OS_ARCH}.tar.xz
-WORK_DIR=/usr/local/src
+WORK_DIR=/tmp
 MYSQL_INSTALL_DIR=/usr/local/mysql
+
+# Tomcat 설치 및 설정
+if ! id "mysql" &>/dev/null; then
+    sudo useradd -r -U -u 104 -c "MySQL Server" -d ${MYSQL_INSTALL_DIR} -s /bin/false mysql
+    mysql:x:104:105:MySQL Server,,,:/nonexistent:/bin/false
+fi
 
 # Check if libncurses5 is installed (only for Ubuntu)
 if [[ $(lsb_release -si) == "Ubuntu" ]]; then
