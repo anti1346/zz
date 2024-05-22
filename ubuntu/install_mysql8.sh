@@ -1,4 +1,6 @@
 #!/bin/bash
+# Chapter 4 Installing the MySQL Binary Package
+# https://dev.mysql.com/doc/mysql-secure-deployment-guide/8.0/en/secure-deployment-install.html
 
 MYSQL_VERSION=8.0.37
 GLIBC_VERSION=2.28
@@ -9,8 +11,8 @@ MYSQL_INSTALL_DIR=/usr/local/mysql
 
 # MySQL 사용자 생성
 if ! id "mysql" &>/dev/null; then
-    sudo groupadd -g 104 mysql
-    sudo useradd -r -u 104 -g mysql -c "MySQL Server" -d ${MYSQL_INSTALL_DIR} -s /bin/false mysql
+    sudo groupadd -g 27 -o -r mysql
+    sudo useradd -M -N -g mysql -o -r -d ${MYSQL_INSTALL_DIR} -s /bin/false -c "MySQL Server" -u 27 mysql
 fi
 
 # libncurses5가 설치되어 있는지 확인
