@@ -11,26 +11,34 @@ MYSQL_INSTALL_DIR=/usr/local/mysql
 
 # MySQL 사용자 생성
 if ! id "mysql" &>/dev/null; then
-    sudo groupadd -r mysql
+    if ! getent group mysql > /dev/null; then
+        sudo groupadd -r mysql
+    fi
     sudo useradd -M -N -g mysql -o -r -d ${MYSQL_INSTALL_DIR} -s /bin/false -c "MySQL Server" -u 27 mysql
 fi
 
-# libncurses5가 설치되어 있는지 확인
+# 필수 라이브러리 설치
 if [[ "$(command -v apt-get)" ]]; then
+    sudo apt-get update
     if ! dpkg -l | grep -q libncurses5; then
-        sudo apt-get update
         sudo apt-get install -y libncurses5
+    fi
+    if ! dpkg -l | grep -q libaio1; then
+        sudo apt-get install -y libaio1
     fi
 elif [[ "$(command -v yum)" ]]; then
     if ! rpm -q libaio; then
         sudo yum install -y libaio
+    fi
+    if ! rpm -q ncurses-compat-libs; then
+        sudo yum install -y ncurses-compat-libs
     fi
 else
     echo "Unsupported package manager."
     exit 1
 fi
 
-# WORK_DIR에 MySQL 패키지가 이미 있는지 확인
+# MySQL 패키지 다운로드 및 설치
 if [ ! -f ${WORK_DIR}/${MYSQL_PACKAGE} ]; then
     cd ${WORK_DIR}
     wget -q ${MYSQL_DOWNLOAD_URL}/${MYSQL_PACKAGE} -O ${MYSQL_PACKAGE}
@@ -41,6 +49,9 @@ sudo mkdir -p ${MYSQL_INSTALL_DIR}/data
 sudo tar xf ${WORK_DIR}/${MYSQL_PACKAGE} -C ${MYSQL_INSTALL_DIR} --strip-components=1
 
 sudo chown -R mysql:mysql ${MYSQL_INSTALL_DIR}
+
+# MySQL 버전 확인
+${MYSQL_INSTALL_DIR}/bin/mysqld -V
 
 
 
