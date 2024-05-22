@@ -8,6 +8,15 @@ MYSQL_PACKAGE=mysql-${MYSQL_VERSION}-linux-glibc${GLIBC_VERSION}-${OS_ARCH}.tar.
 WORK_DIR=/usr/local/src
 MYSQL_INSTALL_DIR=/usr/local/mysql
 
+# Check if libncurses5 is installed (only for Ubuntu)
+if [[ $(lsb_release -si) == "Ubuntu" ]]; then
+    if ! dpkg -l | grep -q libncurses5; then
+        echo "Installing libncurses5..."
+        sudo apt-get update
+        sudo apt-get install -y libncurses5
+    fi
+fi
+
 # Check if the MySQL package already exists in the WORK_DIR
 if [ ! -f ${WORK_DIR}/${MYSQL_PACKAGE} ]; then
     cd ${WORK_DIR}
