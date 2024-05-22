@@ -2,9 +2,8 @@
 
 MYSQL_VERSION=8.0.37
 GLIBC_VERSION=2.28
-OS_ARCH=86_64
 MYSQL_DOWNLOAD_URL=https://dev.mysql.com/get/Downloads/MySQL-8.0
-MYSQL_PACKAGE=mysql-${MYSQL_VERSION}-linux-glibc${GLIBC_VERSION}-${OS_ARCH}.tar.xz
+MYSQL_PACKAGE=mysql-${MYSQL_VERSION}-linux-glibc${GLIBC_VERSION}-$(arch).tar.xz
 WORK_DIR=/tmp
 MYSQL_INSTALL_DIR=/usr/local/mysql
 
@@ -12,7 +11,6 @@ MYSQL_INSTALL_DIR=/usr/local/mysql
 if ! id "mysql" &>/dev/null; then
     sudo useradd -r -u 104 -g mysql -c "MySQL Server" -d ${MYSQL_INSTALL_DIR} -s /bin/false mysql
 fi
-
 
 # libncurses5가 설치되어 있는지 확인
 if [[ "$(command -v apt-get)" ]]; then
