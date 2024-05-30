@@ -49,4 +49,5 @@ echo -e "${COMMAND^} 프록시 설정이 완료되었습니다.\n- 설정 파일
 
 
 ### Execute
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/set_apt_proxy.sh | bash -s apt_proxy 192.168.56.1 8080
 # curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/set_apt_proxy.sh | bash -s bash_proxy 192.168.56.1 8080
