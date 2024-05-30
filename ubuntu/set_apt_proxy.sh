@@ -18,11 +18,11 @@ set_proxy() {
 
     case $PROXY_TYPE in
         apt_proxy)
-            PROXY_CONFIG="Acquire::http::Proxy \"http://${PROXY_IP}:${PROXY_PORT}/\";\nAcquire::https::Proxy \"https://${PROXY_IP}:${PROXY_PORT}/\";"
+            PROXY_CONFIG="Acquire::http::Proxy \"http://${PROXY_IP}:${PROXY_PORT}/\";\nAcquire::https::Proxy \"http://${PROXY_IP}:${PROXY_PORT}/\";"
             PROXY_FILE="/etc/apt/apt.conf.d/02proxy"
             ;;
         bash_proxy)
-            PROXY_CONFIG="export http_proxy=http://${PROXY_IP}:${PROXY_PORT}\nexport https_proxy=https://${PROXY_IP}:${PROXY_PORT}"
+            PROXY_CONFIG="export http_proxy=http://${PROXY_IP}:${PROXY_PORT}\nexport https_proxy=http://${PROXY_IP}:${PROXY_PORT}"
             PROXY_FILE="$HOME/.bashrc"
             ;;
         *)
