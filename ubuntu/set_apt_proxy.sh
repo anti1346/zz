@@ -19,21 +19,17 @@ fi
 
 # Function to set proxy
 set_proxy() {
-    local PROXY_TYPE=$1
     local PROXY_CONFIG=""
+    local PROXY_FILE=""
 
-    case $PROXY_TYPE in
+    case $COMMAND in
         apt_proxy)
-            PROXY_CONFIG="Acquire::http::Proxy \"http://${PROXY_IP}:${PROXY_PORT}/\";\nAcquire::https::Proxy \"http://${PROXY_IP}:${PROXY_PORT}/\";"
+            PROXY_CONFIG="Acquire::http::Proxy \"http://${PROXY_IP}:${PROXY_PORT}/\";\nAcquire::https::Proxy \"https://${PROXY_IP}:${PROXY_PORT}/\";"
             PROXY_FILE="/etc/apt/apt.conf.d/02proxy"
             ;;
         bash_proxy)
-            PROXY_CONFIG="export http_proxy=http://${PROXY_IP}:${PROXY_PORT}\nexport https_proxy=http://${PROXY_IP}:${PROXY_PORT}"
+            PROXY_CONFIG="export http_proxy=http://${PROXY_IP}:${PROXY_PORT}\nexport https_proxy=https://${PROXY_IP}:${PROXY_PORT}"
             PROXY_FILE="$HOME/.bashrc"
-            ;;
-        *)
-            echo "Unknown proxy type: $PROXY_TYPE"
-            exit 1
             ;;
     esac
 
@@ -41,8 +37,8 @@ set_proxy() {
     echo "${PROXY_FILE}"
 }
 
-# Main execution based on command
-proxy_file=$(set_proxy "$COMMAND")
+# Main execution
+proxy_file=$(set_proxy)
 echo -e "${COMMAND^} 프록시 설정이 완료되었습니다.\n- 설정 파일: ${proxy_file}"
 
 
