@@ -31,7 +31,7 @@ set_proxy() {
             ;;
     esac
 
-    echo -e "${PROXY_CONFIG}" | sudo tee ${PROXY_FILE} > /dev/null
+    echo -e "${PROXY_CONFIG}" | sudo tee -a ${PROXY_FILE} > /dev/null
     echo "${PROXY_FILE}"
 }
 
