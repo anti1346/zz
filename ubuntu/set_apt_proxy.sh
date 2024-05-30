@@ -33,7 +33,7 @@ case $COMMAND in
         apt_proxy_file=$(apt_proxy)
         echo "APT 프록시 설정이 완료되었습니다. 설정 파일: ${apt_proxy_file}"
         ;;
-    bashrc)
+    bash)
         bashrc_proxy_file=$(bashrc_proxy)
         echo "Bashrc 프록시 설정이 완료되었습니다. 설정 파일: ${bashrc_proxy_file}"
         ;;
@@ -43,3 +43,8 @@ case $COMMAND in
         exit 1
         ;;
 esac
+
+
+
+### Execute
+# curl https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/set_apt_proxy.sh | bash -s apt 192.168.56.1 8080
