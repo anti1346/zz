@@ -37,7 +37,7 @@ set_proxy() {
 
 # Main execution based on command
 proxy_file=$(set_proxy "$COMMAND")
-echo "${COMMAND^} 프록시 설정이 완료되었습니다. 설정 파일: ${proxy_file}"
+echo -e "${COMMAND^} 프록시 설정이 완료되었습니다.\n- 설정 파일: ${proxy_file}"
 
 
 
