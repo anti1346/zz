@@ -11,6 +11,12 @@ COMMAND=$1
 PROXY_IP=$2
 PROXY_PORT=${3:-3128}  # Default to 3128 if no proxy port is provided
 
+# Validate command
+if [[ "$COMMAND" != "apt_proxy" && "$COMMAND" != "bash_proxy" ]]; then
+    echo "Error: Invalid command. The first argument must be 'apt_proxy' or 'bash_proxy'."
+    exit 1
+fi
+
 # Function to set proxy
 set_proxy() {
     local PROXY_TYPE=$1
