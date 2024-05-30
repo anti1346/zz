@@ -1,8 +1,18 @@
 #!/bin/bash
 
+# Description: Sets APT or Bash proxy configuration.
+# Usage: set_proxy.sh {apt_proxy|bash_proxy} [PROXY_IP] [PROXY_PORT]
+
+# Validate command
+if [[ "$1" != "apt_proxy" && "$1" != "bash_proxy" ]]; then
+    echo "Error: Invalid command. The first argument must be 'apt_proxy' or 'bash_proxy'."
+    echo "Usage: $(basename "$0") {apt_proxy|bash_proxy} [PROXY_IP] [PROXY_PORT]"
+    exit 1
+fi
+
 # Ensure the script is called with the correct number of arguments
 if [[ $# -lt 2 || $# -gt 3 ]]; then
-    echo "Usage: $(basename "$0") {apt_proxy|bash_proxy} PROXY_IP [PROXY_PORT]"
+    echo "Usage: $(basename "$0") {apt_proxy|bash_proxy} [PROXY_IP] [PROXY_PORT]"
     exit 1
 fi
 
@@ -10,12 +20,6 @@ fi
 COMMAND=$1
 PROXY_IP=$2
 PROXY_PORT=${3:-3128}  # Default to 3128 if no proxy port is provided
-
-# Validate command
-if [[ "$COMMAND" != "apt_proxy" && "$COMMAND" != "bash_proxy" ]]; then
-    echo "Error: Invalid command. The first argument must be 'apt_proxy' or 'bash_proxy'."
-    exit 1
-fi
 
 # Function to set proxy
 set_proxy() {
@@ -40,6 +44,7 @@ set_proxy() {
 # Main execution
 proxy_file=$(set_proxy)
 echo -e "${COMMAND^} 프록시 설정이 완료되었습니다.\n- 설정 파일: ${proxy_file}"
+
 
 
 
