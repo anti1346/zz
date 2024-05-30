@@ -39,7 +39,7 @@ case $COMMAND in
         ;;
     *)
         echo "Unknown command: $COMMAND"
-        echo "Usage: $0 {apt|bashrc} PROXY_IP [PROXY_PORT]"
+        echo "Usage: $0 {apt_proxy|bash_proxy} PROXY_IP [PROXY_PORT]"
         exit 1
         ;;
 esac
