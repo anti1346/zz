@@ -2,7 +2,7 @@
 
 # Ensure the script is called with the correct number of arguments
 if [[ $# -lt 2 || $# -gt 3 ]]; then
-    echo "Usage: $0 {apt_proxy|bash_proxy} PROXY_IP [PROXY_PORT]"
+    echo "Usage: $(basename "$0") {apt_proxy|bash_proxy} PROXY_IP [PROXY_PORT]"
     exit 1
 fi
 
@@ -39,7 +39,7 @@ case $COMMAND in
         ;;
     *)
         echo "Unknown command: $COMMAND"
-        echo "Usage: $0 {apt_proxy|bash_proxy} PROXY_IP [PROXY_PORT]"
+        echo "Usage: $(basename "$0") {apt_proxy|bash_proxy} PROXY_IP [PROXY_PORT]"
         exit 1
         ;;
 esac
