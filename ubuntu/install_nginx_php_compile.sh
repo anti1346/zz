@@ -86,8 +86,7 @@ EOL
 
 # Enable and start Nginx service
 sudo systemctl daemon-reload
-sudo systemctl enable nginx
-sudo systemctl start nginx
+sudo systemctl --now enable nginx.service
 
 # Install dependencies for PHP
 sudo apt-get install -y \
@@ -156,9 +155,7 @@ sudo chown www-data:www-data -R /var/run/php
 # Configure PHP-FPM
 sudo cp /usr/local/src/php-8.3.8/php.ini-production /usr/local/php/8.3/fpm/php.ini
 sudo cp /usr/local/php/8.3/fpm/php-fpm.conf.default /usr/local/php/8.3/fpm/php-fpm.conf
-sudo vim /usr/local/php/8.3/fpm/php-fpm.conf
 sudo cp /usr/local/php/8.3/fpm/php-fpm.d/www.conf.default /usr/local/php/8.3/fpm/php-fpm.d/www.conf
-sudo vim /usr/local/php/8.3/fpm/php-fpm.d/www.conf
 
 # Create systemd service file for PHP-FPM
 sudo tee /usr/lib/systemd/system/php8.3-fpm.service > /dev/null <<EOL
@@ -180,19 +177,18 @@ EOL
 
 # Enable and start PHP-FPM service
 sudo systemctl daemon-reload
-sudo systemctl enable php8.3-fpm.service
-sudo systemctl start php8.3-fpm.service
+sudo systemctl --now enable php8.3-fpm.service
 
 # Install PHP extensions
 EXTENSIONS=(igbinary-3.2.15 mongodb-1.19.2 rdkafka-6.0.3 redis-6.0.2)
 for EXT in "${EXTENSIONS[@]}"; do
-  cd /usr/local/src
-  wget "https://pecl.php.net/get/$EXT.tgz"
-  tar xvfz "$EXT.tgz"
-  cd "$EXT"
-  phpize8.3
-  ./configure --with-php-config=php-config8.3
-  make && sudo make install
+    cd /usr/local/src
+    wget "https://pecl.php.net/get/$EXT.tgz"
+    tar xvfz "$EXT.tgz"
+    cd "$EXT"
+    phpize8.3
+    ./configure --with-php-config=php-config8.3
+    make && sudo make install
 done
 
 # Install mod_screwim
@@ -203,6 +199,7 @@ phpize8.3
 ./configure --with-php-config=php-config8.3
 make && sudo make install
 
+# Create Nginx server configuration
 sudo cp /usr/local/nginx/nginx.conf /usr/local/nginx/nginx.conf.bk
 sudo tee /usr/local/nginx/nginx.conf > /dev/null <<EOL
 # nginx.conf
@@ -310,6 +307,51 @@ server {
 }
 EOL
 
+### php-fpm.conf
+sudo tee /usr/local/php/8.3/fpm/php-fpm.conf > /dev/null <<EOL
+include=/usr/local/php/8.3/fpm/php-fpm.d/www.conf
+
+[global]
+pid = /var/run/php/php8.3-fpm.pid
+
+error_log = /var/log/php-fpm/error-php83.log
+
+daemonize = yes
+EOL
+
+### www.conf
+sudo tee /usr/local/php/8.3/fpm/php-fpm.d/www.conf > /dev/null <<EOL
+[www83]
+user = www-data
+group = www-data
+
+listen = /var/run/php/php8.3-fpm.sock
+
+listen.owner = www-data
+listen.group = www-data
+listen.mode = 0660
+
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+
+pm.status_path = /status
+ping.path = /ping
+
+slowlog = /var/log/php-fpm/$pool-slow.log
+
+access.log = /var/log/php-fpm/$pool-access.log
+access.format = "%R - %u %t \"%m %r%Q%q\" %s %f %{milli}d %{kilo}M %C%%"
+
+php_admin_value[error_log] = /var/log/php-fpm/$pool-fpmphp-error.log
+php_admin_flag[log_errors] = on
+php_admin_value[memory_limit] = 32M
+
+security.limit_extensions = .php .php3 .php4 .php5 .php7
+EOL
+
 # Create PHP info file
 sudo tee /usr/local/nginx/html/info.php > /dev/null <<EOL
 <?php phpinfo(); ?>
@@ -318,6 +360,8 @@ EOL
 # Print URL to access PHP info page
 echo "http://localhost/info.php"
 
+echo "sudo systemctl restart php8.3-fpm.service"
+echo "sudo systemctl restart nginx.service"
 
 
 ### Shell Execute Command
