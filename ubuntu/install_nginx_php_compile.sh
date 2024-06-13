@@ -203,6 +203,70 @@ phpize8.3
 ./configure --with-php-config=php-config8.3
 make && sudo make install
 
+sudo cp /usr/local/nginx/nginx.conf /usr/local/nginx/nginx.conf.bk
+sudo tee /usr/local/nginx/nginx.conf > /dev/null <<EOL
+# nginx.conf
+user www-data www-data;
+worker_processes auto;
+
+error_log /var/log/nginx/error.log notice;
+pid /var/run/nginx.pid;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include /usr/local/nginx/mime.types;
+    default_type application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log /var/log/nginx/access.log main;
+
+    server_tokens off;
+
+    sendfile           on;
+    tcp_nopush         on;
+    tcp_nodelay        on;
+    keepalive_timeout  10;
+
+    ## Gzip config
+    gzip on;
+    gzip_disable "msie6";
+    gzip_proxied any;
+    gzip_comp_level 9;
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_min_length 256;
+    gzip_types
+        application/atom+xml
+        application/geo+json
+        application/javascript
+        application/x-javascript
+        application/json
+        application/ld+json
+        application/manifest+json
+        application/rdf+xml
+        application/rss+xml
+        application/xhtml+xml
+        application/xml
+        font/eot
+        font/otf
+        font/ttf
+        image/svg+xml
+        text/css
+        text/javascript
+        text/plain
+        text/xml;
+    ## end Gzip config
+
+    include /usr/local/nginx/conf.d/*.conf;
+}
+EOL
+
 # Create Nginx default server configuration
 sudo mkdir -p /usr/local/nginx/html
 sudo tee /usr/local/nginx/conf.d/default.conf > /dev/null <<EOL
