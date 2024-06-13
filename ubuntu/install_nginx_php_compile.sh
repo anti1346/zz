@@ -253,3 +253,8 @@ EOL
 
 # Print URL to access PHP info page
 echo "http://localhost/info.php"
+
+
+
+### Shell Execute Command
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/install_nginx_php_compile.sh | bash
