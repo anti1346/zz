@@ -71,6 +71,5 @@ echo -e "\n"
 
 
 
-
 ### Shell Execute Command
-# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/install_chrony.sh | bash
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/common/install_chrony.sh | bash
