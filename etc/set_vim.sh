@@ -8,3 +8,4 @@ EOF
 
 ### Shell Execute Command
 # curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/set_vim.sh | bash
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/set_vim.sh | dos2unix | bash
