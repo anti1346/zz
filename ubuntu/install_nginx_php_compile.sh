@@ -389,16 +389,22 @@ sudo tee /usr/local/nginx/html/info.php > /dev/null <<EOL
 <?php phpinfo(); ?>
 EOL
 
-# PHP 정보 페이지 URL 출력
-echo "PHP 정보 페이지: http://localhost/info.php"
+# NGINX, PHP-FPM 서비스 재시작
+sudo systemctl restart nginx.service php8.3-fpm.service
 
-# 서비스 재시작 명령 출력
-echo "NGINX 서비스 재시작: sudo systemctl restart nginx.service"
-echo "PHP-FPM 서비스 재시작: sudo systemctl restart php8.3-fpm.service"
+# 화면 출력
+cat <<EOF
+################################################################
+PHP 정보 페이지: http://localhost/info.php
 
-# 심볼릭 링크 생성 명령 출력
-echo "sudo ln -s /usr/local/nginx /etc/nginx"
-echo "sudo ln -s /usr/local/php /etc/php"
+NGINX 서비스 재시작: sudo systemctl restart nginx.service
+PHP-FPM 서비스 재시작: sudo systemctl restart php8.3-fpm.service
+
+심볼릭 링크 생성 명령어
+sudo ln -s /usr/local/nginx /etc/nginx
+sudo ln -s /usr/local/php /etc/php
+################################################################
+EOF
 
 
 
