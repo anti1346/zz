@@ -111,6 +111,7 @@ cd php-8.3.8
 ./configure \
   --prefix=/usr/local/php/8.3 \
   --sysconfdir=/usr/local/php/8.3/fpm \
+  --with-config-file-path=/usr/local/php/8.3/fpm \
   --enable-fpm \
   --enable-bcmath \
   --enable-calendar \
@@ -186,7 +187,7 @@ sudo systemctl daemon-reload
 sudo systemctl --now enable php8.3-fpm.service
 
 # PHP 확장 모듈 설치
-EXTENSIONS=(igbinary-3.2.15 mongodb-1.19.2 rdkafka-6.0.3 redis-6.0.2)
+EXTENSIONS=(igbinary-3.2.15 mongodb-1.19.2 redis-6.0.2)
 for EXT in "${EXTENSIONS[@]}"; do
     cd /usr/local/src
     wget "https://pecl.php.net/get/$EXT.tgz"
@@ -194,8 +195,18 @@ for EXT in "${EXTENSIONS[@]}"; do
     cd "$EXT"
     phpize8.3
     ./configure --with-php-config=php-config8.3
-    make && sudo make install
+    make -j4 && sudo make install
 done
+
+# rdkafka 설치
+sudo apt-get install -y librdkafka-dev
+cd /usr/local/src
+wget https://pecl.php.net/get/rdkafka-6.0.3.tgz
+tar xvfz rdkafka-6.0.3.tgz
+cd rdkafka-6.0.3
+phpize8.3
+./configure --with-php-config=php-config8.3
+make -j4 && sudo make install
 
 # mod_screwim 설치
 cd /usr/local/src
@@ -203,7 +214,14 @@ git clone https://github.com/OOPS-ORG-PHP/mod_screwim.git
 cd mod_screwim
 phpize8.3
 ./configure --with-php-config=php-config8.3
-make && sudo make install
+make -j4  && sudo make install
+
+sudo tee -a /usr/local/php/8.3/fpm/php.ini > /dev/null <<EOL
+extension=igbinary.so
+extension=mongodb.so
+extension=redis.so
+extension=rdkafka.so
+EOL
 
 # Nginx 서버 설정 파일 생성
 sudo tee /usr/local/nginx/nginx.conf > /dev/null <<'EOL'
@@ -278,15 +296,26 @@ server {
     root /usr/local/nginx/html;
     index index.html index.htm index.php;
 
+    access_log /var/log/nginx/host-accesss.log;
+    error_log /var/log/nginx/host-error.log;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt { access_log off; log_not_found off; }
+
+    error_page 404 /40x.html;
+    location = /40x.html {
+        root /usr/share/nginx/html;
+    }
+
     error_page 500 502 503 504 /50x.html;
     location = /50x.html {
         root /usr/share/nginx/html;
     }
 
-    location ~ \.php\$ {
+    location ~ \.php$ {
         fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
         fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         include fastcgi_params;
     }
 
@@ -304,7 +333,7 @@ server {
     location /status {
         fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
         include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         access_log off;
         allow 127.0.0.1;
         deny all;
@@ -318,7 +347,7 @@ include=/usr/local/php/8.3/fpm/php-fpm.d/www.conf
 
 [global]
 pid = /var/run/php/php8.3-fpm.pid
-error_log = /var/log/php-fpm/error-php83.log
+error_log = /var/log/php-fpm/phpfpm83-error.log
 daemonize = yes
 EOL
 
@@ -348,7 +377,7 @@ slowlog = /var/log/php-fpm/$pool-slow.log
 access.log = /var/log/php-fpm/$pool-access.log
 access.format = "%R - %u %t \"%m %r%Q%q\" %s %f %{milli}d %{kilo}M %C%%"
 
-php_admin_value[error_log] = /var/log/php-fpm/$pool-fpmphp-error.log
+php_admin_value[error_log] = /var/log/php-fpm/$pool-error.log
 php_admin_flag[log_errors] = on
 php_admin_value[memory_limit] = 32M
 
@@ -361,11 +390,11 @@ sudo tee /usr/local/nginx/html/info.php > /dev/null <<EOL
 EOL
 
 # PHP 정보 페이지 URL 출력
-echo "http://localhost/info.php"
+echo "PHP 정보 페이지: http://localhost/info.php"
 
 # 서비스 재시작 명령 출력
-echo "sudo systemctl restart php8.3-fpm.service"
-echo "sudo systemctl restart nginx.service"
+echo "NGINX 서비스 재시작: sudo systemctl restart nginx.service"
+echo "PHP-FPM 서비스 재시작: sudo systemctl restart php8.3-fpm.service"
 
 # 심볼릭 링크 생성 명령 출력
 echo "sudo ln -s /usr/local/nginx /etc/nginx"
