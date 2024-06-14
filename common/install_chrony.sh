@@ -7,11 +7,11 @@ while [ -f /var/run/yum.pid ]; do
 done
 
 # Determine the package manager and set related variables
-if command -v yum &> /dev/null; then
+if [[ "$(command -v yum)" ]]; then
     PACKAGE_MANAGER="yum"
     SERVICE_NAME="chronyd.service"
     CONFIG_FILE_PATH="/etc/chrony.conf"
-elif command -v apt-get &> /dev/null; then
+elif [[ "$(command -v apt-get)" ]]; then
     PACKAGE_MANAGER="apt-get"
     SERVICE_NAME="chrony.service"
     CONFIG_FILE_PATH="/etc/chrony/chrony.conf"
