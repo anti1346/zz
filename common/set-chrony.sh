@@ -65,3 +65,7 @@ echo -e "\n### chronyc tracking"
 chronyc tracking
 
 echo -e "\n"
+
+
+### Shell Execute Command
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/set-chrony.sh | bash
