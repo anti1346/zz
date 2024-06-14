@@ -393,17 +393,25 @@ EOL
 sudo systemctl restart nginx.service php8.3-fpm.service
 
 # 화면 출력
-cat <<EOF
-################################################################
-PHP 정보 페이지: http://localhost/info.php
+cat <<EOF | tee /root/serverinfo.txt
+################################################
+* PHP 정보 페이지
+http://localhost/info.php
 
-NGINX 서비스 재시작: sudo systemctl restart nginx.service
-PHP-FPM 서비스 재시작: sudo systemctl restart php8.3-fpm.service
+* PHP 모듈 정보 출력 명령어(Additional Modules)
+php8.3 -m
+* PHP Configuration File (php.ini) Path
+php8.3 -i | grep "Configuration File"
 
-심볼릭 링크 생성 명령어
+* NGINX 서비스 재시작
+sudo systemctl restart nginx.service
+* PHP-FPM 서비스 재시작
+sudo systemctl restart php8.3-fpm.service
+
+* 심볼릭 링크 생성 명령어
 sudo ln -s /usr/local/nginx /etc/nginx
 sudo ln -s /usr/local/php /etc/php
-################################################################
+################################################
 EOF
 
 
