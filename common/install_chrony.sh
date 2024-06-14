@@ -20,14 +20,19 @@ else
     exit 1
 fi
 
-# Install chrony
-sudo $PACKAGE_MANAGER install -y chrony
+# Check if chrony is already installed
+if ! command -v chronyc &> /dev/null; then
+    # Install chrony
+    sudo $PACKAGE_MANAGER install -y chrony
 
-# Enable and start chrony service
-sudo systemctl --now enable $SERVICE_NAME
+    # Enable and start chrony service
+    sudo systemctl --now enable $SERVICE_NAME
+fi
 
 # Backup the default configuration file
-sudo cp $CONFIG_FILE_PATH ${CONFIG_FILE_PATH}.bak
+if [ -f $CONFIG_FILE_PATH ]; then
+    sudo cp $CONFIG_FILE_PATH ${CONFIG_FILE_PATH}.bak
+fi
 
 # Update configuration file with new server settings
 sudo tee $CONFIG_FILE_PATH > /dev/null <<EOF
@@ -44,7 +49,10 @@ rtcsync
 logdir /var/log/chrony
 EOF
 
-# Restart chrony service
+# Enable the chrony service
+sudo systemctl enable $SERVICE_NAME
+
+# Restart the chrony service
 sudo systemctl restart $SERVICE_NAME
 
 # Display the current chrony source statistics
@@ -60,6 +68,7 @@ echo -e "\n### chronyc tracking"
 chronyc tracking
 
 echo -e "\n"
+
 
 
 

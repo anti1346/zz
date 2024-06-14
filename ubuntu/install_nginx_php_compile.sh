@@ -59,8 +59,13 @@ cd nginx-1.26.1
 # Build and install Nginx
 make -j4 && sudo make install
 
+# Create symbolic links for Nginx binaries
+sudo ln -s /usr/local/nginx/sbin/nginx /usr/sbin/nginx
+
 # Create necessary directories and set permissions
-sudo mkdir -p /usr/local/nginx/conf.d
+sudo mkdir -p /usr/local/nginx/{backupConf,conf.d}
+sudo cp /usr/local/nginx/nginx.conf /usr/local/nginx/backupConf/nginx.conf
+sudo mv /usr/local/nginx/*.default /usr/local/nginx/backupConf/
 sudo mkdir -p /var/cache/nginx/client_temp
 sudo chown www-data:www-data -R /var/cache/nginx
 
@@ -200,8 +205,7 @@ phpize8.3
 make && sudo make install
 
 # Create Nginx server configuration
-sudo cp /usr/local/nginx/nginx.conf /usr/local/nginx/nginx.conf.bk
-sudo tee /usr/local/nginx/nginx.conf > /dev/null <<EOL
+sudo tee /usr/local/nginx/nginx.conf > /dev/null <<'EOL'
 # nginx.conf
 user www-data www-data;
 worker_processes auto;
@@ -266,7 +270,7 @@ EOL
 
 # Create Nginx default server configuration
 sudo mkdir -p /usr/local/nginx/html
-sudo tee /usr/local/nginx/conf.d/default.conf > /dev/null <<EOL
+sudo tee /usr/local/nginx/conf.d/default.conf > /dev/null <<'EOL'
 server {
     listen 80;
     server_name _;
@@ -308,19 +312,17 @@ server {
 EOL
 
 ### php-fpm.conf
-sudo tee /usr/local/php/8.3/fpm/php-fpm.conf > /dev/null <<EOL
+sudo tee /usr/local/php/8.3/fpm/php-fpm.conf > /dev/null <<'EOL'
 include=/usr/local/php/8.3/fpm/php-fpm.d/www.conf
 
 [global]
 pid = /var/run/php/php8.3-fpm.pid
-
 error_log = /var/log/php-fpm/error-php83.log
-
 daemonize = yes
 EOL
 
 ### www.conf
-sudo tee /usr/local/php/8.3/fpm/php-fpm.d/www.conf > /dev/null <<EOL
+sudo tee /usr/local/php/8.3/fpm/php-fpm.d/www.conf > /dev/null <<'EOL'
 [www83]
 user = www-data
 group = www-data
