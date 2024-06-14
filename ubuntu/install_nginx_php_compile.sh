@@ -1,21 +1,22 @@
 #!/bin/bash
 
-# Script to install Nginx and PHP from source with custom configurations
+# 스크립트 설명
+# 이 스크립트는 Nginx와 PHP를 소스에서 컴파일하여 설치하고, 시스템에 필요한 설정을 적용합니다.
 
-# Update package list and install essential packages
+# 패키지 목록을 업데이트하고 필수 패키지 설치
 sudo apt-get update
 sudo apt-get install -y build-essential pkg-config autoconf make wget vim git
 
-# Install dependencies for Nginx
+# Nginx에 필요한 의존성 패키지 설치
 sudo apt-get install -y zlib1g-dev libssl-dev libpcre3-dev libzip-dev
 
-# Download and compile Nginx from source
+# Nginx 소스 다운로드 및 컴파일
 cd /usr/local/src
 wget https://nginx.org/download/nginx-1.26.1.tar.gz
 tar -zxvf nginx-1.26.1.tar.gz
 cd nginx-1.26.1
 
-# Configure Nginx with specified options
+# Nginx 구성 옵션 설정 및 설치
 ./configure \
   --prefix=/usr/local/nginx \
   --conf-path=/usr/local/nginx/nginx.conf \
@@ -56,20 +57,20 @@ cd nginx-1.26.1
   --with-stream_ssl_module \
   --with-stream_ssl_preread_module
 
-# Build and install Nginx
+# Nginx 빌드 및 설치
 make -j4 && sudo make install
 
-# Create symbolic links for Nginx binaries
+# Nginx 바이너리에 대한 심볼릭 링크 생성
 sudo ln -s /usr/local/nginx/sbin/nginx /usr/sbin/nginx
 
-# Create necessary directories and set permissions
+# Nginx 설정 디렉토리 생성 및 권한 설정
 sudo mkdir -p /usr/local/nginx/{backupConf,conf.d}
 sudo cp /usr/local/nginx/nginx.conf /usr/local/nginx/backupConf/nginx.conf
 sudo mv /usr/local/nginx/*.default /usr/local/nginx/backupConf/
 sudo mkdir -p /var/cache/nginx/client_temp
 sudo chown www-data:www-data -R /var/cache/nginx
 
-# Create systemd service file for Nginx
+# Nginx용 systemd 서비스 파일 생성
 sudo tee /usr/lib/systemd/system/nginx.service > /dev/null <<EOL
 [Unit]
 Description=nginx - high performance web server
@@ -89,24 +90,24 @@ ExecStop=/bin/sh -c "/bin/kill -s TERM \$(/bin/cat /var/run/nginx.pid)"
 WantedBy=multi-user.target
 EOL
 
-# Enable and start Nginx service
+# Nginx 서비스 활성화 및 시작
 sudo systemctl daemon-reload
 sudo systemctl --now enable nginx.service
 
-# Install dependencies for PHP
+# PHP에 필요한 의존성 패키지 설치
 sudo apt-get install -y \
   libxml2-dev libsqlite3-dev libcurl4-openssl-dev libonig-dev \
   libreadline-dev libargon2-dev libjpeg-dev libpng-dev libfreetype6-dev \
   libmcrypt-dev libxslt1-dev libffi-dev libsodium-dev libexpat1-dev \
   libpcre2-dev imagemagick bison re2c
 
-# Download and compile PHP from source
+# PHP 소스 다운로드 및 컴파일
 cd /usr/local/src
 wget https://www.php.net/distributions/php-8.3.8.tar.gz
 tar -zxvf php-8.3.8.tar.gz
 cd php-8.3.8
 
-# Configure PHP with specified options
+# PHP 구성 옵션 설정 및 설치
 ./configure \
   --prefix=/usr/local/php/8.3 \
   --sysconfdir=/usr/local/php/8.3/fpm \
@@ -142,27 +143,27 @@ cd php-8.3.8
   --with-expat \
   --with-external-pcre
 
-# Build and install PHP
+# PHP 빌드 및 설치
 make -j4 && sudo make install
 
-# Create symbolic links for PHP binaries
+# PHP 바이너리에 대한 심볼릭 링크 생성
 sudo ln -s /usr/local/php/8.3/bin/php /usr/bin/php8.3
 sudo ln -s /usr/local/php/8.3/bin/php-config /usr/bin/php-config8.3
 sudo ln -s /usr/local/php/8.3/bin/phpize /usr/bin/phpize8.3
 sudo ln -s /usr/local/php/8.3/sbin/php-fpm /usr/sbin/php-fpm8.3
 
-# Create necessary directories and set permissions for PHP-FPM
+# PHP-FPM에 필요한 디렉토리 생성 및 권한 설정
 sudo mkdir -p /var/log/php-fpm
 sudo chown www-data:root -R /var/log/php-fpm
 sudo mkdir -p /var/run/php
 sudo chown www-data:www-data -R /var/run/php
 
-# Configure PHP-FPM
+# PHP-FPM 구성 설정 복사
 sudo cp /usr/local/src/php-8.3.8/php.ini-production /usr/local/php/8.3/fpm/php.ini
 sudo cp /usr/local/php/8.3/fpm/php-fpm.conf.default /usr/local/php/8.3/fpm/php-fpm.conf
 sudo cp /usr/local/php/8.3/fpm/php-fpm.d/www.conf.default /usr/local/php/8.3/fpm/php-fpm.d/www.conf
 
-# Create systemd service file for PHP-FPM
+# PHP-FPM용 systemd 서비스 파일 생성
 sudo tee /usr/lib/systemd/system/php8.3-fpm.service > /dev/null <<EOL
 [Unit]
 Description=The PHP 8.3 FastCGI Process Manager
@@ -180,11 +181,11 @@ ExecStop=/bin/kill -WINCH \$MAINPID
 WantedBy=multi-user.target
 EOL
 
-# Enable and start PHP-FPM service
+# PHP-FPM 서비스 활성화 및 시작
 sudo systemctl daemon-reload
 sudo systemctl --now enable php8.3-fpm.service
 
-# Install PHP extensions
+# PHP 확장 모듈 설치
 EXTENSIONS=(igbinary-3.2.15 mongodb-1.19.2 rdkafka-6.0.3 redis-6.0.2)
 for EXT in "${EXTENSIONS[@]}"; do
     cd /usr/local/src
@@ -196,7 +197,7 @@ for EXT in "${EXTENSIONS[@]}"; do
     make && sudo make install
 done
 
-# Install mod_screwim
+# mod_screwim 설치
 cd /usr/local/src
 git clone https://github.com/OOPS-ORG-PHP/mod_screwim.git
 cd mod_screwim
@@ -204,7 +205,7 @@ phpize8.3
 ./configure --with-php-config=php-config8.3
 make && sudo make install
 
-# Create Nginx server configuration
+# Nginx 서버 설정 파일 생성
 sudo tee /usr/local/nginx/nginx.conf > /dev/null <<'EOL'
 # nginx.conf
 user www-data www-data;
@@ -268,7 +269,7 @@ http {
 }
 EOL
 
-# Create Nginx default server configuration
+# Nginx 기본 서버 설정 파일 생성
 sudo mkdir -p /usr/local/nginx/html
 sudo tee /usr/local/nginx/conf.d/default.conf > /dev/null <<'EOL'
 server {
@@ -311,7 +312,7 @@ server {
 }
 EOL
 
-### php-fpm.conf
+# PHP-FPM 구성 파일 생성
 sudo tee /usr/local/php/8.3/fpm/php-fpm.conf > /dev/null <<'EOL'
 include=/usr/local/php/8.3/fpm/php-fpm.d/www.conf
 
@@ -321,7 +322,7 @@ error_log = /var/log/php-fpm/error-php83.log
 daemonize = yes
 EOL
 
-### www.conf
+# PHP-FPM 풀 구성 파일 생성
 sudo tee /usr/local/php/8.3/fpm/php-fpm.d/www.conf > /dev/null <<'EOL'
 [www83]
 user = www-data
@@ -354,16 +355,22 @@ php_admin_value[memory_limit] = 32M
 security.limit_extensions = .php .php3 .php4 .php5 .php7
 EOL
 
-# Create PHP info file
+# PHP 정보 페이지 생성
 sudo tee /usr/local/nginx/html/info.php > /dev/null <<EOL
 <?php phpinfo(); ?>
 EOL
 
-# Print URL to access PHP info page
+# PHP 정보 페이지 URL 출력
 echo "http://localhost/info.php"
 
+# 서비스 재시작 명령 출력
 echo "sudo systemctl restart php8.3-fpm.service"
 echo "sudo systemctl restart nginx.service"
+
+# 심볼릭 링크 생성 명령 출력
+echo "sudo ln -s /usr/local/nginx /etc/nginx"
+echo "sudo ln -s /usr/local/php /etc/php"
+
 
 
 ### Shell Execute Command
