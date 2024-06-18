@@ -87,8 +87,8 @@ function install_ctop {
 ### 메인 스크립트 실행
 detect_os
 install_docker
-install_docker_compose
-install_ctop
+# install_docker_compose
+# install_ctop
 
 ### Clean up
 echo "Cleaning up installation files"
