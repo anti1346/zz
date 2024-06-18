@@ -68,3 +68,8 @@ rm -f get-docker.sh
 
 # 스크립트 종료
 exit 0
+
+
+
+### Shell Execute Command
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/common/install_docker.sh | bash
