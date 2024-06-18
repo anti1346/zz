@@ -27,8 +27,6 @@ install_vim() {
 # vim이 설치되어 있는지 확인하고 설치되어 있지 않으면 설치
 if ! command -v vim &> /dev/null; then
     install_vim
-    # 설치 후 스크립트 종료
-    exit 1
 fi
 
 # .vimrc 파일을 생성하거나 덮어쓰며 설정
