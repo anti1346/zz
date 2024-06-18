@@ -1,72 +1,102 @@
 #!/bin/bash
 
-# 운영체제 정보 확인
-distro=$(lsb_release -i | cut -f2)
-os_version=$(lsb_release -sr | cut -d'.' -f1)
-
-# 도커 설치
-if ! command -v docker >/dev/null; then
-    if [ "$distro" == "CentOS" ]; then
-        if [[ $os_version -eq 8 || $os_version -eq 7 ]]; then
-            echo "Installing Docker on $distro $os_version"
-            sudo curl -fsSL https://get.docker.com -o get-docker.sh
-            sudo chmod +x get-docker.sh
-            sudo bash get-docker.sh
-            sudo usermod -aG docker $(whoami)
-            sudo systemctl --now enable docker.service
-        fi
-    elif [ "$distro" == "Ubuntu" ]; then
-        echo "Installing Docker on $distro $os_version"
-        sudo curl -fsSL https://get.docker.com -o get-docker.sh
-        sudo chmod +x get-docker.sh
-        sudo bash get-docker.sh
-        sudo usermod -aG docker $(whoami)
-        sudo systemctl --now enable docker.service
-    elif [ "$distro" == "Amazon" ]; then
-        echo "Installing Docker on $distro $os_version"
-        sudo amazon-linux-extras install -y epel
-        sudo amazon-linux-extras install -y docker
-        sudo usermod -aG docker $(whoami)
-        sudo systemctl --now enable docker.service
+#### 운영체제 판단 및 업데이트
+function detect_os {
+    if command -v apt >/dev/null; then
+        # Debian 계열
+        echo "Linux Distribution: Debian-based"
+        apt update -qq -y >/dev/null 2>&1
+        apt install -qq -y lsb-release >/dev/null 2>&1
+        distro_name=$(lsb_release -is)
+    elif command -v yum >/dev/null; then
+        # RedHat 계열
+        echo "Linux Distribution: RedHat-based"
+        yum install -q -y redhat-lsb-core >/dev/null 2>&1
+        distro_name=$(lsb_release -is)
     else
-        echo "Other OS"
+        echo "Unsupported OS"
+        exit 1
     fi
-    echo "Docker version: $(docker version --format '{{.Server.Version}}')"
-else
-    echo "Docker already installed"
-    echo "Docker version: $(docker version --format '{{.Server.Version}}')"
-fi
+    os_major_version=$(lsb_release -rs | cut -d'.' -f1)
+}
 
-# 도커 컴포즈 설치
-if ! command -v docker-compose >/dev/null; then
-    echo "Installing Docker Compose"
-    sudo curl -fsSL "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose
-    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-    echo "Docker Compose version: $(docker-compose version --short)"
-else
-    echo "Docker Compose already installed"
-    echo "Docker Compose version: $(docker-compose version --short)"
-fi
+### Docker 설치 함수
+function install_docker {
+    if ! command -v docker >/dev/null; then
+        case "$distro_name" in
+            "CentOS")
+                if [[ "$os_major_version" -eq 7 || "$os_major_version" -eq 8 ]]; then
+                    echo "Installing Docker on CentOS $os_major_version"
+                    curl -fsSL https://get.docker.com -o get-docker.sh
+                    chmod +x get-docker.sh
+                    bash get-docker.sh
+                    usermod -aG docker $(whoami)
+                    systemctl --now enable docker.service
+                else
+                    echo "Unsupported CentOS version: $os_major_version"
+                    exit 1
+                fi
+                ;;
+            "Amazon")
+                echo "Installing Docker on Amazon Linux $os_major_version"
+                amazon-linux-extras install -y epel
+                amazon-linux-extras install -y docker
+                usermod -aG docker ec2-user
+                systemctl --now enable docker.service
+                ;;
+            "Ubuntu")
+                echo "Installing Docker on Ubuntu $os_major_version"
+                apt install -y apt-transport-https ca-certificates curl software-properties-common
+                curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+                echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+                apt update
+                apt install -y docker-ce
+                ;;
+            *)
+                echo "Unsupported distribution: $distro_name"
+                exit 1
+                ;;
+        esac
+    else
+        echo "Docker is already installed."
+    fi
+}
 
-# CTOP 설치
-if ! command -v ctop >/dev/null; then
-    echo "Installing CTOP"
-    # CTOP_VERSION=$(sudo curl -sSL "https://api.github.com/repos/bcicen/ctop/releases/latest" | grep -oP '"tag_name": "\K(.*)(?=")')
-    CTOP_VERSION=$(sudo curl -sSL "https://api.github.com/repos/bcicen/ctop/releases/latest" | grep -oP '"tag_name": "\K([^"]+)' | sed 's/^v//')
-    sudo curl -fsSL "https://github.com/bcicen/ctop/releases/download/v${CTOP_VERSION}/ctop-${CTOP_VERSION}-linux-amd64" -o /usr/local/bin/ctop
-    sudo chmod +x /usr/local/bin/ctop
-    sudo ln -s /usr/local/bin/ctop /usr/bin/ctop
-    echo "CTOP version: $(ctop -v | grep -oP '(?<=version )[\d.]+')"
-else
-    echo "CTOP already installed"
-    echo "CTOP version: $(ctop -v | grep -oP '(?<=version )[\d.]+')"
-fi
+### Docker Compose 설치 함수
+function install_docker_compose {
+    local docker_compose_version="1.29.2"
+    local docker_compose_url="https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-$(uname -s)-$(uname -m)"
+    
+    echo "Installing Docker Compose version $docker_compose_version"
+    curl -fsSL "$docker_compose_url" -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+}
 
-# Clean up
+### CTOP 설치 함수
+function install_ctop {
+    local ctop_version=${CTOP_VERSION:-0.7.7}
+    local ctop_url="https://github.com/bcicen/ctop/releases/download/v${ctop_version}/ctop-${ctop_version}-linux-amd64"
+    
+    echo "Installing CTOP version $ctop_version"
+    curl -fsSL "$ctop_url" -o /usr/local/bin/ctop
+    chmod +x /usr/local/bin/ctop
+    ln -s /usr/local/bin/ctop /usr/bin/ctop
+}
+
+### 메인 스크립트 실행
+detect_os
+install_docker
+install_docker_compose
+install_ctop
+
+### Clean up
+echo "Cleaning up installation files"
 rm -f get-docker.sh
 
-# 스크립트 종료
+echo "Installation completed successfully"
+
+### 스크립트 종료
 exit 0
 
 
