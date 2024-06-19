@@ -37,6 +37,10 @@ set encoding=utf-8
 set fileencoding=utf-8
 set termencoding=utf-8
 EOF
+
+    echo ".vimrc 파일에 설정이 추가되었습니다."
+else
+    echo ".vimrc 파일에 설정이 이미 존재합니다. 변경하지 않았습니다."
 fi
 
 
