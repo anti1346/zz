@@ -29,14 +29,15 @@ if ! command -v vim &> /dev/null; then
     install_vim
 fi
 
-# .vimrc 파일을 생성하거나 덮어쓰며 설정
-cat <<EOF > $HOME/.vimrc
+# .vimrc 파일에 설정이 이미 존재하는지 확인
+VIMRC_FILE=$HOME/.vimrc
+if ! grep -q 'set encoding=utf-8' $VIMRC_FILE 2>/dev/null; then
+    cat <<EOF >> $VIMRC_FILE
 set encoding=utf-8
 set fileencoding=utf-8
 set termencoding=utf-8
 EOF
-
-echo "vimrc 설정이 업데이트되었습니다."
+fi
 
 
 
