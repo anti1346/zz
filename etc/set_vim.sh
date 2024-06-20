@@ -36,6 +36,9 @@ if ! grep -q 'set encoding=utf-8' $VIMRC_FILE 2>/dev/null; then
 set encoding=utf-8
 set fileencoding=utf-8
 set termencoding=utf-8
+set tabstop=4
+set shiftwidth=4
+set expandtab    
 EOF
 
     echo ".vimrc 파일에 설정이 추가되었습니다."
