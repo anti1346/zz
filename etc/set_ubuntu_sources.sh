@@ -20,7 +20,7 @@ sudo apt-get update
 
 
 ### Shell Execute Command
-# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/set_ubuntu_sources.sh | bash
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/set_ubuntu_sources.sh | dos2unix | bash
 #
 # curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/set_ubuntu_sources.sh | bash -s mirror.navercorp.com
 
