@@ -18,6 +18,7 @@ sudo sed -i.bak "s/\(kr\|archive\|ports\).ubuntu.com/$mirror_server/g" /etc/apt/
 sudo apt-get update
 
 
+
 ### Shell Execute Command
 # curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/set_ubuntu_sources.sh | bash
 #
