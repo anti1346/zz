@@ -35,4 +35,4 @@ echo "Script execution completed."
 # curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/delete_accounts.sh -o delete_accounts.sh
 # chmod +x delete_accounts.sh
 
-curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/delete_accounts.sh | dos2unix | bash
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/delete_accounts.sh | dos2unix | bash
