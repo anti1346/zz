@@ -55,4 +55,4 @@ echo -e "\nOpenSSL version: $(openssl version)"
 
 ### OpenSSL SITE : https://www.openssl.org/source/
 ### Shell Execute Command
-# curl -fsSL  https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/install_openssl.sh | bash
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/install_openssl.sh | bash
