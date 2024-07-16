@@ -4,8 +4,8 @@ set -e  # 스크립트가 실패하면 중지
 set -u  # 정의되지 않은 변수를 사용할 경우 오류 발생
 
 OPENSSL_VERSION="3.1.3"
-OPENSSL_DIR="/usr/local/src"
 OPENSSL_PREFIX="/usr/local/openssl"
+WORK_DIR="/usr/local/src"
 
 # 필요한 개발 도구 및 의존성 설치
 echo "Installing development tools and dependencies..."
@@ -13,7 +13,7 @@ yum install -y perl-core zlib-devel gcc make perl-IPC-Cmd
 
 # OpenSSL 소스 코드 다운로드 및 압축 해제
 echo "Downloading OpenSSL ${OPENSSL_VERSION}..."
-cd "${OPENSSL_DIR}"
+cd "${WORK_DIR}"
 if [ -f "openssl-${OPENSSL_VERSION}.tar.gz" ]; then
     rm -f "openssl-${OPENSSL_VERSION}.tar.gz"
 fi
@@ -53,4 +53,6 @@ echo -e "\nOpenSSL version: $(openssl version)"
 
 
 
+### OpenSSL SITE : https://www.openssl.org/source/
+### Shell Execute Command
 # curl -fsSL  https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/install_openssl.sh | bash
