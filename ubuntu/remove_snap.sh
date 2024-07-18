@@ -45,5 +45,9 @@ done
 echo "Snapd and related components have been successfully removed."
 
 
+
 ### Shell Execute Command
-# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/set-chrony.sh | bash
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/remove_snap.sh | bash
+# 
+# apt-get install -y dos2unix
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/remove_snap.sh | dos2unix | bash
