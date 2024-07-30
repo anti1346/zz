@@ -52,3 +52,9 @@ openssl genrsa -out peer.key 2048
 openssl req -new -key peer.key -subj "/CN=etcd-peer" -out peer.csr -config openssl.conf
 openssl x509 -req -in peer.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out peer.crt \
     -days $DAYS -extensions v3_req -extfile openssl.conf
+
+
+
+### Shell Execute Command
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/sslcert_generator.sh -o sslcert_generator.sh
+# chmod -x sslcert_generator.sh
