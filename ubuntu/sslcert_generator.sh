@@ -38,6 +38,9 @@ IP.3 = $ADDRESS2
 IP.4 = $ADDRESS3
 EOF
 
+# SSL DIRECTORY 생성
+mkdir $SSLDIR
+
 # CA 인증서 및 키 생성
 openssl genrsa -out $SSLDIR/ca.key 2048
 openssl req -x509 -new -nodes -key $SSLDIR/ca.key -subj "/CN=etcd-ca" -days $DAYS -out $SSLDIR/ca.crt
