@@ -47,15 +47,15 @@ openssl req -x509 -new -nodes -key $SSLDIR/ca.key -subj "/CN=etcd-ca" -days $DAY
 
 # 클라이언트 인증서 및 키 생성
 openssl genrsa -out $SSLDIR/node.key 2048
-openssl req -new -key $SSLDIR/node.key -subj "/CN=etcd-node" -out $SSLDIR/node.csr -config $SSLDIR/openssl.conf
+openssl req -new -key $SSLDIR/node.key -subj "/CN=etcd-node" -out $SSLDIR/node.csr -config openssl.conf
 openssl x509 -req -in $SSLDIR/node.csr -CA $SSLDIR/ca.crt -CAkey $SSLDIR/ca.key -CAcreateserial -out $SSLDIR/node.crt \
-    -days $DAYS -extensions v3_req -extfile $SSLDIR/openssl.conf
+    -days $DAYS -extensions v3_req -extfile openssl.conf
 
 # 피어 인증서 및 키 생성
 openssl genrsa -out $SSLDIR/peer.key 2048
-openssl req -new -key $SSLDIR/peer.key -subj "/CN=etcd-peer" -out $SSLDIR/peer.csr -config $SSLDIR/openssl.conf
+openssl req -new -key $SSLDIR/peer.key -subj "/CN=etcd-peer" -out $SSLDIR/peer.csr -config openssl.conf
 openssl x509 -req -in $SSLDIR/peer.csr -CA $SSLDIR/ca.crt -CAkey $SSLDIR/ca.key -CAcreateserial -out $SSLDIR/peer.crt \
-    -days $DAYS -extensions v3_req -extfile $SSLDIR/openssl.conf
+    -days $DAYS -extensions v3_req -extfile openssl.conf
 
 
 
