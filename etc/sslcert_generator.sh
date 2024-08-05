@@ -60,6 +60,6 @@ openssl x509 -req -in $SSLDIR/peer.csr -CA $SSLDIR/ca.crt -CAkey $SSLDIR/ca.key 
 
 
 ### Shell Execute Command
-# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/sslcert_generator.sh -o sslcert_generator.sh
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/sslcert_generator.sh -o sslcert_generator.sh
 # chmod -x sslcert_generator.sh
 
