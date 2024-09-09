@@ -38,7 +38,9 @@ source /etc/profile
 ```
 echo 'NoPasswordUser ALL=NOPASSWD: ALL' >> /etc/sudoers
 ```
-
+```
+echo 'centos ALL=NOPASSWD: ALL' >> /etc/sudoers
+```
 #### 타임존(timezone) 설정
 ```
 sudo timedatectl set-timezone Asia/Seoul
