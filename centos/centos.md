@@ -81,5 +81,3 @@ chronyc sources -v
 ```
 chronyc tracking
 ```
-
-
