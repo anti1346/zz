@@ -46,7 +46,17 @@ echo 'centos ALL=NOPASSWD: ALL' >> /etc/sudoers
 sudo timedatectl set-timezone Asia/Seoul
 ```
 
-### chrony(chronyd) 설정
+#### resolv 설정
+```
+cat <<EOF > /etc/resolv.conf
+nameserver 8.8.8.8
+nameserver 1.1.1.1
+nameserver 168.126.63.1
+nameserver 8.8.4.4
+EOF
+```
+
+#### chrony(chronyd) 설정
 ```
 sudo yum install -y chrony
 ```
@@ -81,3 +91,13 @@ chronyc sources -v
 ```
 chronyc tracking
 ```
+
+#### CentOS EOL이슈 (Vault 저장소)
+```
+cat <<EOF > /etc/yum.repos.d/CentOS-Base.repo
+[base]
+name=CentOS-$releasever - Base
+baseurl=http://vault.centos.org/7.9.2009/os/$basearch/
+enabled=1
+gpgcheck=1
+EOF
