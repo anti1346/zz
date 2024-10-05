@@ -31,7 +31,7 @@ super user(root)
 echo 'export PS1="\[\033[01;32m\]\u\[\e[m\]\[\033[01;32m\]@\[\e[m\]\[\033[01;32m\]\h\[\e[m\]:\[\033[01;34m\]\W\[\e[m\]$ "' >> ~/.bashrc
 ```
 ```
-source /etc/profile
+source ~/.bashrc
 ```
 
 #### sudoers 변경
@@ -48,10 +48,10 @@ sudo timedatectl set-timezone Asia/Seoul
 
 ### chrony(chronyd) 설정
 ```
-yum install -q -y chrony
+sudo yum install -y chrony
 ```
 ```
-systemctl --now enable chronyd
+sudo systemctl --now enable chronyd
 ```
 ```
 cat <<EOF > /etc/chrony.conf
