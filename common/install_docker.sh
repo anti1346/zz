@@ -88,7 +88,7 @@ function install_ctop {
 detect_os
 install_docker
 # install_docker_compose
-# install_ctop
+install_ctop
 
 ### Clean up
 echo "Cleaning up installation files"
