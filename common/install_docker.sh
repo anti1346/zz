@@ -89,14 +89,14 @@ function install_docker {
 ### CTOP 설치 함수
 function install_ctop {
     local ctop_version=${CTOP_VERSION:-0.7.7}
-    local ctop_url="https://github.com/bcicen/ctop/releases/download/v${ctop_version}/ctop-${ctop_version}-linux-$(dpkg --print-architecture)"
+    local arch=$(dpkg --print-architecture)
+    local ctop_url="https://github.com/bcicen/ctop/releases/download/v${ctop_version}/ctop-${ctop_version}-linux-${arch}"
     # https://github.com/bcicen/ctop/releases/download/v0.7.7/ctop-0.7.7-linux-amd64
     
     if ! command -v ctop >/dev/null; then
         echo "Installing CTOP version $ctop_version"
         curl -fsSL "$ctop_url" -o /usr/local/bin/ctop || { echo "Failed to download CTOP"; exit 1; }
         chmod +x /usr/local/bin/ctop
-        ln -s /usr/local/bin/ctop /usr/bin/ctop
     else
         echo "CTOP is already installed."
     fi
