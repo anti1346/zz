@@ -11,8 +11,8 @@ function install_lsb_release {
     if ! command -v lsb_release >/dev/null; then
         if command -v apt >/dev/null; then
             # Debian 계열
-            sudo apt-get update -qq >/dev/null 2>&1
-            sudo apt-get install -qq -y lsb-release >/dev/null 2>&1
+            apt-get update -qq >/dev/null 2>&1
+            apt-get install -qq -y lsb-release >/dev/null 2>&1
         elif command -v yum >/dev/null; then
             # RedHat 계열
             yum install -q -y redhat-lsb-core >/dev/null 2>&1
