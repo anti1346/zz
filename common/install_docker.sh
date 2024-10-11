@@ -49,8 +49,8 @@ function install_docker {
                     curl -fsSL https://get.docker.com -o get-docker.sh || { echo "Failed to download Docker installation script"; exit 1; }
                     sudo chmod +x get-docker.sh
                     bash get-docker.sh
-                    sudo usermod -aG docker $(whoami)
-                    sudo systemctl --now enable docker.service
+                    usermod -aG docker $(whoami)
+                    systemctl --now enable docker.service
                 else
                     echo "Unsupported CentOS version: $os_major_version"
                     exit 1
@@ -58,18 +58,18 @@ function install_docker {
                 ;;
             "Amazon")
                 echo "Installing Docker on Amazon Linux $os_major_version"
-                sudo amazon-linux-extras install -y epel
-                sudo amazon-linux-extras install -y docker
-                sudo usermod -aG docker ec2-user
-                sudo systemctl --now enable docker.service
+                amazon-linux-extras install -y epel
+                amazon-linux-extras install -y docker
+                usermod -aG docker ec2-user
+                systemctl --now enable docker.service
                 ;;
             "Ubuntu")
                 echo "Installing Docker on Ubuntu $os_major_version"
-                sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+                apt-get install -y apt-transport-https ca-certificates curl software-properties-common
                 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
                 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-                sudo apt-get update
-                sudo apt-get install -y docker-ce
+                apt-get update
+                apt-get install -y docker-ce
                 ;;
             *)
                 echo "Unsupported distribution: $distro_name"
