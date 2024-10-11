@@ -120,5 +120,6 @@ exit 0
 
 
 ### Shell Execute Command
+# sed -i 's/\r$//' install_docker.sh
 # curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/common/install_docker.sh | bash
 # curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/common/install_docker.sh | dos2unix | bash
