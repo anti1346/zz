@@ -37,16 +37,19 @@ if [ -z "$RAID_DEVICE" ]; then
 fi
 echo "RAID Device found: $RAID_DEVICE" | tee -a "$LOG_FILE"
 
-# growpart를 사용하여 파티셔닝
-echo "Growing partition on $RAID_DEVICE" | tee -a "$LOG_FILE"
-sudo growpart "$RAID_DEVICE" 1
+# parted를 사용하여 파티셔닝
+echo "Partitioning $RAID_DEVICE using parted" | tee -a "$LOG_FILE"
+sudo parted "$RAID_DEVICE" mklabel gpt
+sudo parted -a optimal "$RAID_DEVICE" mkpart primary xfs 0% 100%
 
-# 논리 드라이브 확인
-echo "Listing block devices to verify partition" | tee -a "$LOG_FILE"
-lsblk | tee -a "$LOG_FILE"
+# 생성된 파티션 이름 확인
+PARTITION="${RAID_DEVICE}1"
+if [ ! -b "$PARTITION" ]; then
+  echo "Error: Partition not created!" | tee -a "$LOG_FILE"
+  exit 1
+fi
 
 # XFS 파일 시스템 생성
-PARTITION="${RAID_DEVICE}1"
 echo "Creating XFS filesystem on $PARTITION" | tee -a "$LOG_FILE"
 sudo mkfs.xfs "$PARTITION"
 
