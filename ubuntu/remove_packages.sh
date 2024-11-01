@@ -40,4 +40,4 @@ fi
 # curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/remove_packages.sh | bash -s packages_to_apm
 # 
 # apt-get install -y dos2unix
-# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/remove_snap.sh | dos2unix | bash -s packages_to_apm
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/ubuntu/remove_packages.sh | dos2unix | bash -s packages_to_apm
