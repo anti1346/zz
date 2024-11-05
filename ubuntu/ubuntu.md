@@ -13,7 +13,7 @@ sudo update-alternatives --config editor
 
 #### 방화벽 설정
 ```
-systemctl stop ufw && systemctl disable ufw
+sudo systemctl disable --now ufw
 ```
 
 #### 저장소 URL 변경
