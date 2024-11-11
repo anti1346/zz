@@ -20,13 +20,14 @@ echo "${PROTOCOL}://${TARGET_DOMAIN}:${TARGET_PORT} - [${TARGET_IP}]"
 # Print HTTP header response
 echo -e "\n=== HTTP Header Response ==="
 # curl -I --max-time 1 --resolve "www.scbyun.com:443:27.0.236.142" "https://www.scbyun.com"
-HTTP_RESPONSE=$(curl -I --max-time 1 --resolve "${TARGET_DOMAIN}:${TARGET_PORT}:${TARGET_IP}" "${PROTOCOL}://${TARGET_DOMAIN}" 2>/dev/null)
+HTTP_RESPONSE=$(curl -I --max-time 2 --resolve "${TARGET_DOMAIN}:${TARGET_PORT}:${TARGET_IP}" "${PROTOCOL}://${TARGET_DOMAIN}" 2>/dev/null)
 echo "${HTTP_RESPONSE}"
 
 # Print SSL certificate expiration dates
 echo -e "\n=== SSL Certificate Expiration Dates ==="
-# echo | openssl s_client -connect "27.0.236.142:443" -servername "www.scbyun.com" 2>/dev/null | openssl x509 -noout -dates
-SSL_CERT_INFO=$(echo | openssl s_client -servername ${TARGET_DOMAIN} -connect ${TARGET_IP}:${TARGET_PORT} 2>/dev/null | openssl x509 -noout -dates)
+# echo | openssl s_client -connect "27.0.236.142:443" -servername "www.scbyun.com" -showcerts 2>/dev/null | openssl x509 -noout -dates
+# echo | openssl s_client -connect "27.0.236.142:443" -servername "www.scbyun.com" -showcerts -timeout 2 2>/dev/null | openssl x509 -noout -dates
+SSL_CERT_INFO=$(timeout 2s echo | openssl s_client -servername ${TARGET_DOMAIN} -connect ${TARGET_IP}:${TARGET_PORT} 2>/dev/null | openssl x509 -noout -dates)
 echo "${SSL_CERT_INFO}"
 echo -e "\n"
 
