@@ -5,6 +5,7 @@ packages_to_haproxy='roxy-wi|haproxy'
 packages_to_pacemaker='corosync|pacemaker|pcs'
 packages_to_zabbix='zabbix|mysql|php'
 packages_to_loki='grafana|loki|promtail'
+p_java='grafana|loki|promtail'
 
 display_available_categories() {
   echo "Available package categories:"
@@ -13,6 +14,7 @@ display_available_categories() {
   echo "  - packages_to_pacemaker"
   echo "  - packages_to_zabbix"
   echo "  - packages_to_loki"
+  echo "  - p_java"
 }
 
 remove_packages() {
