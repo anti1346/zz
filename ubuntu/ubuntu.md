@@ -16,7 +16,25 @@ sudo update-alternatives --config editor
 sudo systemctl disable --now ufw
 ```
 
-#### 저장소 URL 변경
+#### 저장소 URL 변경(24.04 ubuntu.sources)
+```
+cat /etc/apt/sources.list.d/ubuntu.sources
+```
+```
+sudo cp /etc/apt/sources.list.d/ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources.bk
+```
+```
+sudo tee /etc/apt/sources.list.d/zabbix.list > /dev/null <<EOF
+Types: deb
+URIs: https://mirror.kakao.com/ubuntu/
+Suites: noble noble-updates noble-backports
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+EOF
+```
+<details>
+<summary>ubuntu 22.04 sources.list</summary>
+
 ```
 cat /etc/apt/sources.list
 ```
@@ -32,6 +50,7 @@ sudo sed -i 's/http:\/\/kr.archive.ubuntu.com/https:\/\/mirror.kakao.com/g' /etc
 ```
 sudo sed -i 's/kr.archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
 ```
+</details>
 
 #### 계정 생성
 ###### user1 계정 생성
