@@ -76,25 +76,26 @@ useradd -m -c "user1" -d /home/user1 -s /bin/bash -u 1201 user1
 ```
 </details>
 
-###### vagrant 계정 생성
-```
-useradd -m -c "vagrant" -d /home/vagrant -s /bin/bash -u 1101 vagrant
-```
-```
-echo 'vagrant:vagrant' | sudo chpasswd
-```
-```
-echo 'vagrant ALL=(ALL:ALL) NOPASSWD: ALL' >> /etc/sudoers
-```
 ###### ubuntu 계정 생성
 ```
-useradd -m -c "ubuntu" -d /home/ubuntu -s /bin/bash -u 1201 ubuntu
+useradd -m -c "ubuntu" -d /home/ubuntu -s /bin/bash -u 1101 ubuntu
 ```
 ```
 echo 'ubuntu:ubuntu' | sudo chpasswd
 ```
 ```
 echo 'ubuntu ALL=(ALL:ALL) NOPASSWD: ALL' >> /etc/sudoers
+```
+
+###### vagrant 계정 생성
+```
+useradd -m -c "vagrant" -d /home/vagrant -s /bin/bash -u 1102 vagrant
+```
+```
+echo 'vagrant:vagrant' | sudo chpasswd
+```
+```
+echo 'vagrant ALL=(ALL:ALL) NOPASSWD: ALL' >> /etc/sudoers
 ```
 
 #### sudoers 설정
@@ -143,24 +144,24 @@ source /etc/profile
 #### 프롬프트
 ###### linux user 
 ```
-echo 'export PS1="\[\e[31m\]\u\[\e[m\]\[\e[37m\]@\[\e[m\]\[\e[33m\]\h\[\e[m\]:\[\033[01;36m\]\W\[\e[m\]$ "' >> ~/.bashrc
+echo 'export PS1="\[\e[31m\]\u\[\e[m\]\[\e[37m\]@\[\e[m\]\[\e[33m\]\h\[\e[m\]:\[\033[01;36m\]\W\[\e[m\]$ "' >> ${HOME}/.bashrc
 ```
 ```
-source ~/.bashrc
+source ${HOME}/.bashrc
 ```
 ###### docker user
 ```
-echo 'export PS1="\[\e[33m\]\u\[\e[m\]\[\e[37m\]@\[\e[m\]\[\e[34m\]\h\[\e[m\]:\[\033[01;31m\]\W\[\e[m\]$ "' >> ~/.bashrc
+echo 'export PS1="\[\e[33m\]\u\[\e[m\]\[\e[37m\]@\[\e[m\]\[\e[34m\]\h\[\e[m\]:\[\033[01;31m\]\W\[\e[m\]$ "' >> ${HOME}/.bashrc
 ```
 ```
-source ~/.bashrc
+source ${HOME}/.bashrc
 ```
 ###### root
 ```
-echo 'export PS1="\[\033[01;32m\]\u\[\e[m\]\[\033[01;32m\]@\[\e[m\]\[\033[01;32m\]\h\[\e[m\]:\[\033[01;34m\]\W\[\e[m\]$ "' >> ~/.bashrc
+echo 'export PS1="\[\033[01;32m\]\u\[\e[m\]\[\033[01;32m\]@\[\e[m\]\[\033[01;32m\]\h\[\e[m\]:\[\033[01;34m\]\W\[\e[m\]$ "' >> ${HOME}/.bashrc
 ```
 ```
-source ~/.bashrc
+source ${HOME}/.bashrc
 ```
 
 #### 고정 IP 설정
