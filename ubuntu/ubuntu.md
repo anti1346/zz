@@ -3,6 +3,11 @@
 sudo timedatectl set-timezone Asia/Seoul
 ```
 
+#### 호스트 네임 설정
+```
+sudo hostnamectl set-hostname node177
+```
+
 #### 우분투 editor 변경
 ```
 sudo update-alternatives --set editor /usr/bin/vim.basic
@@ -156,6 +161,35 @@ echo 'export PS1="\[\033[01;32m\]\u\[\e[m\]\[\033[01;32m\]@\[\e[m\]\[\033[01;32m
 ```
 ```
 source ~/.bashrc
+```
+
+#### 고정 IP 설정
+###### Ubuntu 24.04
+```
+sudo vim /etc/netplan/50-cloud-init.yaml
+```
+```
+# This file is generated from information provided by the datasource.  Changes
+# to it will not persist across an instance reboot.  To disable cloud-init's
+# network configuration capabilities, write a file
+# /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg with the following:
+# network: {config: disabled}
+network:
+    ethernets:
+        enp0s3:
+            dhcp4: false
+            dhcp6: false
+            addresses:
+              - 192.168.10.51/24
+            routes:
+              - to: default
+                via: 192.168.10.1
+            nameservers:
+              addresses: [8.8.8.8, 8.8.4.4]
+    version: 2
+```
+```
+sudo netplan apply
 ```
 
 <details>
