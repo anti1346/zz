@@ -21,7 +21,7 @@ sudo systemctl disable --now ufw
 cat /etc/apt/sources.list.d/ubuntu.sources
 ```
 ```
-sudo cp /etc/apt/sources.list.d/ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources.bk
+sudo cp /etc/apt/sources.list.d/ubuntu.sources /etc/apt/ubuntu.sources_$(date '+%Y%m%d-%H%M%S')
 ```
 ```
 sudo tee /etc/apt/sources.list.d/zabbix.list > /dev/null <<EOF
