@@ -197,5 +197,4 @@ sudo netplan apply
 <summary>details summary block sample</summary>
 
 details block sample
-
 </details>
