@@ -24,7 +24,7 @@ cat /etc/apt/sources.list.d/ubuntu.sources
 sudo cp /etc/apt/sources.list.d/ubuntu.sources /etc/apt/ubuntu.sources_$(date '+%Y%m%d-%H%M%S')
 ```
 ```
-sudo tee /etc/apt/sources.list.d/zabbix.list > /dev/null <<EOF
+sudo tee /etc/apt/sources.list.d/ubuntu.sources > /dev/null <<EOF
 Types: deb
 URIs: https://mirror.kakao.com/ubuntu/
 Suites: noble noble-updates noble-backports
