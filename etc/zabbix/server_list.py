@@ -8,8 +8,11 @@ DB_CONFIG = {
     "database": "zabbix",
 }
 
-# MySQL에서 호스트명과 IP 조회
+# 서버 목록을 저장할 파일 경로
+OUTPUT_FILE = "server_list.txt"
+
 def fetch_server_list():
+    """MySQL에서 서버 목록을 조회하고 파일로 저장"""
     try:
         conn = mysql.connector.connect(**DB_CONFIG)
         cursor = conn.cursor()
@@ -22,19 +25,18 @@ def fetch_server_list():
         """
         cursor.execute(query)
 
-        # 결과를 (호스트 이름, IP 주소) 튜플로 변환하여 리스트에 저장
-        server_list = [(row[0], row[1]) for row in cursor.fetchall()]
+        # 결과를 파일로 저장
+        with open(OUTPUT_FILE, "w") as file:
+            for hostname, ip in cursor.fetchall():
+                file.write(f"{hostname} {ip}\n")
 
-        # 리스트 출력
-        print("server_list = [")
-        for host, ip in server_list:
-            print(f'    ("{host}", "{ip}"),')
-        print("]")
+        print(f"[INFO] 서버 목록이 {OUTPUT_FILE} 파일에 저장되었습니다.")
 
     except mysql.connector.Error as err:
-        print(f"Error: {err}")
+        print(f"[ERROR] MySQL 연결 오류: {err}")
+
     finally:
-        if conn.is_connected():
+        if 'conn' in locals() and conn.is_connected():
             cursor.close()
             conn.close()
 
