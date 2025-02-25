@@ -18,10 +18,10 @@ for entry in "${server_list[@]}"; do
     read -r server_ip server_name <<< "$entry"
 
     # 서버 모델 정보 가져오기 (Product Name: 제거)
-    product=$(zabbix_get -s "$server_ip" -p 10500 -t 2 -k "z_command[
+    product_name=$(zabbix_get -s "$server_ip" -p 10500 -t 2 -k "z_command[
         dmidecode -t system | grep 'Product Name:' | sed 's/Product Name: //g'
     ]" | tr -d '\r\n')
 
     # 결과 출력 (탭 구분)
-    echo -e "$server_name\t$server_ip\t$product"
+    echo -e "$server_name\t$server_ip\t$product_name"
 done
