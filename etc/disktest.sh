@@ -64,4 +64,4 @@ done
 
 
 ### Shell Execute Command
-# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/main/etc/get_inet.sh | bash
+# curl -fsSL https://raw.githubusercontent.com/anti1346/zz/refs/heads/main/etc/disktest.sh | bash
