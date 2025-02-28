@@ -78,6 +78,8 @@ for file in randrw_result.json read_result.json write_result.json; do
     parse_fio_result "$file"
 done
 
+rm -f testfile randrw_result.json read_result.json write_result.json;
+
 
 
 ### Shell Execute Command
