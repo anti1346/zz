@@ -47,7 +47,7 @@ install_docker() {
 }
 
 install_docker-compose() {
-    if command -v docker-compos >/dev/null 2>&1; then
+    if command -v docker-compose >/dev/null 2>&1; then
         echo "✔ Docker Compose v2 is already installed."
         echo -e "✅ Docker Compose Version : $(docker-compose --version | awk '{print $4}' | tr -d 'v')\n"
     else 
