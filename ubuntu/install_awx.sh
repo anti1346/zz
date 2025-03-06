@@ -4,6 +4,7 @@ set -e  # 오류 발생 시 즉시 종료
 
 echo "Updating package list..."
 sudo apt update
+echo -e "\n"
 
 install_python() {
     if command -v python >/dev/null 2>&1; then
