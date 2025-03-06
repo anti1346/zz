@@ -11,8 +11,10 @@ install_python() {
         echo "✅ Python Version : $(python --version)"
     else
         echo "Installing Python..."
-        sudo apt install -y python3 python3-pip python-is-python3 python-setuptools
-        python3 -m pip install --upgrade pip docker
+        sudo apt install -y python3 python3-pip python-is-python3 python3-six python-setuptools
+        python3 -m pip install --upgrade pip
+        pip3 install --user docker
+        pip3 install --user six
     fi
 }
 
