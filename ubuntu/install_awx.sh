@@ -2,20 +2,17 @@
 
 set -e  # 오류 발생 시 즉시 종료
 
-echo "Updating package list..."
-sudo apt update
-echo -e "\n"
-
 install_python() {
     if command -v python >/dev/null 2>&1; then
         echo "✔ Python is already installed."
         echo -e "✅ Python Version : $(python --version)\n"
     else
-        echo "Installing Python..."
-        sudo apt install -y python3 python3-pip python-is-python3 python3-six python-setuptools
+        echo "📌 Updating package list..."
+        sudo apt update
+        echo "📌 Installing Python..."
+        sudo apt install -y python3 python3-pip python3-setuptools python-is-python3
         python3 -m pip install --upgrade pip
-        pip3 install --user docker
-        pip3 install --user six
+        pip install --upgrade six docker
     fi
 }
 
@@ -25,9 +22,10 @@ install_nodejs() {
         echo "✅ Node.js Version : $(node --version)"
         echo -e "✅ NPM Version : $(npm --version)\n"
     else
-        echo "Installing Node.js and dependencies..."
+        echo "📌 Updating package list..."
+        sudo apt update    
+        echo "📌 Installing Node.js and dependencies..."
         sudo apt install -y git nodejs npm pwgen
-        #sudo apt install -y git pwgen nodejs npm
         sudo npm install -g npm
     fi
 }
@@ -37,13 +35,14 @@ install_docker() {
         echo "✔ Docker is already installed."
         echo -e "✅ Docker Version : $(docker --version | awk '{print $3}' | tr -d ',')\n"
     else
-        echo "Installing Docker..."
-        DOCKER_INSTALL_SCRIPT="get-docker.sh"
-        curl -fsSL https://get.docker.com -o "$DOCKER_INSTALL_SCRIPT"
-        chmod +x "$DOCKER_INSTALL_SCRIPT"
-        sudo bash "$DOCKER_INSTALL_SCRIPT"
+        echo "📌 Updating package list..."
+        sudo apt update    
+        echo "📌 Installing Docker..."
+        curl -fsSL https://get.docker.com -o get-docker.sh
+        chmod +x get-docker.sh
+        sudo bash get-docker.sh
         sudo systemctl enable --now docker
-        rm -f "$DOCKER_INSTALL_SCRIPT"
+        rm -f get-docker.sh
     fi
 }
 
@@ -52,8 +51,9 @@ install_ansible() {
         echo "✔ Ansible is already installed."
         echo -e "✅ Ansible Version : $(ansible --version | egrep "^ansible" | awk '{print $3}' | tr -d ']')\n"
     else
-        echo "Installing Ansible..."
-        sudo apt update
+        echo "📌 Updating package list..."
+        sudo apt update    
+        echo "📌 Installing Ansible..."
         sudo apt install -y software-properties-common
         sudo add-apt-repository --yes --update ppa:ansible/ansible
         sudo apt install -y ansible
@@ -61,20 +61,25 @@ install_ansible() {
 }
 
 install_awx() {
-    AWX_DIRECTORY="/opt/awx"
-    if [ -d "$AWX_DIRECTORY" ]; then
+    local AWX_DIRECTORY="/opt/awx"
+
+    if [ -d "$AWX_DIRECTORY/.git" ]; then
         echo "✔ AWX repository already exists."
-        echo -e "✅ AWX Version : $(cd $AWX_DIRECTORY; git tag | sort -V | tail -n1)\n"
+        echo -e "✅ AWX Version: $(cd $AWX_DIRECTORY; git tag | sort -V | tail -n1)\n"
+        
+        echo "📌 Updating AWX repository..."
+        cd "$AWX_DIRECTORY"
+        git fetch --all
+        git reset --hard origin/main
     else
-        echo "Cloning AWX repository..."
-        mkdir -p $AWX_DIRECTORY
-        git clone https://github.com/ansible/awx.git $AWX_DIRECTORY
-        cd $AWX_DIRECTORY
-        git pull
+        echo "📌 Cloning AWX repository..."
+        sudo rm -rf "$AWX_DIRECTORY"
+        sudo mkdir -p "$AWX_DIRECTORY"
+        sudo git clone https://github.com/ansible/awx.git "$AWX_DIRECTORY"
     fi
 
-    echo "Running AWX installation playbook..."
-    cd $AWX_DIRECTORY
+    echo "📌 Running AWX installation playbook..."
+    cd "$AWX_DIRECTORY"
     ansible-playbook -i inventory install.yml
 }
 
@@ -83,6 +88,6 @@ install_python
 install_nodejs
 install_docker
 install_ansible
-install_awx
+# install_awx
 
-echo "✅ Installation completed successfully!"
+echo -e "✅ Installation completed successfully!\n"
