@@ -49,8 +49,10 @@ install_docker() {
 install_ansible() {
     if command -v ansible >/dev/null 2>&1; then
         echo "✔ Ansible is already installed."
+        echo "✅ Ansible Version : $(ansible --version | egrep "^ansible" | awk '{print $3}' | tr -d ']')"
     else
         echo "Installing Ansible..."
+        sudo apt update
         sudo apt install -y software-properties-common
         sudo add-apt-repository --yes --update ppa:ansible/ansible
         sudo apt install -y ansible
