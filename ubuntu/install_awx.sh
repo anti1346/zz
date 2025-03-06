@@ -10,9 +10,9 @@ install_python() {
         echo "📌 Updating package list..."
         sudo apt update
         echo "📌 Installing Python..."
-        sudo apt install -y python3 python3-pip python3-setuptools python-is-python3
-        python3 -m pip install --upgrade pip
-        pip install --upgrade six docker
+        sudo apt install -y python3 python3-setuptools python-is-python3 pipx
+        pipx ensurepath
+        pipx install six docker
     fi
 }
 
