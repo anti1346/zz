@@ -20,6 +20,7 @@ install_nodejs() {
     if command -v nodejs >/dev/null 2>&1; then
         echo "✔ Node.js is already installed."
         echo "✅ Node.js Version : $(node --version)"
+        echo "✅ NPM Version : $(npm --version)"
     else
         echo "Installing Node.js and dependencies..."
         sudo apt install -y git nodejs npm
@@ -66,9 +67,9 @@ install_awx() {
 }
 
 # 실행 순서
-install_python
-install_nodejs
-# install_docker
+# install_python
+# install_nodejs
+install_docker
 # install_ansible
 # install_awx
 
