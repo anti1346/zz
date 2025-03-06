@@ -99,6 +99,7 @@ install_awx() {
 install_python
 install_nodejs
 install_docker
+install_docker-compose
 install_ansible
 # install_awx
 
