@@ -8,6 +8,7 @@ sudo apt update
 install_python() {
     if command -v python >/dev/null 2>&1; then
         echo "✔ Python is already installed."
+        echo "Python Version : $(python --version)"
     else
         echo "Installing Python..."
         sudo apt install -y python3 python3-pip python-is-python3 python-setuptools
@@ -18,6 +19,7 @@ install_python() {
 install_nodejs() {
     if command -v nodejs >/dev/null 2>&1; then
         echo "✔ Node.js is already installed."
+        echo "Node.js Version : $(node --version)"
     else
         echo "Installing Node.js and dependencies..."
         sudo apt install -y git nodejs npm
@@ -65,7 +67,7 @@ install_awx() {
 
 # 실행 순서
 install_python
-# install_nodejs
+install_nodejs
 # install_docker
 # install_ansible
 # install_awx
