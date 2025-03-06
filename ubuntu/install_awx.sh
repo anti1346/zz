@@ -46,6 +46,18 @@ install_docker() {
     fi
 }
 
+install_docker-compose() {
+    if command -v docker-compos >/dev/null 2>&1; then
+        echo "✔ Docker Compose v2 is already installed."
+        echo -e "✅ Docker Compose Version : $(docker-compose --version | awk '{print $4}' | tr -d 'v')\n"
+    else 
+        echo "📌 Installing Docker Compose v2..."
+        sudo curl -fsSL "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest \
+          | grep tag_name | cut -d '"' -f 4)/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        chmod +x /usr/local/bin/docker-compose
+    fi
+}
+
 install_ansible() {
     if command -v ansible >/dev/null 2>&1; then
         echo "✔ Ansible is already installed."
