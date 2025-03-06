@@ -20,7 +20,8 @@ install_nodejs() {
         echo "✔ Node.js is already installed."
     else
         echo "Installing Node.js and dependencies..."
-        sudo apt install -y git pwgen nodejs npm
+        sudo apt install -y git nodejs npm
+        #sudo apt install -y git pwgen nodejs npm
         sudo npm install -g npm
     fi
 }
