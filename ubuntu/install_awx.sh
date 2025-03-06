@@ -63,9 +63,13 @@ install_ansible() {
 install_awx() {
     if [ -d "awx" ]; then
         echo "✔ AWX repository already exists."
+        echo -e "✅ AWX Version : $(cd /opt/awx; git tag | sort -V | tail -n1)\n"
     else
         echo "Cloning AWX repository..."
-        git clone https://github.com/ansible/awx.git
+        mkdir -p /opt/awx
+        git clone https://github.com/ansible/awx.git /opt/awx
+        cd /opt/awx
+        git pull
     fi
 
     echo "Running AWX installation playbook..."
