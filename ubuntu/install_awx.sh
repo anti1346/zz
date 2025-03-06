@@ -65,9 +65,9 @@ install_awx() {
 
 # 실행 순서
 install_python
-install_nodejs
-install_docker
-install_ansible
-install_awx
+# install_nodejs
+# install_docker
+# install_ansible
+# install_awx
 
 echo "✅ Installation completed successfully!"
