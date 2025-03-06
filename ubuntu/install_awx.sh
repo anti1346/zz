@@ -32,7 +32,7 @@ install_nodejs() {
 install_docker() {
     if command -v docker >/dev/null 2>&1; then
         echo "✔ Docker is already installed."
-        echo "✅ Docker Version : $(docker --version | grep ' Engine:' -A 1 | grep 'Version:')"
+        echo "✅ Docker Version : $(docker --version | grep " Engine:" -A 1 | grep "Version:")"
     else
         echo "Installing Docker..."
         DOCKER_INSTALL_SCRIPT="get-docker.sh"
