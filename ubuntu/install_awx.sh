@@ -8,7 +8,7 @@ sudo apt update
 install_python() {
     if command -v python >/dev/null 2>&1; then
         echo "✔ Python is already installed."
-        echo "✅ Python Version : $(python --version)"
+        echo -e "✅ Python Version : $(python --version)\n"
     else
         echo "Installing Python..."
         sudo apt install -y python3 python3-pip python-is-python3 python3-six python-setuptools
@@ -22,7 +22,7 @@ install_nodejs() {
     if command -v nodejs >/dev/null 2>&1; then
         echo "✔ Node.js is already installed."
         echo "✅ Node.js Version : $(node --version)"
-        echo "✅ NPM Version : $(npm --version)"
+        echo -e "✅ NPM Version : $(npm --version)\n"
     else
         echo "Installing Node.js and dependencies..."
         sudo apt install -y git nodejs npm
@@ -34,7 +34,7 @@ install_nodejs() {
 install_docker() {
     if command -v docker >/dev/null 2>&1; then
         echo "✔ Docker is already installed."
-        echo "✅ Docker Version : $(docker --version | awk '{print $3}' | tr -d ',')"
+        echo -e "✅ Docker Version : $(docker --version | awk '{print $3}' | tr -d ',')\n"
     else
         echo "Installing Docker..."
         DOCKER_INSTALL_SCRIPT="get-docker.sh"
@@ -49,7 +49,7 @@ install_docker() {
 install_ansible() {
     if command -v ansible >/dev/null 2>&1; then
         echo "✔ Ansible is already installed."
-        echo "✅ Ansible Version : $(ansible --version | egrep "^ansible" | awk '{print $3}' | tr -d ']')"
+        echo -e "✅ Ansible Version : $(ansible --version | egrep "^ansible" | awk '{print $3}' | tr -d ']')\n"
     else
         echo "Installing Ansible..."
         sudo apt update
