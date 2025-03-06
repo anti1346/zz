@@ -26,7 +26,7 @@ install_nodejs() {
         echo -e "✅ NPM Version : $(npm --version)\n"
     else
         echo "Installing Node.js and dependencies..."
-        sudo apt install -y git nodejs npm
+        sudo apt install -y git nodejs npm pwgen
         #sudo apt install -y git pwgen nodejs npm
         sudo npm install -g npm
     fi
@@ -74,6 +74,7 @@ install_awx() {
     fi
 
     echo "Running AWX installation playbook..."
+    cd $AWX_DIRECTORY
     ansible-playbook -i inventory install.yml
 }
 
