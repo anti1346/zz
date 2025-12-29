@@ -64,6 +64,14 @@ sudo systemctl disable --now udisks2
 sudo apt autoremove --purge -y udisks2
 ```
 
+#### PackageKit Daemon (GUI 패키지 관리)
+```
+sudo systemctl disable --now packagekit
+```
+```
+sudo apt autoremove --purge -y packagekit*
+```
+
 ##### 다른 패키지가 사용하지 않는 의존성만 제거
 ```
 sudo apt autoremove -y
