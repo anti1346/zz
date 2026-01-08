@@ -76,3 +76,8 @@ sudo apt autoremove --purge -y packagekit*
 ```
 sudo apt autoremove -y
 ```
+##### 불필요한 계정 삭제
+```
+echo "games lp mail news uucp proxy backup list gnats irc" | xargs -n1 sudo userdel -r
+```
+
