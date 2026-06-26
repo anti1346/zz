@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# 운영체제 감지
+OS="$(uname)"
+
+# 1. 외부 IP 확인 함수 (공통)
+get_external_ip() {
+    local services=("https://ifconfig.co" "https://api.ipify.org" "https://ifconfig.me")
+    for service in "${services[@]}"; do
+        ext_ip=$(curl -s --max-time 2 "$service" 2>/dev/null)
+        if [[ $ext_ip =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "$ext_ip"
+            return 0
+        fi
+    done
+    echo "Check Failed"
+}
+
+# 2. 로컬 IP 확인 함수 (운영체제별 분기)
+get_local_ip() {
+    if [[ "$OS" == "Darwin" ]]; then
+        # macOS: ifconfig 사용
+        # en0 또는 en1 등 활성 인터페이스의 inet 주소를 가져옴
+        ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}' | head -n 1
+    else
+        # Linux (Ubuntu, CentOS): ip route 사용 (표준 방식)
+        local_ip=$(ip route get 1.2.3.4 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="src") print $(i+1)}')
+
+        # 위 방식 실패 시 hostname -I 사용 (CentOS 7 등에서 확인)
+        if [ -z "$local_ip" ]; then
+            local_ip=$(hostname -I 2>/dev/null | awk '{print $1}')
+        fi
+        echo "$local_ip"
+    fi
+}
+
+# 실행
+local_ip=$(get_local_ip)
+external_ip=$(get_external_ip)
+
+# 3. 결과 출력
+echo "=========================================="
+printf "%-18s : %s\n" "Local IPADDR" "${local_ip:-Unknown}"
+printf "%-18s : %s\n" "External IPADDR" "$external_ip"
+echo "=========================================="
